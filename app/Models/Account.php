@@ -116,9 +116,10 @@ class Account extends Model
             return 0;
         }
         $sum = 0;
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
         foreach ($this->entries as $entry) {
             if ($entry['currency_id'] == session('currency_id')) {
-                if (session('currency_id') == 2) {
+                if ($currency->code == 'SYP') {
                     $sum +=  $entry['cr'] / $entry['currency_value'];
                 } else {
                     $sum +=  $entry['cr'] * $entry['currency_value'];
@@ -138,9 +139,10 @@ class Account extends Model
             return 0;
         }
         $sum = 0;
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
         foreach ($this->entries as $entry) {
             if ($entry['currency_id'] == session('currency_id')) {
-                if (session('currency_id') == 2) {
+                if ($currency->code == 'SYP') {
                     $sum +=  $entry['dr'] / $entry['currency_value'];
                 } else {
                     $sum +=  $entry['dr'] * $entry['currency_value'];

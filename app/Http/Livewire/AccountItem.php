@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Transaction;
 use Livewire\Component;
 
@@ -14,10 +15,13 @@ class AccountItem extends Component
     public $balance;
     public $usdBalance;
     public $currency;
+    public $otherCurrency;
     public function mount()
     {
         $this->balance = number_format($this->accountBalance($this->item), 2);
         $this->usdBalance = number_format($this->usdAccountBalance($this->item), 2);
+        $this->currency = Currency::all()->where('id', session('currency_id'))->first();
+        $this->otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
     }
 
     public function render()
