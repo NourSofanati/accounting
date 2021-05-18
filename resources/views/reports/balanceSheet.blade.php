@@ -38,14 +38,24 @@
                                     @foreach ($account->children as $child)
                                         <tr class="border-b border-t border-dashed ">
                                             <td class="text-right px-3 py-4"> {{ $child->name }}</td>
-                                            <td class="text-left px-3 py-4"> {{ $child->balance() }}</td>
+                                            <td class="text-left px-3 py-4">
+                                                {{ $child->balance() . ' ' . $currency->sign }}
+                                                <br>
+                                                <span
+                                                    class="text-gray-500 text-sm">({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot class="border-t">
                                     <tr class="font-bold">
                                         <td class="text-right px-3 py-4">المجموع:</td>
-                                        <td class="text-left px-3 py-4">{{ $account->balance() }}</td>
+                                        <td class="text-left px-3 py-4">
+                                            {{ $account->balance() . ' ' . $currency->sign }}
+                                            <br>
+                                            <span
+                                                class="text-gray-500 text-sm">({{ $account->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -57,7 +67,11 @@
                     </div>
                     <div class="w-full flex justify-between">
                         <div class="font-bold px-3 py-4">حساب الأصول الكلي</div>
-                        <div class="font-bold px-3 py-4">{{ $types[0]->balance() }}</div>
+                        <div class="font-bold px-3 py-4 text-left">{{ $types[0]->balance() . ' ' . $currency->sign }}
+                            <br>
+                            <span
+                                class="text-gray-500 text-sm">({{ $types[0]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                        </div>
                     </div>
                 </div>
                 <div class="my-10">
@@ -79,7 +93,8 @@
                                         @if ($child->balance() > 0)
                                             <tr class="border-b border-t border-dashed ">
                                                 <td class="text-right px-3 py-4"> {{ $child->name }}</td>
-                                                <td class="text-left px-3 py-4"> {{ $child->balance() }}</td>
+                                                <td class="text-left px-3 py-4">
+                                                    {{ $child->balance() . ' ' . $currency->sign }}</td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -87,7 +102,8 @@
                                 <tfoot class="border-t">
                                     <tr class="font-bold">
                                         <td class="text-right px-3 py-4">المجموع:</td>
-                                        <td class="text-left px-3 py-4">{{ $account->balance() }}</td>
+                                        <td class="text-left px-3 py-4">
+                                            {{ $account->balance() . ' ' . $currency->sign }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -99,7 +115,7 @@
                         </div>
                         <div class="w-full flex justify-between">
                             <div class="font-bold px-3 py-4">حساب الاتزامات الكلي</div>
-                            <div class="font-bold px-3 py-4">{{ $types[1]->balance() }}</div>
+                            <div class="font-bold px-3 py-4">{{ $types[1]->balance() . ' ' . $currency->sign }}</div>
                         </div>
                     </div>
                 </div>
@@ -117,7 +133,8 @@
                                     @foreach ($account->children as $child)
                                         <tr class="border-b border-t border-dashed ">
                                             <td class="text-right px-3 py-4"> {{ $child->name }}</td>
-                                            <td class="text-left px-3 py-4"> {{ $child->balance() }}</td>
+                                            <td class="text-left px-3 py-4">
+                                                {{ $child->balance() . ' ' . $currency->sign }}</td>
                                         </tr>
                                     @endforeach
 
@@ -126,7 +143,8 @@
                                 <tfoot class="border-t">
                                     <tr class="font-bold">
                                         <td class="text-right px-3 py-4">المجموع:</td>
-                                        <td class="text-left px-3 py-4">{{ $account->balance() }}</td>
+                                        <td class="text-left px-3 py-4">
+                                            {{ $account->balance() . ' ' . $currency->sign }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -140,7 +158,7 @@
                         <div class="w-full flex justify-between">
                             <div class=" px-3 py-4">الربح الصافي</div>
                             <div class=" px-3 py-4">
-                                {{ $types[3]->balance() - $types[4]->balance() }}</div>
+                                {{ $types[3]->balance() - $types[4]->balance() . ' ' . $currency->sign }}</div>
                         </div>
                         <div class="px-3">
                             <hr class="mb-1">
@@ -148,7 +166,8 @@
                         <div class="w-full flex justify-between">
                             <div class="font-bold px-3 py-4">حساب حقوق الملكية</div>
                             <div class="font-bold px-3 py-4">
-                                {{ $types[2]->balance() + ($types[3]->balance() - $types[4]->balance()) }}</div>
+                                {{ $types[2]->balance() + ($types[3]->balance() - $types[4]->balance()) . ' ' . $currency->sign }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,7 +178,9 @@
                     </div>
                     <div class="w-full flex justify-between">
                         <div class="font-bold px-3 py-4">حساب الاتزامات + حقوق الملكية الكلي</div>
-                        <div class="font-bold px-3 py-4">{{ $types[1]->balance() + $types[2]->balance() + ($types[3]->balance() - $types[4]->balance())}}</div>
+                        <div class="font-bold px-3 py-4">
+                            {{ $types[1]->balance() + $types[2]->balance() + ($types[3]->balance() - $types[4]->balance()) . ' ' . $currency->sign }}
+                        </div>
                     </div>
                 </div>
             </div>

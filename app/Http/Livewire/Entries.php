@@ -18,15 +18,17 @@ class Entries extends Component
     public $diff;
     public $newTransaction;
     public $lastValue = 0;
+    public $USDprice;
     public function mount()
     {
 
         $this->accountTypes = AccountType::all();
-        $this->entries = [['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => 3600], ['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => 3600]];
+        $this->lastValue = $this->USDprice;
+        //dd($this->USDprice);
+        $this->entries = [['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => $this->USDprice], ['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => $this->USDprice]];
         $this->totalCr = 0;
         $this->totalDr = 0;
         $this->diff = 0;
-        $this->lastValue = 3600;
         $this->newTransaction = Transaction::create();
     }
 
@@ -66,7 +68,7 @@ class Entries extends Component
             $this->totalDrUSD += (float)$entry['dr'] / $entry['currency_value'];
             $this->totalCrUSD += (float)$entry['cr'] / $entry['currency_value'];
         }
-        $this->changeLastValue(count($this->entries)-1);
+        $this->changeLastValue(count($this->entries) - 1);
         $this->diff = abs($this->totalDr - $this->totalCr);
         return view('livewire.entries');
     }
