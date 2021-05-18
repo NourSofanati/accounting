@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         DB::table('currencies')->insert(
             array(
-                ['name' => 'United States Dollar', 'code' => "USD", 'sign' => "$"],
                 ['name' => 'Syrian Pound', 'code' => "SYP", "sign" => "ل.س"],
+                ['name' => 'United States Dollar', 'code' => "USD", 'sign' => "$"],
             ),
         );
         $this->seedAccountTypes();

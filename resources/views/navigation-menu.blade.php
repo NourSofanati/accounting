@@ -265,10 +265,10 @@
 
         <ul class="pr-4">
             <li> <a href="{{ route('setCurrency', 1) }}"
-                    class="{{ session('currency_id') == 1 ? 'text-white' : 'text-gray-300' }}">USD</a>
+                    class="{{ session('currency_id') == 1 ? 'text-white' : 'text-gray-300' }}">SYP</a>
             </li>
             <li> <a href="{{ route('setCurrency', 2) }}"
-                    class="{{ session('currency_id') == 2 ? 'text-white' : 'text-gray-300' }}">SYP</a>
+                    class="{{ session('currency_id') == 2 ? 'text-white' : 'text-gray-300' }}">USD</a>
             </li>
             <li> <a href="{{ route('exchange.index') }}">تحويل عملة</a></li>
 
