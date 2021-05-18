@@ -62,29 +62,29 @@ class ExpenseRecieptController extends Controller
         ]);
         $reciept->transaction_id = $recieptTransaction->id;
         $reciept->save();
-            foreach ($request->entries as $index => $entry) {
+        foreach ($request->entries as $index => $entry) {
             ExpenseRecieptItem::create([
                 'reciept_id' => $reciept->id,
                 'rate' => $entry['rate'],
                 'qty' => $entry['qty'],
                 'description' => $entry['description'],
-		'currency_value'=>$request->currency_value,
-		'currency_id'=>$request->session()->get('currency_id'),
+                'currency_value' => $request->currency_value,
+                'currency_id' => $request->session()->get('currency_id'),
             ]);
         }
         Entry::create([
             'cr' => $reciept->total(),
             'account_id' => $reciept->vendor->account_id,
             'transaction_id' => $recieptTransaction->id,
-		'currency_id'=>$request->session()->get('currency_id'),
-		'currency_value'=>$request->currency_value,
+            'currency_id' => $request->session()->get('currency_id'),
+            'currency_value' => $request->currency_value,
         ]);
         Entry::create([
             'dr' => $reciept->total(),
             'account_id' => $reciept->vendor->loss_account_id,
             'transaction_id' => $recieptTransaction->id,
-		'currency_id'=>$request->session()->get('currency_id'),
-		'currency_value'=>$request->currency_value,
+            'currency_id' => $request->session()->get('currency_id'),
+            'currency_value' => $request->currency_value,
         ]);
         return redirect()->route('expenses.index');
     }
@@ -105,22 +105,22 @@ class ExpenseRecieptController extends Controller
             'cr' => $request->paidAmount,
             'account_id' => $request->designatedAccountId,
             'transaction_id' => $transaction->id,
-		'currency_id'=>$request->session()->get('currency_id'),
-		'currency_value'=>$request->currency_value,
+            'currency_id' => $request->session()->get('currency_id'),
+            'currency_value' => $request->currency_value,
         ]);
         Entry::create([
             'dr' => $request->paidAmount,
             'account_id' => $reciept->vendor->account_id,
             'transaction_id' => $transaction->id,
-		'currency_id'=>$request->session()->get('currency_id'),
-		'currency_value'=>$request->currency_value,
+            'currency_id' => $request->session()->get('currency_id'),
+            'currency_value' => $request->currency_value,
         ]);
         ExpenseRecieptPayment::create([
             'date' => $request->date,
             'amount' => $request->paidAmount,
             'reciept_id' => $reciept->id,
-		'currency_id'=>$request->session()->get('currency_id'),
-		'currency_value'=>$request->currency_value,
+            'currency_id' => $request->session()->get('currency_id'),
+            'currency_value' => $request->currency_value,
         ]);
         return redirect()->route('expenses.show', $reciept);
     }

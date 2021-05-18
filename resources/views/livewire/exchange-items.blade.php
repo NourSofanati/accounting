@@ -1,7 +1,8 @@
 <div class="rounded bg-white shadow-xl p-5">
     <form action="{{ route('exchange.store') }}" method="post">
         @csrf
-
+        <input type="number" value="{{ $currency['id'] }}" class="sr-only" name="currency_from" />
+        <input type="number" value="{{ $otherCurrency['id'] }}" class="sr-only" name="currency_to" />
         <header>
             <div class="flex justify-between pb-8 ">
                 <div>
@@ -20,7 +21,7 @@
                 <div class="">
                     <div class="flex flex-col">
                         <span class="text-gray-500">تاريخ تحويل العملة</span>
-                        <input type="date" name="issueDate" id="issueDate" class="border-none text-right text-xs">
+                        <input type="date" name="issueDate" id="issueDate" class="border-none text-right text-xs" required>
                     </div>
                 </div>
                 <div class="">
@@ -38,18 +39,21 @@
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block mt-1 w-full">
             </div>
             <div class="py-2">
-                <x-jet-label for="exchange_from" value="تحويل المبلغ من حساب"></x-jet-label>
+                <x-jet-label for="exchange_from" value="تحويل المبلغ من حساب شجرة {{ $currency['code'] }}">
+                </x-jet-label>
                 <select name="exchange_from" id="exchange_from"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block mt-1 w-full">
                     @foreach ($cashAccounts as $acc)
                         @foreach ($acc->children as $child)
-                            <option value="{{ $child->id }}">{{ $child->name }}</option>
+                            <option value="{{ $child->id }}">{{ $child->name }}
+                                ({{ $child->balance() . $currency['sign'] }})</option>
                         @endforeach
                     @endforeach
                 </select>
             </div>
             <div class="py-2">
-                <x-jet-label for="exchange_to" value="تحويل المبلغ ل حساب"></x-jet-label>
+                <x-jet-label for="exchange_to" value="تحويل المبلغ ل حساب شجرة {{ $otherCurrency['code'] }}">
+                </x-jet-label>
                 <select name="exchange_to" id="exchange_to"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block mt-1 w-full">
                     @foreach ($cashAccounts as $acc)

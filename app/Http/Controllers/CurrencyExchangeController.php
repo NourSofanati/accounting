@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Currency;
 use App\Models\CurrencyExchange;
+use App\Models\Entry;
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CurrencyExchangeController extends Controller
@@ -29,7 +32,7 @@ class CurrencyExchangeController extends Controller
         $USDprice = $this->getUSDprice();
         $currencies = Currency::all();
 
-        
+
         $cA = Account::all()->where('name', 'النقد')->first();
         $accounts = Account::all()->where('parent_id', $cA->id);
 
@@ -74,7 +77,68 @@ class CurrencyExchangeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $currency_from = Currency::all()->where('id', $request->currency_from)->first();
+        $currency_to = Currency::all()->where('id', $request->currency_to)->first();
+        $account_from = Account::all()->where('id', $request->exchange_from)->first();
+        $account_to = Account::all()->where('id', $request->exchange_to)->first();
+
+        if ($currency_from->code == 'USD') {
+            $amount = $request->currency_value * $request->exchange_value;
+            $transaction = Transaction::create([
+                'transaction_name' => 'Currency Convert to ' . $currency_to->code . Carbon::now(),
+                'transaction_date' => $request->issueDate,
+            ]);
+            $this->handleExchangeFrom($request->exchange_value, $account_from, $transaction, $currency_from, $request->currency_value);
+            $this->handleExchangeTo($amount, $account_to, $transaction, $currency_to, $request->currency_value);
+        } else {
+            $amount =  $request->exchange_value / $request->currency_value;
+            $transaction = Transaction::create([
+                'transaction_name' => 'Currency Convert to ' . $currency_to->code . Carbon::now(),
+                'transaction_date' => $request->issueDate,
+            ]);
+            $this->handleExchangeFrom($request->exchange_value, $account_from, $transaction, $currency_from, $request->currency_value);
+            $this->handleExchangeTo($amount, $account_to, $transaction, $currency_to, $request->currency_value);
+        }
+        return redirect()->route('accounts-chart');
+    }
+
+    public function handleExchangeFrom($amount, $account_from, $transaction, $currency_from, $currency_value)
+    {
+        $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
+        Entry::create([
+            'cr' => $amount,
+            'account_id' => $account_from->id,
+            'transaction_id' => $transaction->id,
+            'currency_id' => $currency_from->id,
+            'currency_value' => $currency_value,
+        ]);
+        Entry::create([
+            'dr' => $amount,
+            'account_id' => $exchange_expense_account->id,
+            'transaction_id' => $transaction->id,
+            'currency_id' => $currency_from->id,
+            'currency_value' => $currency_value,
+        ]);
+    }
+
+
+    public function handleExchangeTo($amount, $account_to, $transaction, $currency_to, $currency_value)
+    {
+        $exchange_income_account = Account::all()->where('name', 'ايرادات تحويل عملة')->first();
+        Entry::create([
+            'dr' => $amount,
+            'account_id' => $account_to->id,
+            'transaction_id' => $transaction->id,
+            'currency_id' => $currency_to->id,
+            'currency_value' => $currency_value,
+        ]);
+        Entry::create([
+            'cr' => $amount,
+            'account_id' => $exchange_income_account->id,
+            'transaction_id' => $transaction->id,
+            'currency_id' => $currency_to->id,
+            'currency_value' => $currency_value,
+        ]);
     }
 
     /**
