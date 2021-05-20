@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Entry;
 use App\Models\FixedAsset;
 use App\Models\Invertory;
@@ -80,7 +81,7 @@ class FixedAssetController extends Controller
 
         $asset->account_id = $assetAccount->id;
         $asset->save();
-
+        $otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
         $transaction = Transaction::create([
             'transaction_name' => 'Asset ' . sprintf("%07d", $asset->id),
             'transaction_date' => $asset->purchase_date,
@@ -101,6 +102,29 @@ class FixedAssetController extends Controller
             'account_id' => $asset->account_id,
             'transaction_id' => $transaction->id,
         ]);
+        if ($otherCurrency->code == 'SYP') {
+            $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
+            $sypTransaction = Transaction::create([
+                'transaction_name' => 'Asset ' . sprintf("%07d", $asset->id),
+                'transaction_date' => $asset->purchase_date,
+                'currency_value' => $asset->currency_value,
+                'currency_id' => $otherCurrency->id,
+            ]);
+            Entry::create([
+                'currency_value' => $asset->currency_value,
+                'currency_id' => $otherCurrency->id,
+                'cr' => $asset->value * $asset->currency_value,
+                'account_id' => $exchange_expense_account->id,
+                'transaction_id' => $sypTransaction->id,
+            ]);
+            Entry::create([
+                'currency_value' => $asset->currency_value,
+                'currency_id' => $otherCurrency->id,
+                'dr' => $asset->value * $asset->currency_value,
+                'account_id' => $asset->account_id,
+                'transaction_id' => $sypTransaction->id,
+            ]);
+        }
         return redirect()->route('invertories.show', $request->invertory_id);
     }
 
