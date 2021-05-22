@@ -52,7 +52,8 @@ class EmployeeController extends Controller
                     ]);
                     EmployeeLiability::create([
                         'employee_id' => $employee->id,
-                        'transaction_id' => $transaction->id
+                        'transaction_id' => $transaction->id,
+                        'amount' =>  $employee->monthlySalary,
                     ]);
                 }
             } else if ($now->gte($lastMonthPayDay)) {
@@ -82,7 +83,8 @@ class EmployeeController extends Controller
                     EmployeeLiability::create([
                         'amount' => $employee->monthlySalary,
                         'employee_id' => $employee->id,
-                        'transaction_id' => $transaction->id
+                        'transaction_id' => $transaction->id,
+                        'amount' =>  $employee->monthlySalary,
                     ]);
                 }
             }
