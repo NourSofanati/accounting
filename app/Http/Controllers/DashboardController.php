@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
+        if (!$request->session()->has('currency_id')) {
+            session(['currency_id' => 1]);
+        }
         $accounts = Account::all();
         $expenseAccounts = $accounts->where('parent_id', null)->where('account_type', 5);
         $activeExpenseAccounts = [];
