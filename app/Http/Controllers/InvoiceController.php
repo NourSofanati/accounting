@@ -52,8 +52,9 @@ class InvoiceController extends Controller
                 $revenueSplit["retains"] += $invoice->totalRetains();
             }
         }
+        $currency = Currency::all()->where('id',session('currency_id'))->first();
 
-        return view('invoices.index')->with('invoices', $invoices)->with('colors', $colors)->with('revenue', $revenueSplit);
+        return view('invoices.index')->with('invoices', $invoices)->with('colors', $colors)->with('revenue', $revenueSplit)->with('currency', $currency);
     }
 
 

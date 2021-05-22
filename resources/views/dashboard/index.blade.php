@@ -14,7 +14,7 @@
                         @case("recievables")
                         <div class="">
                             <h1 class="text-4xl text-indigo-500">
-                                ${{ number_format($item) }}
+                                {{ $currency->sign.' '.number_format($item) }}
                             </h1>
                             <span class="text-xl text-gray-500">{{ __($key) }}</span>
                         </div>
@@ -24,6 +24,11 @@
                 @endforelse
             </div>
         </section>
+        <img class="mx-auto my-5" src="{{asset('images/1.png')}}"/>
+        <img class="mx-auto my-5" src="{{asset('images/2.png')}}"/>
+        <img class="mx-auto my-5" src="{{asset('images/3.png')}}"/>
+        <img class="mx-auto my-5" src="{{asset('images/4.png')}}"/>
+        <img class="mx-auto my-5" src="{{asset('images/5.png')}}"/>
         <div class=" h-72">
 
             <canvas id="myChart"></canvas>

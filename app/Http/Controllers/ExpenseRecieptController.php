@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Entry;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseReciept;
@@ -62,6 +63,9 @@ class ExpenseRecieptController extends Controller
         ]);
         $reciept->transaction_id = $recieptTransaction->id;
         $reciept->save();
+
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
+        $otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
         foreach ($request->entries as $index => $entry) {
             ExpenseRecieptItem::create([
                 'reciept_id' => $reciept->id,
@@ -86,6 +90,23 @@ class ExpenseRecieptController extends Controller
             'currency_id' => $request->session()->get('currency_id'),
             'currency_value' => $request->currency_value,
         ]);
+        if ($currency->code == 'USD') {
+            $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
+            Entry::create([
+                'dr' => $reciept->total() * $request->currency_value,
+                'account_id' => $reciept->vendor->loss_account_id,
+                'transaction_id' => $recieptTransaction->id,
+                'currency_id' => $otherCurrency->id,
+                'currency_value' => $request->currency_value,
+            ]);
+            Entry::create([
+                'cr' => $reciept->total() * $request->currency_value,
+                'account_id' => $exchange_expense_account->id,
+                'transaction_id' => $recieptTransaction->id,
+                'currency_id' => $otherCurrency->id,
+                'currency_value' => $request->currency_value,
+            ]);
+        }
         return redirect()->route('expenses.index');
     }
 

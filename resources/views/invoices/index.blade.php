@@ -22,7 +22,7 @@
                     @forelse ($revenue as $key=> $item)
                         <div class="">
                             <h1 class="text-4xl text-indigo-500">
-                                ${{ number_format($item) }}
+                                {{ $currency->sign. ' '.number_format($item) }}
                             </h1>
                             <span class="text-xl text-gray-500">{{ __($key) }}</span>
                         </div>

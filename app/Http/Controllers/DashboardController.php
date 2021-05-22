@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,8 +21,9 @@ class DashboardController extends Controller
                 array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => $a->balance()));
             }
         }
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
 
-        return view('dashboard.index', ['expenseAccounts' => $this->profits(), 'invoices' => $this->invoices()]);
+        return view('dashboard.index', ['expenseAccounts' => $this->profits(), 'invoices' => $this->invoices(), 'currency' => $currency]);
     }
     public function invoices()
     {
@@ -75,7 +77,7 @@ class DashboardController extends Controller
                 foreach ($acc->entries as $entry) {
                     //dd(Carbon::create($entry->transaction->transaction_date)->format('m')); // 03
                     $month = Carbon::create($entry->transaction->transaction_date)->format('m');
-                    array_push($months[$month-1]['expenses'], $entry);
+                    array_push($months[$month - 1]['expenses'], $entry);
                 }
             }
         }
@@ -84,7 +86,7 @@ class DashboardController extends Controller
                 foreach ($acc->entries as $entry) {
                     //dd(Carbon::create($entry->transaction->transaction_date)->format('m')); // 03
                     $month = Carbon::create($entry->transaction->transaction_date)->format('m');
-                    array_push($months[$month-1]['income'], $entry);
+                    array_push($months[$month - 1]['income'], $entry);
                 }
             }
         }
