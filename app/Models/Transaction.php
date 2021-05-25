@@ -15,4 +15,8 @@ class Transaction extends Model
     {
         return $this->hasMany(Entry::class, 'transaction_id');
     }
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'transaction_id');
+    }
 }

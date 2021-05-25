@@ -135,6 +135,11 @@ class DatabaseSeeder extends Seeder
                 'parent_id' => null,
             ),
             array(
+                'name' => 'الديون',
+                'account_type' => AccountType::where('name', 'أصول')->first()->id,
+                'parent_id' => null,
+            ),
+            array(
                 'name' => 'أصول ثابتة',
                 'account_type' => AccountType::where('name', 'أصول')->first()->id,
                 'parent_id' => null,
@@ -287,6 +292,22 @@ class DatabaseSeeder extends Seeder
                 'name' => 'جاري الموردين',
                 'account_type' => Account::where('name', 'مصاريف الموردين')->first()->account_type,
                 'parent_id' => Account::where('name', 'مصاريف الموردين')->first()->id,
+            ),
+            
+            array(
+                'name' => 'ابو عمر',
+                'account_type' => AccountType::where('name', 'حقوق الملكية')->first()->id,
+                'parent_id' => Account::all()->where('name', 'الملكية')->first()->id,
+            ),
+            array(
+                'name' => 'يوسف',
+                'account_type' => AccountType::where('name', 'حقوق الملكية')->first()->id,
+                'parent_id' => Account::all()->where('name', 'الملكية')->first()->id,
+            ),
+            array(
+                'name' => 'هيلبيرتو',
+                'account_type' => AccountType::where('name', 'حقوق الملكية')->first()->id,
+                'parent_id' => Account::all()->where('name', 'الملكية')->first()->id,
             ),
         ];
         foreach ($defaultChildren as $child) {

@@ -21,4 +21,9 @@ class Entry extends Model
     {
         return $this->belongsTo(Account::class, 'account_id');
     }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
+    }
 }

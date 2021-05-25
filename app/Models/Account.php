@@ -176,4 +176,123 @@ class Account extends Model
             return $sum;
         }
     }
+
+
+
+    public function _USD_Credit()
+    {
+        if ($this == null) {
+            return 0;
+        }
+        $sum = 0;
+        $currency = Currency::all()->where('code', 'USD')->first();
+        foreach ($this->entries as $entry) {
+            if ($entry['currency_id'] == $currency->id) {
+                $sum +=  $entry['cr'] / $entry['currency_value'];
+            }
+        }
+        if ($this->children->count()) {
+            foreach ($this->children as $leaf) {
+                $sum += $leaf->_USD_Credit();
+            }
+        }
+        return $sum;
+    }
+    public function _USD_Debit()
+    {
+        if ($this == null) {
+            return 0;
+        }
+        $sum = 0;
+        $currency = Currency::all()->where('code', 'USD')->first();
+        foreach ($this->entries as $entry) {
+            if ($entry['currency_id'] == $currency->id) {
+                $sum +=  $entry['dr'];
+            }
+        }
+        if ($this->children->count()) {
+            foreach ($this->children as $leaf) {
+                $sum += $leaf->_USD_Debit();
+            }
+        }
+        return $sum;
+    }
+
+    public function _USD_Balance()
+    {
+        $sum = 0;
+        if ($this == null) {
+            return 0;
+        }
+        if ($this->children->count()) {
+            foreach ($this->children as $leaf) {
+                $sum += $leaf->_USD_Debit() - $leaf->_USD_Credit();
+            }
+        } else {
+            $sum = $this->_USD_Debit() - $this->_USD_Credit();
+        }
+        if ($this->accountType->name == 'حقوق الملكية' || $this->accountType->name == 'التزامات' || $this->accountType->name == 'دخل') {
+            return $sum * -1;
+        } else {
+            return $sum;
+        }
+    }
+    public function _SYP_Credit()
+    {
+        if ($this == null) {
+            return 0;
+        }
+        $sum = 0;
+        $currency = Currency::all()->where('code', 'SYP')->first();
+        foreach ($this->entries as $entry) {
+            if ($entry['currency_id'] == $currency->id) {
+                $sum +=  $entry['cr'] / $entry['currency_value'];
+            }
+        }
+        if ($this->children->count()) {
+            foreach ($this->children as $leaf) {
+                $sum += $leaf->_SYP_Credit();
+            }
+        }
+        return $sum;
+    }
+    public function _SYP_Debit()
+    {
+        if ($this == null) {
+            return 0;
+        }
+        $sum = 0;
+        $currency = Currency::all()->where('code', 'SYP')->first();
+        foreach ($this->entries as $entry) {
+            if ($entry['currency_id'] == $currency->id) {
+                $sum +=  $entry['dr'];
+            }
+        }
+        if ($this->children->count()) {
+            foreach ($this->children as $leaf) {
+                $sum += $leaf->_SYP_Debit();
+            }
+        }
+        return $sum;
+    }
+
+    public function _SYP_Balance()
+    {
+        $sum = 0;
+        if ($this == null) {
+            return 0;
+        }
+        if ($this->children->count()) {
+            foreach ($this->children as $leaf) {
+                $sum += $leaf->_SYP_Debit() - $leaf->_SYP_Credit();
+            }
+        } else {
+            $sum = $this->_SYP_Debit() - $this->_SYP_Credit();
+        }
+        if ($this->accountType->name == 'حقوق الملكية' || $this->accountType->name == 'التزامات' || $this->accountType->name == 'دخل') {
+            return $sum * -1;
+        } else {
+            return $sum;
+        }
+    }
 }

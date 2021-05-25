@@ -96,6 +96,7 @@ class TransactionController extends Controller
             }
             if ($currency->code == 'USD') {
                 $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
+                $EEA_balance = $exchange_expense_account->_SYP_Balance();
                 if (isset($entry['dr'])) {
                     Entry::create([
                         'dr' => $entry['dr'] * $entry['currency_value'],
@@ -105,13 +106,39 @@ class TransactionController extends Controller
                         'currency_id' => $sypCurrency->id,
                     ]);
                 } else {
-                    Entry::create([
-                        'cr' => $entry['cr'] * $entry['currency_value'],
-                        'account_id' => $exchange_expense_account->id,
-                        'transaction_id' => $request->transaction_id,
-                        'currency_value' => $entry['currency_value'],
-                        'currency_id' => $sypCurrency->id,
-                    ]);
+                    if ($EEA_balance >= $entry['cr'] * $entry['currency_value'])
+                        Entry::create([
+                            'cr' => $entry['cr'] * $entry['currency_value'],
+                            'account_id' => $exchange_expense_account->id,
+                            'transaction_id' => $request->transaction_id,
+                            'currency_value' => $entry['currency_value'],
+                            'currency_id' => $sypCurrency->id,
+                        ]);
+                    else if ($EEA_balance > 0) {
+                        $remaining_amount = abs(($entry['cr'] * $entry['currency_value']) - $EEA_balance);
+                        Entry::create([
+                            'cr' => $EEA_balance,
+                            'account_id' => $exchange_expense_account->id,
+                            'transaction_id' => $request->transaction_id,
+                            'currency_value' => $entry['currency_value'],
+                            'currency_id' => $sypCurrency->id,
+                        ]);
+                        Entry::create([
+                            'cr' => $remaining_amount,
+                            'account_id' => $entry['account_id'],
+                            'transaction_id' => $request->transaction_id,
+                            'currency_value' => $entry['currency_value'],
+                            'currency_id' => $sypCurrency->id,
+                        ]);
+                    } else {
+                        Entry::create([
+                            'cr' => $entry['cr'] * $entry['currency_value'],
+                            'account_id' => $entry['account_id'],
+                            'transaction_id' => $request->transaction_id,
+                            'currency_value' => $entry['currency_value'],
+                            'currency_id' => $sypCurrency->id,
+                        ]);
+                    }
                 }
             }
         }

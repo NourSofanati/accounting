@@ -15,6 +15,7 @@ use App\Http\Controllers\FixedAssetController;
 use App\Http\Controllers\GeneralLedgerController;
 use App\Http\Controllers\InvertoryController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\PurchaseController;
@@ -55,6 +56,7 @@ Route::resource('accounts', AccountController::class);
 Route::resource('journals', TransactionController::class);
 // التقارير
 Route::resource('reports', ReportController::class);
+Route::resource('monthly-report', MonthlyReportController::class);
 // المشتريات
 Route::resource('purchases', PurchaseController::class);
 // المصاريف

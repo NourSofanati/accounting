@@ -81,7 +81,7 @@ class CurrencyExchangeController extends Controller
         $currency_to = Currency::all()->where('id', $request->currency_to)->first();
         $account_from = Account::all()->where('id', $request->exchange_from)->first();
         $account_to = Account::all()->where('id', $request->exchange_to)->first();
-
+        $transaction = null;
         if ($currency_from->code == 'USD') {
             $amount = $request->currency_value * $request->exchange_value;
             $transaction = Transaction::create([
@@ -119,6 +119,13 @@ class CurrencyExchangeController extends Controller
             'currency_id' => $currency_from->id,
             'currency_value' => $currency_value,
         ]);
+        // Entry::create([
+        //     'dr' => $amount,
+        //     'account_id' => $account_from->id,
+        //     'transaction_id' => $transaction->id,
+        //     'currency_id' => $currency_from->id,
+        //     'currency_value' => $currency_value,
+        // ]);
     }
 
 
