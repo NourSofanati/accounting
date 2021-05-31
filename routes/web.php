@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CurrencyExchangeController;
+use App\Http\Controllers\CurrencyRateController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\DashboardController;
@@ -92,7 +93,7 @@ Route::resource('form', StupidFormController::class);
 
 //تحويل عملة
 Route::resource('exchange', CurrencyExchangeController::class);
-
+Route::resource('currency_rates', CurrencyRateController::class);
 // الموارد البشرية
 Route::resource('employees', EmployeeController::class);
 Route::resource('salary', EmployeePaymentsController::class);

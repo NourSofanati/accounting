@@ -2,28 +2,19 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\AccountType;
-use App\Models\Currency;
 use App\Models\CurrencyRate;
 use Illuminate\Http\Request;
 
-class AccountTypeController extends Controller
+class CurrencyRateController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if (!$request->session()->has('currency_id')) {
-            session(['currency_id' => 1]);
-        }
-        return view('index')
-            ->with('accountTypes', AccountType::with(['accounts'])->get())
-            ->with('currency', Currency::all())
-            ->with('currency_rate', CurrencyRate::orderBy('created_at', 'desc')->first());
+        //
     }
 
     /**
@@ -44,17 +35,17 @@ class AccountTypeController extends Controller
      */
     public function store(Request $request)
     {
-
-        //return $this->index();
+        CurrencyRate::create(['currency_rate' => $request->currency_rate]);
+        return redirect()->route('accounts-chart');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\AccountType  $accountType
+     * @param  \App\Models\CurrencyRate  $currencyRate
      * @return \Illuminate\Http\Response
      */
-    public function show(AccountType $accountType)
+    public function show(CurrencyRate $currencyRate)
     {
         //
     }
@@ -62,10 +53,10 @@ class AccountTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\AccountType  $accountType
+     * @param  \App\Models\CurrencyRate  $currencyRate
      * @return \Illuminate\Http\Response
      */
-    public function edit(AccountType $accountType)
+    public function edit(CurrencyRate $currencyRate)
     {
         //
     }
@@ -74,10 +65,10 @@ class AccountTypeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AccountType  $accountType
+     * @param  \App\Models\CurrencyRate  $currencyRate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AccountType $accountType)
+    public function update(Request $request, CurrencyRate $currencyRate)
     {
         //
     }
@@ -85,10 +76,10 @@ class AccountTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\AccountType  $accountType
+     * @param  \App\Models\CurrencyRate  $currencyRate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AccountType $accountType)
+    public function destroy(CurrencyRate $currencyRate)
     {
         //
     }

@@ -22,6 +22,15 @@ class Account extends Model
     {
         return $this->belongsTo(Account::class, 'parent_id');
     }
+    public function grandparent()
+    {
+        if (!$this->parent) {
+            return $this;
+        } else {
+            $grandparent = $this->parent->grandparent();
+            return $grandparent;
+        }
+    }
 
     public function accountType()
     {
@@ -73,6 +82,7 @@ class Account extends Model
         } else {
             $sum = $this->debit() - $this->credit();
         }
+        //if($this)
         if ($this->accountType->name == 'حقوق الملكية' || $this->accountType->name == 'التزامات' || $this->accountType->name == 'دخل') {
             return $sum * -1;
         } else {
@@ -120,9 +130,9 @@ class Account extends Model
         foreach ($this->entries as $entry) {
             if ($entry['currency_id'] == session('currency_id')) {
                 if ($currency->code == 'SYP') {
-                    $sum +=  $entry['cr'] / $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' ? $entry['cr'] :  $entry['cr'] / $entry['currency_value'];
                 } else {
-                    $sum +=  $entry['cr'] * $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' ? $entry['cr'] :  $entry['cr'] * $entry['currency_value'];
                 }
             }
         }
@@ -143,9 +153,9 @@ class Account extends Model
         foreach ($this->entries as $entry) {
             if ($entry['currency_id'] == session('currency_id')) {
                 if ($currency->code == 'SYP') {
-                    $sum +=  $entry['dr'] / $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' ? $entry['dr'] : $entry['dr'] / $entry['currency_value'];
                 } else {
-                    $sum +=  $entry['dr'] * $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' ? $entry['dr'] : $entry['dr'] * $entry['currency_value'];
                 }
             }
         }
@@ -169,6 +179,17 @@ class Account extends Model
             }
         } else {
             $sum = $this->usdDebit() - $this->usdCredit();
+        }
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
+        if ($this->grandparent()->name == 'النقد') {
+            $latestRate = CurrencyRate::orderBy('created_at', 'desc')->first();
+
+            //dd($currency);
+            if ($currency->code == 'USD') {
+                $sum *= $latestRate ? $latestRate->currency_rate : 1;
+            } else {
+                $sum /= $latestRate ? $latestRate->currency_rate : 1;
+            }
         }
         if ($this->accountType->name == 'حقوق الملكية' || $this->accountType->name == 'التزامات' || $this->accountType->name == 'دخل') {
             return $sum * -1;

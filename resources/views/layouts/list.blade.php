@@ -1,5 +1,5 @@
 @livewire('account-item',['item'
-=>$item,'depth'=>$depth,'currency'=>$currency],key($item->id))
+=>$item,'depth'=>$depth,'currency'=>$currency,'currency_rate'=>$currency_rate],key($item->id))
 @if ($item->children->count())
     @php
         $depth++;
