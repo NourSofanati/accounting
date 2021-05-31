@@ -155,7 +155,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($invoice->payment as $index=>$item)
+                                @forelse ($invoice->payments as $index=>$item)
                                     <tr class="border-t border-dashed">
                                         <td class="px-3 py-4">
                                             {{ $item->date }}
