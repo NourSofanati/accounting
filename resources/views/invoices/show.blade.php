@@ -137,9 +137,37 @@
                                         </td>
                                     </tr>
                                 @empty
-                    @endforelse
-                    </tbody>
-                    </table>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    @endif
+                    @if ($invoice->payments->count())
+
+                        <table class="w-6/12 border-1 border-gray-300 mt-10" cols=2>
+                            <thead>
+                                <tr>
+                                    <th class="px-3 py-4  text-right">
+                                        تاريخ الدفعة
+                                    </th>
+                                    <th class="px-3 py-4  text-right">
+                                        قيمة الدفعة
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($invoice->payment as $index=>$item)
+                                    <tr class="border-t border-dashed">
+                                        <td class="px-3 py-4">
+                                            {{ $item->date }}
+                                        </td>
+                                        <td class="px-3 py-4">
+                                            {{ $item->amount }}
+                                        </td>
+                                    </tr>
+                                @empty
+                                @endforelse
+                            </tbody>
+                        </table>
                     @endif
                 </div>
             </div>
