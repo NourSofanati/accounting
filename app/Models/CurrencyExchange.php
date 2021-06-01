@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CurrencyExchange extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'date', 'amount', 'amount_spent', 'currency_to',
+    ];
 }

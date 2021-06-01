@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Currency;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,10 @@ class CreateCurrencyExchangesTable extends Migration
     {
         Schema::create('currency_exchanges', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->decimal('amount');
+            $table->decimal('amount_spent');
+            $table->foreignIdFor(Currency::class, 'currency_to');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\AccountType;
+use App\Models\Currency;
 use App\Models\Transaction;
 use Illuminate\Http\Client\Request;
 use Livewire\Component;
@@ -19,9 +20,10 @@ class Entries extends Component
     public $newTransaction;
     public $lastValue = 0;
     public $USDprice;
+    public $currency;
     public function mount()
     {
-
+        $this->currency = Currency::where('id', session('currency_id'))->first();
         $this->accountTypes = AccountType::all();
         $this->lastValue = $this->USDprice;
         //dd($this->USDprice);

@@ -19,7 +19,7 @@ class CurrencyExchangeController extends Controller
      */
     public function index()
     {
-        return view('exchange.index');
+        return view('exchange.index', ['exchanges' => CurrencyExchange::all()]);
     }
 
     /**
@@ -81,6 +81,7 @@ class CurrencyExchangeController extends Controller
         $currency_to = Currency::all()->where('id', $request->currency_to)->first();
         $account_from = Account::all()->where('id', $request->exchange_from)->first();
         $account_to = Account::all()->where('id', $request->exchange_to)->first();
+        $amount = 0;
         $transaction = null;
         if ($currency_from->code == 'USD') {
             $amount = $request->currency_value * $request->exchange_value;
@@ -99,7 +100,13 @@ class CurrencyExchangeController extends Controller
             $this->handleExchangeFrom($request->exchange_value, $account_from, $transaction, $currency_from, $request->currency_value);
             $this->handleExchangeTo($amount, $account_to, $transaction, $currency_to, $request->currency_value);
         }
-        return redirect()->route('accounts-chart');
+        CurrencyExchange::create([
+            'amount' => $amount,
+            'amount_spent' => 0,
+            'currency_to' => $currency_to->id,
+            'date' => $request->issueDate,
+        ]);
+        return redirect()->route('exchange.index');
     }
 
     public function handleExchangeFrom($amount, $account_from, $transaction, $currency_from, $currency_value)

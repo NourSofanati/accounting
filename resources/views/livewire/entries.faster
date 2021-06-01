@@ -23,15 +23,13 @@
     </div>
     <hr class="my-5">
     <div class="mt-4">
-        <table class="text-right w-full">
+        <table class="text-right">
             <thead>
                 <tr class="text-gray-500 tracking-wide font-light">
                     <th class="px-3">اسم الحساب</th>
                     <th class="px-3">مدين</th>
                     <th class="px-3">دائن</th>
-                    @if ($currency->code == 'SYP')
-                        <th class="px-3">قيمة العملة</th>
-                    @endif
+                    <th class="px-3">قيمة العملة</th>
                     @if (count($entries) > 2)
                         <th class="px-3"></th>
                     @endif
@@ -39,13 +37,12 @@
             </thead>
             <tbody>
                 @foreach ($entries as $index => $entry)
-
                     <tr>
                         <td class="px-1">
                             <select name="entries[{{ $index }}][account_id]"
                                 id="entries[{{ $index }}][account_id]" required
                                 class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block  w-full"
-                                wire:model.lazy="entries.{{ $index }}.account_id">
+                                >
                                 @foreach ($accountTypes as $item)
                                     <optgroup label="◀{{ $item->name }}">
                                         @if ($item->accounts->count() > 0)
@@ -64,27 +61,23 @@
                         <td class="px-1">
                             <x-jet-input id="entries[{{ $index }}][dr]" name="entries[{{ $index }}][dr]"
                                 type="number" placeholder="أدخل قيمة المدين"
-                                wire:model.lazy="entries.{{ $index }}.dr"
                                 disabled="{{ $entries[$index]['cr'] != 0 }}"
                                 class="{{ $entries[$index]['cr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }} "
-                                min=0 data-inputType="debit" />
+                                min=0 data-inputType="debit" onchange="totalDebit()" />
                         </td>
                         <td class="px-1">
                             <x-jet-input id="entries[{{ $index }}][cr]" name="entries[{{ $index }}][cr]"
                                 type="number" placeholder="أدخل قيمة الدائن"
-                                wire:model.lazy="entries.{{ $index }}.cr"
                                 disabled="{{ $entries[$index]['dr'] != 0 }}"
                                 class="{{ $entries[$index]['dr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }} "
-                                min=0 data-inputType="credit" />
+                                min=0 data-inputType="credit" onchange="totalCredit()" />
                         </td>
-                        @if ($currency->code == 'SYP')
-                            <td class="px-1">
-                                <x-jet-input id="entries[{{ $index }}][currency_value]"
-                                    name="entries[{{ $index }}][currency_value]" type="number"
-                                    placeholder="أدخل قيمة الدائن"
-                                    wire:model.lazy="entries.{{ $index }}.currency_value" min=0 />
-                            </td>
-                        @endif
+                        <td class="px-1">
+                            <x-jet-input id="entries[{{ $index }}][currency_value]"
+                                name="entries[{{ $index }}][currency_value]" type="number"
+                                placeholder="أدخل قيمة الدائن" value="{{ $entries[$index]['currency_value'] }}"
+                                min=0 />
+                        </td>
                         @if (count($entries) > 2)
                             <td>
                                 <a wire:click.prevent="removeEntry({{ $index }})" class="cursor-pointer">
@@ -101,20 +94,21 @@
                 @endforeach
                 <tr>
                     <td class="
-                        @if ($diff !=0) text-red-500 @endif ">الفرق: {{ $diff }}</td>
-                    <td>المدين الكلي: {{ $totalDr }}
+                        @if ($diff !=0) text-red-500 @endif " id="
+                        diffDisplay">الفرق: {{ $diff }}</td>
+                    <td>المدين الكلي: <span id="totalDr">0</span>
                         <br>
-                        <span class=" text-gray-500">(${{ number_format($totalDrUSD, 2) }})</span>
+                        <span class=" text-gray-500">($)</span>
                     </td>
-                    <td>الدائن الكلي: {{ $totalCr }}
+                    <td>الدائن الكلي: <span id="totalCr">0</span>
                         <br>
-                        <span class="text-gray-500">(${{ number_format($totalCrUSD, 2) }})</span>
+                        <span class="text-gray-500">($)</span>
                     </td>
                 </tr>
                 <tr>
                     <td colspan=" 4">
                         <button class=" border border-dashed border-gray-400 text-sm w-full py-3 mt-3 rounded-xl"
-                            wire:click.prevent="addEntry">إضافة سطر جديد</button>
+                            wire:click.prevent="addEntry" id="addEntryBtn">إضافة سطر جديد</button>
                     </td>
                 </tr>
             </tbody>
@@ -128,3 +122,47 @@
             class="rounded-md bg-gray-100 text-gray-500 font-bold px-10 py-3 block mr-5 hover:shadow-xl transition-shadow ease-linear duration-200">إلغاء</a>
     </div>
 </form>
+@section('footerScripts')
+    <script>
+        let creditInputs;
+        let debitInputs;
+        const totalCr = document.getElementById('totalCr');
+        const totalDr = document.getElementById('totalDr');
+        let _totalCredit = 0;
+        let _totalDredit = 0;
+
+        function updateInputs(elements) {
+
+            elements.forEach(input => {
+                input.onchange = () => {
+                    totalCr.innerText = totalCredit();
+                    totalDr.innerText = totalDebit();
+                    updateInputs(document.querySelectorAll('[data-inputType]'));
+                }
+            })
+
+        }
+
+        function totalCredit() {
+            let totalCredit = 0;
+            document.querySelectorAll('[data-inputType="credit"]').forEach(input => {
+                totalCredit += parseInt(input.value) ? parseInt(input.value) : 0;
+            });
+            return totalCredit;
+        }
+
+        function totalDebit() {
+            let totalDebit = 0;
+            document.querySelectorAll('[data-inputType="debit"]').forEach(input => {
+                totalDebit += parseInt(input.value) ? parseInt(input.value) : 0;
+            });
+            return totalDebit;
+        }
+        updateInputs(document.querySelectorAll('[data-inputType]'));
+        document.getElementById('addEntryBtn').onclick = () => {
+            console.log('haha');
+            updateInputs(document.querySelectorAll('[data-inputType]'))
+        };
+
+    </script>
+@endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\Currency;
+use App\Models\CurrencyExchange;
 use App\Models\Entry;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -95,6 +96,7 @@ class TransactionController extends Controller
                 ]);
             }
             if ($currency->code == 'USD') {
+                $exchangeReciepts = CurrencyExchange::all()->where('currency_to',$currency->id)->where('amount_spent','<','amount')->orderBy('date','ASC');
                 $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
                 $EEA_balance = $exchange_expense_account->_SYP_Balance();
                 if (isset($entry['dr'])) {

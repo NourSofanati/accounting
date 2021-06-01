@@ -1,0 +1,7 @@
+{
+    "blade.format.enable": true,
+    "emmet.includeLanguages": {
+        "blade": "html",
+        "blade.php": "html"
+    }
+}

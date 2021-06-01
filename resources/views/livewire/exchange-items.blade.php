@@ -21,7 +21,8 @@
                 <div class="">
                     <div class="flex flex-col">
                         <span class="text-gray-500">تاريخ تحويل العملة</span>
-                        <input type="date" name="issueDate" id="issueDate" class="border-none text-right text-xs" required>
+                        <input type="date" name="issueDate" id="issueDate" class="border-none text-right text-xs"
+                            required>
                     </div>
                 </div>
                 <div class="">
@@ -64,6 +65,6 @@
                 </select>
             </div>
         </header>
-
+        
     </form>
 </div>
