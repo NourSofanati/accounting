@@ -28,6 +28,8 @@ class Entries extends Component
         $this->lastValue = $this->USDprice;
         //dd($this->USDprice);
         $this->entries = [['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => $this->USDprice], ['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => $this->USDprice]];
+        // for ($i = 0; $i < 300; $i++)
+        //     $this->addEntry();
         $this->totalCr = 0;
         $this->totalDr = 0;
         $this->diff = 0;

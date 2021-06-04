@@ -66,7 +66,7 @@
                                 type="number" placeholder="أدخل قيمة المدين"
                                 wire:model.lazy="entries.{{ $index }}.dr"
                                 disabled="{{ $entries[$index]['cr'] != 0 }}"
-                                class="{{ $entries[$index]['cr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }} "
+                                class="{{ $entries[$index]['cr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }}  w-full"
                                 min=0 data-inputType="debit" />
                         </td>
                         <td class="px-1">
@@ -74,7 +74,7 @@
                                 type="number" placeholder="أدخل قيمة الدائن"
                                 wire:model.lazy="entries.{{ $index }}.cr"
                                 disabled="{{ $entries[$index]['dr'] != 0 }}"
-                                class="{{ $entries[$index]['dr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }} "
+                                class="{{ $entries[$index]['dr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }}  w-full"
                                 min=0 data-inputType="credit" />
                         </td>
                         @if ($currency->code == 'SYP')
@@ -102,11 +102,11 @@
                 <tr>
                     <td class="
                         @if ($diff !=0) text-red-500 @endif ">الفرق: {{ $diff }}</td>
-                    <td>المدين الكلي: {{ $totalDr }}
+                    <td>المدين الكلي: <x-jet-input value="{{ $totalDr }}" name="totalDr"/>
                         <br>
                         <span class=" text-gray-500">(${{ number_format($totalDrUSD, 2) }})</span>
                     </td>
-                    <td>الدائن الكلي: {{ $totalCr }}
+                    <td>الدائن الكلي: <x-jet-input value="{{ $totalCr }}" name="totalCr"/>
                         <br>
                         <span class="text-gray-500">(${{ number_format($totalCrUSD, 2) }})</span>
                     </td>

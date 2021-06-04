@@ -9,6 +9,6 @@ class CurrencyExchange extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'date', 'amount', 'amount_spent', 'currency_to',
+        'date', 'amount', 'amount_spent', 'currency_to', 'currency_value'
     ];
 }

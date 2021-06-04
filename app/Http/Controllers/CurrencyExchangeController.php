@@ -19,7 +19,7 @@ class CurrencyExchangeController extends Controller
      */
     public function index()
     {
-        return view('exchange.index', ['exchanges' => CurrencyExchange::all()]);
+        return view('exchange.index', ['exchanges' => CurrencyExchange::orderBy('date', 'desc')->orderBy('created_at', 'desc')->get()]);
     }
 
     /**
@@ -88,6 +88,7 @@ class CurrencyExchangeController extends Controller
             $transaction = Transaction::create([
                 'transaction_name' => 'Currency Convert to ' . $currency_to->code . Carbon::now(),
                 'transaction_date' => $request->issueDate,
+
             ]);
             $this->handleExchangeFrom($request->exchange_value, $account_from, $transaction, $currency_from, $request->currency_value);
             $this->handleExchangeTo($amount, $account_to, $transaction, $currency_to, $request->currency_value);
@@ -105,6 +106,7 @@ class CurrencyExchangeController extends Controller
             'amount_spent' => 0,
             'currency_to' => $currency_to->id,
             'date' => $request->issueDate,
+            'currency_value' => $request->currency_value
         ]);
         return redirect()->route('exchange.index');
     }
