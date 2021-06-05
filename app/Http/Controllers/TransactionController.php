@@ -74,97 +74,38 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->processUsdFifo($request);
-        // $parentTransaction = Transaction::find($request->transaction_id);
-        // $parentTransaction->transaction_name = $request->name;
-        // $parentTransaction->transaction_date = $request->date;
-        // $parentTransaction->description = $request->description;
-        // $parentTransaction->currency_id = session('currency_id');
-        // $currency = Currency::all()->where('id', $parentTransaction->currency_id)->first();
-        // $sypCurrency = Currency::all()->where('id', '!=', $currency->id)->first();
-        // $parentTransaction->save();
-        // $previousValue = 0;
-        // foreach ($request->entries as $entry) {
-        //     $exchangeReciepts = CurrencyExchange::where('currency_to', $currency->id)->whereRaw('amount_spent < amount')->orderBy('date', 'ASC')->get();
-        //     if ($currency->code == 'USD') {
-        //         if ($exchangeReciepts->first()) {
-        //             $previousValue = $exchangeReciepts->first()->currency_value;
-        //         }
-        //         $entry['currency_value'] = $previousValue;
-        //         if (isset($entry['cr'])) {
-        //             $exchangeReciepts->first()->amount_spent +=  $entry['cr'];
-        //             $exchangeReciepts->first()->save();
-        //         }
-        //     }
-        //     if (isset($entry['dr'])) {
-        //         Entry::create([
-        //             'dr' => $entry['dr'],
-        //             'account_id' => $entry['account_id'],
-        //             'transaction_id' => $request->transaction_id,
-        //             'currency_value' => $entry['currency_value'],
-        //             'currency_id' => session('currency_id'),
-        //         ]);
-        //     } else {
-        //         Entry::create([
-        //             'cr' => $entry['cr'],
-        //             'account_id' => $entry['account_id'],
-        //             'transaction_id' => $request->transaction_id,
-        //             'currency_value' => $entry['currency_value'],
-        //             'currency_id' => session('currency_id'),
-        //         ]);
-        //     }
-        //     if ($currency->code == 'USD') {
-        //         $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
-        //         //$EEA_balance = $exchange_expense_account->_SYP_Balance();
-        //         $EEA_balance = $exchangeReciepts->first()->amount;
-
-
-        //         if (isset($entry['dr'])) {
-        //             Entry::create([
-        //                 'dr' => $entry['dr'] * $entry['currency_value'],
-        //                 'account_id' => $entry['account_id'],
-        //                 'transaction_id' => $request->transaction_id,
-        //                 'currency_value' => $entry['currency_value'],
-        //                 'currency_id' => $sypCurrency->id,
-        //             ]);
-        //         } else {
-        //             if ($EEA_balance >= $entry['cr'] * $entry['currency_value'])
-        //                 Entry::create([
-        //                     'cr' => $entry['cr'] * $entry['currency_value'],
-        //                     'account_id' => $exchange_expense_account->id,
-        //                     'transaction_id' => $request->transaction_id,
-        //                     'currency_value' => $entry['currency_value'],
-        //                     'currency_id' => $sypCurrency->id,
-        //                 ]);
-        //             else if ($EEA_balance > 0) {
-        //                 $remaining_amount = abs(($entry['cr'] * $entry['currency_value']) - $EEA_balance);
-        //                 Entry::create([
-        //                     'cr' => $EEA_balance,
-        //                     'account_id' => $exchange_expense_account->id,
-        //                     'transaction_id' => $request->transaction_id,
-        //                     'currency_value' => $entry['currency_value'],
-        //                     'currency_id' => $sypCurrency->id,
-        //                 ]);
-        //                 Entry::create([
-        //                     'cr' => $remaining_amount,
-        //                     'account_id' => $entry['account_id'],
-        //                     'transaction_id' => $request->transaction_id,
-        //                     'currency_value' => $entry['currency_value'],
-        //                     'currency_id' => $sypCurrency->id,
-        //                 ]);
-        //             } else {
-        //                 Entry::create([
-        //                     'cr' => $entry['cr'] * $entry['currency_value'],
-        //                     'account_id' => $entry['account_id'],
-        //                     'transaction_id' => $request->transaction_id,
-        //                     'currency_value' => $entry['currency_value'],
-        //                     'currency_id' => $sypCurrency->id,
-        //                 ]);
-        //             }
-        //         }
-        //     }
-        // }
-        // return redirect()->route('dashboard');
+        $usdCurrency = Currency::where('code', 'USD')->first();
+        $sypCurrency = Currency::where('code', 'SYP')->first();
+        if (session('currency_id') == $usdCurrency->id) {
+            $currencyVALUE = $this->processUsdFifo($request);
+            if($currencyVALUE=='error'){
+                alert()->error('You don\'t have enought money exchanged to USD currency');
+                return redirect()->back();
+            }
+            $unMirroredTransaction = $this->createTransaction($request->name, $request->date, $sypCurrency->id, $request->description);
+            $mirroredTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
+            $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
+            foreach ($request->entries as $entry) {
+                if (isset($entry['cr'])) {
+                    $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $entry['cr'] * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+                    $crRecord = $this->createCreditEntry($entry['account_id'], $usdCurrency->id, $entry['cr'], $unMirroredTransaction, $currencyVALUE);
+                } else if (isset($entry['dr'])) {
+                    $drRecord_mirrored = $this->createDebitEntry($entry['account_id'], $sypCurrency->id, $entry['dr'] * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+                    $drRecord = $this->createDebitEntry($entry['account_id'], $usdCurrency->id, $entry['dr'], $unMirroredTransaction, $currencyVALUE);
+                }
+            }
+        } else {
+            $newTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
+            foreach ($request->entries as $entry) {
+                if (isset($entry['cr'])) {
+                    $crRecord = $this->createCreditEntry($entry['account_id'], $sypCurrency->id, $entry['cr'], $newTransaction, $entry['currency_value']);
+                } else if (isset($entry['dr'])) {
+                    $drRecord = $this->createDebitEntry($entry['account_id'], $sypCurrency->id, $entry['dr'], $newTransaction, $entry['currency_value']);
+                }
+            }
+            alert()->success('Successfully completed transaction');
+        }
+        return redirect()->route('accounts-chart');
     }
 
     function processUsdFifo(Request $request)
@@ -173,39 +114,42 @@ class TransactionController extends Controller
         if (session('currency_id') != $usdCurrency->id) return;
         $allExchanges = CurrencyExchange::whereColumn('amount', '>', 'amount_spent')->where('currency_to', $usdCurrency->id)->orderBy('date', 'asc')->orderBy('created_at', 'asc')->get();
         $batches = array();
-        $amounts = array();
+        $amount = 0;
         $totalAvailableAmount = 0;
-        $totalRemainingAmount = $request->totalCr;
-        $totalAmountSyp = 0;
+        $totalRemainingAmount = $request->totalCr; // 2000
+        $totalAmountSyp = 0; // 0
+        $count = 0;
         foreach ($allExchanges as $batch) {
             $totalAvailableAmount += $batch->amount - $batch->amount_spent;
             array_push($batches, $batch);
+            $count++;
             if ($totalAvailableAmount >= $request->totalCr) {
                 foreach ($batches as $b) {
-                    $count++;
-                    $c_val += $b->currency_value;
+                    //1st run - $1000
+                    //2nd run - $1000
                     if ($b->amount - $b->amount_spent >= $totalRemainingAmount) {
-                        array_push($amounts, [$b->id => $totalRemainingAmount]);
+
+                        $amount += $totalRemainingAmount; // 1000$ + 1000$ = 2000$
+                        $totalAmountSyp += $totalRemainingAmount * $b->currency_value; //500,000s.p += 1000$ * 600 = 1,100,000
                         $b->amount_spent += $totalRemainingAmount;
                         $b->save();
-
                         break;
                     } else {
-                        $totalRemainingAmount -= ($b->amount - $b->amount_spent);
-                        array_push($amounts, [$b->id => $b->amount - $b->amount_spent]);
+                        $totalRemainingAmount -= ($b->amount - $b->amount_spent); //2000 - 1000 = 1000
+                        $amount += $b->amount - $b->amount_spent; // 1000
+                        $totalAmountSyp += $amount * $b->currency_value; // 1000 * 500 = 500,000
                         $b->amount_spent += $b->amount - $b->amount_spent;
                         $b->save();
                     }
                 }
-                toast()->success('Successfully spent ' . $totalAmountSyp . ' at the currency_value of ');
-                return redirect()->back();
                 break;
             }
         }
         if ($totalAvailableAmount < $request->totalCr) {
-            alert()->error('You don\'t have enought money exchanged to USD currency');
-            return redirect()->route('journals.create');
+            return 'error';
         }
+        toast()->success('Successfully spent ' . $totalAmountSyp . ' at the currency_value of ' . $totalAmountSyp / $amount);
+        return $totalAmountSyp / $amount; // array('TotalAmountSyp' => $totalAmountSyp, 'TotalAmountUsd' => $amount);
     }
 
     public function createTransaction($transaction_name, $transaction_date, $currency_id, $description)
