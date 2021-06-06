@@ -3,8 +3,19 @@
     "draft": "مسودة",
     "recievables": "مستحقة",
     "paid": "محققة",
-    "paidTaxes":"ضرائب مدفوعة",
-    "retains":"توقيفات",
-    "male":"ذكر",
-    "female":"أنثى"
+    "paidTaxes": "ضرائب مدفوعة",
+    "retains": "توقيفات",
+    "male": "ذكر",
+    "female": "أنثى",
+    "dashboard": "لوحة المراقبة",
+    "accounts-chart": "شجرة الحسابات",
+    "vendors": "الموردين",
+    "reports": "التقارير",
+    "purchases": "المشتريات",
+    "expenses": "المصاريف",
+    "invoices": "الفواتير",
+    "customers": "الزبائن",
+    "taxes": "الضرائب",
+    "invertories": "المخازن",
+    "employees": "الموظفين"
 }

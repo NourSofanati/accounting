@@ -25,13 +25,13 @@
 
     <x-jet-banner />
 
-    <div class="min-h-screen bg-gray-50">
+    <div class="bg-gray-50 h-screen flex">
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
-        <div class="fixed bottom-0 top-0 left-0 w-10/12  overflow-auto">
+        <div class="overflow-auto w-full">
             @if (isset($header))
-                <header class="bg-white shadow">
+                <header class="bg-white border-b border-gray-300">
                     <div class="w-full py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>

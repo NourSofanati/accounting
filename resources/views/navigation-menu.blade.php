@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 ">
+<nav x-data="{ open: false }" class="border-gray-300 border-l">
     <!-- Primary Navigation Menu -->
     {{-- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -141,51 +141,35 @@
     </div> --}}
 
     <!-- Responsive Navigation Menu -->
-    <div
-        class="block fixed top-0 bottom-0 right-0 bg-blue-500 text-white shadow-md w-2/12  transition-all duration-150">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('لوحة التحكم') }}
-            </x-jet-responsive-nav-link>
+    <div class="bg-white text-black w-56 h-full ">
+        <div class="bg-gray-700 font-black py-6 text-center text-white w-full">
+            الديار للطاقة
+        </div>
+        <div class="pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
+                :name="'dashboard'" />
             <x-jet-responsive-nav-link href="{{ route('accounts-chart') }}"
-                :active="request()->routeIs('accounts-chart')">
-                {{ __('شجرة الحسابات') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('accounts-chart')" :name="'accounts-chart'" />
             <x-jet-responsive-nav-link href="{{ route('reports.index') }}"
-                :active="request()->routeIs('reports.index')">
-                {{ __('طيز جاج') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('reports.index')" :name="'reports'" />
             <x-jet-responsive-nav-link href="{{ route('vendors.index') }}"
-                :active="request()->routeIs('vendors.index')">
-                {{ __('الموردون') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('vendors.index')" :name="'vendors'" />
             <x-jet-responsive-nav-link href="{{ route('purchases.index') }}"
-                :active="request()->routeIs('purchases.index')">
-                {{ __('المشتريات') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('purchases.index')" :name="'purchases'" />
             <x-jet-responsive-nav-link href="{{ route('expenses.index') }}"
-                :active="request()->routeIs('expenses.index')">
-                {{ __('المصاريف') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('expenses.index')" :name="'expenses'" />
             <x-jet-responsive-nav-link href="{{ route('invoices.index') }}"
-                :active="request()->routeIs('invoices.index')">
-                {{ __('المبيعات') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('invoices.index')" :name="'invoices'" />
             <x-jet-responsive-nav-link href="{{ route('customers.index') }}"
-                :active="request()->routeIs('customers.index')">
-                {{ __('الزبائن') }}
-            </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('taxes.index') }}" :active="request()->routeIs('taxes.index')">
-                {{ __('الضرائب') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('customers.index')" :name="'customers'" />
+            <x-jet-responsive-nav-link href="{{ route('taxes.index') }}" :active="request()->routeIs('taxes.index')"
+                :name="'taxes'" />
             <x-jet-responsive-nav-link href="{{ route('invertories.index') }}"
-                :active="request()->routeIs('invertories.index')">
-                {{ __('المستودعات والمخازن') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('invertories.index')" :name="'invertories'" />
             <x-jet-responsive-nav-link href="{{ route('employees.index') }}"
-                :active="request()->routeIs('employees.index')">
-                {{ __('الموظفين') }}
-            </x-jet-responsive-nav-link>
+                :active="request()->routeIs('employees.index')" :name="'employees'" />
+
+
 
         </div>
 
@@ -265,10 +249,10 @@
 
         <ul class="pr-4">
             <li> <a href="{{ route('setCurrency', 1) }}"
-                    class="{{ session('currency_id') == 1 ? 'text-white' : 'text-gray-300' }}">SYP</a>
+                    class="{{ session('currency_id') == 1 ? 'text-black' : 'text-gray-300' }}">SYP</a>
             </li>
             <li> <a href="{{ route('setCurrency', 2) }}"
-                    class="{{ session('currency_id') == 2 ? 'text-white' : 'text-gray-300' }}">USD</a>
+                    class="{{ session('currency_id') == 2 ? 'text-black' : 'text-gray-300' }}">USD</a>
             </li>
             <li> <a href="{{ route('exchange.index') }}">تحويل عملة</a></li>
 

@@ -12,7 +12,17 @@ module.exports = {
             fontFamily: {
                 sans: ['Cairo', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                lime: {
+                    lightest: '#59FFFD',
+                    light: '#50E5E4',
+                    DEFAULT: '#43BFBE',
+                    dark: '#318C8B',
+                    darkest: '#287271',
+                }
+            }
         },
+
     },
 
     variants: {
