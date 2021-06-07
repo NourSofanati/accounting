@@ -1,4 +1,4 @@
-<tr class="border-t border-b hover:bg-indigo-50 cursor-pointer" wire:click.prevent="showItem({{ $item }})">
+<tr class="border-t border-b bg-white hover:bg-indigo-50 cursor-pointer" wire:click.prevent="showItem({{ $item }})">
     <td class=" px-4 text-right ">
         <div class="flex ">
             @if ($item->parent_id == null)

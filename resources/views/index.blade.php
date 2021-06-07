@@ -1,31 +1,29 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('لوحة التحكم') }}
+            {{ __('dashboard') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-
-
         <div class=" mx-auto sm:px-6 lg:px-8">
             <div class="sm:rounded-lg">
                 <div class="flex p-5 justify-between">
                     <div class="flex">
                         <a href="{{ route('accounts.create') }}"
-                            class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-green-400 ">إنشاء حساب
+                            class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime ">إنشاء حساب
                             جديد</a>
                         <a href="{{ route('journals.create') }}"
-                            class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-indigo-400 mr-4">ادخال
+                            class="px-3 py-2 rounded text-white block shadow-md font-bold bg-gray-700 mr-4">ادخال
                             قيود
                             جديدة</a>
                     </div>
-                    <form class="flex" action="{{ route('currency_rates.store')}}" method="post">
+                    <form class="flex" action="{{ route('currency_rates.store') }}" method="post">
                         @csrf
                         <x-jet-input type="number" placeholder="سعر العملة" name="currency_rate"
                             value="{{ $currency_rate ? $currency_rate->currency_rate : 1 }}" />
                         <x-jet-input type="submit" value="تعديل"
-                            class="px-3 bg-indigo-400 shadow-md font-bold text-white mr-2" />
+                            class="px-3 bg-gray-700 shadow-md font-bold text-white mr-2" />
                     </form>
                 </div>
                 <hr>
@@ -43,7 +41,7 @@
                                 @foreach ($accountType->accounts as $item)
                                     @php
                                         $depth = 0;
-                                        $items = ['item' => $item, $depth , $currency_rate];
+                                        $items = ['item' => $item, $depth, $currency_rate];
                                     @endphp
                                     @include('layouts.list',$items)
                                 @endforeach
