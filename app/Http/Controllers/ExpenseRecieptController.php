@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Currency;
+use App\Models\CurrencyExchange;
 use App\Models\Entry;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseReciept;
@@ -23,7 +24,7 @@ class ExpenseRecieptController extends Controller
      */
     public function index()
     {
-        return view('expenses.index')->with('expenses', ExpenseReciept::all());
+        return view('expenses.index')->with('expenses', ExpenseReciept::all())->with('currency',Currency::all()->where('id',session('currency_id'))->first());
     }
 
     /**
@@ -41,7 +42,8 @@ class ExpenseRecieptController extends Controller
             ->with('cashAccounts', $cashAccounts)
             ->with('vendors', $vendors)
             ->with('draftexpenseReciept', $draftexpenseReciept)
-            ->with('categories', $categories);
+            ->with('categories', $categories)
+            ->with('currency',Currency::all()->where('id',session('currency_id'))->first());
     }
 
     /**
@@ -52,6 +54,8 @@ class ExpenseRecieptController extends Controller
      */
     public function store(Request $request)
     {
+        $usdCurrency = Currency::where('code', 'USD')->first();
+        $sypCurrency = Currency::where('code', 'SYP')->first();
         $reciept = ExpenseReciept::find($request->expenseRecieptNumber);
         $reciept->issueDate = $request->issueDate;
         $reciept->dueDate = $request->dueDate;
@@ -62,10 +66,7 @@ class ExpenseRecieptController extends Controller
             'transaction_date' => $reciept->issueDate,
         ]);
         $reciept->transaction_id = $recieptTransaction->id;
-        $reciept->save();
 
-        $currency = Currency::all()->where('id', session('currency_id'))->first();
-        $otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
         foreach ($request->entries as $index => $entry) {
             ExpenseRecieptItem::create([
                 'reciept_id' => $reciept->id,
@@ -76,40 +77,104 @@ class ExpenseRecieptController extends Controller
                 'currency_id' => $request->session()->get('currency_id'),
             ]);
         }
-        Entry::create([
-            'cr' => $reciept->total(),
-            'account_id' => $reciept->vendor->account_id,
-            'transaction_id' => $recieptTransaction->id,
-            'currency_id' => $request->session()->get('currency_id'),
-            'currency_value' => $request->currency_value,
-        ]);
-        Entry::create([
-            'dr' => $reciept->total(),
-            'account_id' => $reciept->vendor->loss_account_id,
-            'transaction_id' => $recieptTransaction->id,
-            'currency_id' => $request->session()->get('currency_id'),
-            'currency_value' => $request->currency_value,
-        ]);
-        if ($currency->code == 'USD') {
+        $reciept->save();
+        if (session('currency_id') == $usdCurrency->id) {
+            $currencyVALUE = $this->processUsdFifo($reciept->total());
+            if ($currencyVALUE == 'error') {
+                alert()->error('You don\'t have enought money exchanged to USD currency');
+                return redirect()->back();
+            }
+            $unMirroredTransaction = $this->createTransaction($request->name, $request->date, $sypCurrency->id, $request->description);
+            $mirroredTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
-            Entry::create([
-                'dr' => $reciept->total() * $request->currency_value,
-                'account_id' => $reciept->vendor->loss_account_id,
-                'transaction_id' => $recieptTransaction->id,
-                'currency_id' => $otherCurrency->id,
-                'currency_value' => $request->currency_value,
-            ]);
-            Entry::create([
-                'cr' => $reciept->total() * $request->currency_value,
-                'account_id' => $exchange_expense_account->id,
-                'transaction_id' => $recieptTransaction->id,
-                'currency_id' => $otherCurrency->id,
-                'currency_value' => $request->currency_value,
-            ]);
+            $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $reciept->total() * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $drRecord_mirrored = $this->createDebitEntry($reciept->vendor->loss_account_id, $sypCurrency->id, $reciept->total() * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $crRecord = $this->createCreditEntry($reciept->vendor->account_id, $usdCurrency->id, $reciept->total(), $unMirroredTransaction, $currencyVALUE);
+            $drRecord = $this->createDebitEntry($reciept->vendor->loss_account_id, $usdCurrency->id, $reciept->total(), $unMirroredTransaction, $currencyVALUE);
+        } else {
+            $newTransaction = $this->createTransaction($request->name, $request->date, $sypCurrency->id, $request->description);
+            $crRecord = $this->createCreditEntry($reciept->vendor->account_id, $sypCurrency->id, $reciept->total(), $newTransaction, $request->currency_value);
+            $drRecord = $this->createDebitEntry($reciept->vendor->loss_account_id, $sypCurrency->id, $reciept->total(), $newTransaction, $request->currency_value);
+            alert()->success('Successfully completed transaction');
         }
         return redirect()->route('expenses.index');
     }
 
+    function processUsdFifo($RecieptTotal)
+    {
+        $usdCurrency = Currency::where('code', 'USD')->first();
+        if (session('currency_id') != $usdCurrency->id) return;
+        $allExchanges = CurrencyExchange::whereColumn('amount', '>', 'amount_spent')->where('currency_to', $usdCurrency->id)->orderBy('date', 'asc')->orderBy('created_at', 'asc')->get();
+        $batches = array();
+        $amount = 0;
+        $totalAvailableAmount = 0;
+        $totalRemainingAmount = $RecieptTotal; // 2000
+        $totalAmountSyp = 0; // 0
+        $count = 0;
+        foreach ($allExchanges as $batch) {
+            $totalAvailableAmount += $batch->amount - $batch->amount_spent;
+            array_push($batches, $batch);
+            $count++;
+            if ($totalAvailableAmount >= $RecieptTotal) {
+                foreach ($batches as $b) {
+                    if ($b->amount - $b->amount_spent >= $totalRemainingAmount) {
+
+                        $amount += $totalRemainingAmount; // 1000$ + 1000$ = 2000$
+                        $totalAmountSyp += $totalRemainingAmount * $b->currency_value; //500,000s.p += 1000$ * 600 = 1,100,000
+                        $b->amount_spent += $totalRemainingAmount;
+                        $b->save();
+                        break;
+                    } else {
+                        $totalRemainingAmount -= ($b->amount - $b->amount_spent); //2000 - 1000 = 1000
+                        $amount += $b->amount - $b->amount_spent; // 1000
+                        $totalAmountSyp += $amount * $b->currency_value; // 1000 * 500 = 500,000
+                        $b->amount_spent += $b->amount - $b->amount_spent;
+                        $b->save();
+                    }
+                }
+                break;
+            }
+        }
+        if ($totalAvailableAmount < $RecieptTotal) {
+            return 'error';
+        }
+        toast()->success('Successfully spent ' . $totalAmountSyp . ' at the currency_value of ' . $totalAmountSyp / $amount);
+        return $totalAmountSyp / $amount; // array('TotalAmountSyp' => $totalAmountSyp, 'TotalAmountUsd' => $amount);
+    }
+
+    public function createTransaction($transaction_name, $transaction_date, $currency_id, $description)
+    {
+        $transaction = Transaction::create([
+            'transaction_name' => $transaction_name,
+            'transaction_date' => $transaction_date,
+            'currnecy_id' => $currency_id,
+            'description' => $description,
+        ]);
+        return $transaction;
+    }
+
+    public function createCreditEntry($account_id, $currency_id, $amount, Transaction $transaction, $currency_value)
+    {
+        $crEntry = Entry::create([
+            'cr' => $amount,
+            'account_id' => $account_id,
+            'currency_id' => $currency_id,
+            'currency_value' => $currency_value,
+            'transaction_id' => $transaction->id,
+        ]);
+        return $crEntry;
+    }
+    public function createDebitEntry($account_id, $currency_id, $amount, Transaction $transaction, $currency_value)
+    {
+        $drEntry = Entry::create([
+            'dr' => $amount,
+            'account_id' => $account_id,
+            'currency_id' => $currency_id,
+            'currency_value' => $currency_value,
+            'transaction_id' => $transaction->id,
+        ]);
+        return $drEntry;
+    }
 
 
     public function addExpensePage(ExpenseReciept $reciept)
@@ -118,24 +183,31 @@ class ExpenseRecieptController extends Controller
         $accounts = Account::all()->where('parent_id', $cA->id);
         return view('expenses.payment')->with('reciept', $reciept)->with('parentAccounts', $accounts);
     }
-
+    
     public function addExpense(Request $request, ExpenseReciept $reciept)
     {
+        
+        $usdCurrency = Currency::where('code', 'USD')->first();
+        $sypCurrency = Currency::where('code', 'SYP')->first();
         $transaction = Transaction::find($reciept->transaction_id);
-        Entry::create([
-            'cr' => $request->paidAmount,
-            'account_id' => $request->designatedAccountId,
-            'transaction_id' => $transaction->id,
-            'currency_id' => $request->session()->get('currency_id'),
-            'currency_value' => $request->currency_value,
-        ]);
-        Entry::create([
-            'dr' => $request->paidAmount,
-            'account_id' => $reciept->vendor->account_id,
-            'transaction_id' => $transaction->id,
-            'currency_id' => $request->session()->get('currency_id'),
-            'currency_value' => $request->currency_value,
-        ]);
+        if (session('currency_id') == $usdCurrency->id) {
+            $currencyVALUE = $this->processUsdFifo($request->paidAmount);
+            if ($currencyVALUE == 'error') {
+                alert()->error('You don\'t have enought money exchanged to USD currency');
+                return redirect()->back();
+            }
+            $unMirroredTransaction = Transaction::find($reciept->transaction_id);
+            $mirroredTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
+            $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
+            $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $reciept->total() * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $drRecord_mirrored = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $reciept->total() * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $crRecord = $this->createCreditEntry($request->designatedAccountId, $usdCurrency->id, $reciept->total(), $unMirroredTransaction, $currencyVALUE);
+            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $usdCurrency->id, $reciept->total(), $unMirroredTransaction, $currencyVALUE);
+        } else {
+            $crRecord = $this->createCreditEntry($request->designatedAccountId, $sypCurrency->id, $reciept->total(), $transaction, $request->currency_value);
+            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $reciept->total(), $transaction, $request->currency_value);
+            alert()->success('Successfully completed transaction');
+        }
         ExpenseRecieptPayment::create([
             'date' => $request->date,
             'amount' => $request->paidAmount,
@@ -163,7 +235,8 @@ class ExpenseRecieptController extends Controller
         }
         return view('expenses.show')
             ->with('reciept', $expenseReciept)
-            ->with('dueAmount', $dueAmount);
+            ->with('dueAmount', $dueAmount)
+            ->with('currency',Currency::all()->where('id',session('currency_id'))->first());
     }
 
     /**

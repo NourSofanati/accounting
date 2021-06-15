@@ -13,6 +13,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="https://cdn.nayzac.online/svgCharts/css/style.css"/>
 
     @livewireStyles
 
@@ -51,7 +52,10 @@
 
     <script src="{{ mix('js/app.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script src="{{ asset('js/classes/IDrawable.js')}}" type="module"></script>
+    <script src="{{ asset('js/classes/Pie.js')}}" type="module"></script>
+    <script src="{{ asset('js/classes/Slice.js')}}" type="module"></script>
+    <script src="{{ asset('js/main.js')}}" type="module"></script>
     @yield('footerScripts')
 </body>
 

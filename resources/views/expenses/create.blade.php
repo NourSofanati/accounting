@@ -18,7 +18,7 @@
                     </div>
 
                     @livewire('expense-reciept-items', ['cashAccounts' =>
-                    $cashAccounts,'vendors'=>$vendors,'draftexpenseReciept'=>$draftexpenseReciept,'categories'=>$categories])
+                    $cashAccounts,'vendors'=>$vendors,'draftexpenseReciept'=>$draftexpenseReciept,'categories'=>$categories,'currency'=>$currency])
                 </div>
             </form>
         </div>

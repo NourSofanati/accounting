@@ -29,7 +29,7 @@
                                             </div>
                                             <div class="text-center px-2">
                                                 <hr>
-                                                <span class=" text-lg">${{ $expense->total() }}</span>
+                                                <span class=" text-lg">{{ $currency->sign.' '.$expense->total() }}</span>
                                             </div>
                                         </div>
                                         <div

@@ -65,7 +65,7 @@
                             <div class="">
                                 <div class="flex flex-col">
                                     <span class="text-gray-500">المبلغ المستحق</span>
-                                    <h1 class="text-black text-xl">$ <span>{{ $reciept->totalDue() }}</span>
+                                    <h1 class="text-black text-xl"><span>{{ $currency->sign. ' '.$reciept->totalDue() }}</span>
                                     </h1>
                                 </div>
                             </div>

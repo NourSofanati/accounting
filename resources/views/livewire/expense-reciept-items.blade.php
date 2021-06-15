@@ -27,7 +27,7 @@
                 <span class="text-gray-500 block">الصنف</span>
                 <select name="category_id" id="category_id" class="border-none">
                     @forelse ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}">{{ __($category->name) }}</option>
                     @empty
 
                     @endforelse
@@ -53,7 +53,7 @@
             <div class="">
                 <div class="flex flex-col">
                     <span class="text-gray-500">المبلغ المستحق</span>
-                    <h1 class="text-black text-xl">$ <span>{{ $dueAmount }}</span> </h1>
+                    <h1 class="text-black text-xl"><span>{{ $currency->sign. ' '.$dueAmount }}</span> </h1>
                 </div>
 		<div class="flex flex-col">
 			<span class="text-gray-500">Currency Value</span>

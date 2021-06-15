@@ -12,6 +12,7 @@ class ExpenseRecieptItems extends Component
     public $expenseRecieptLines;
     public $draftexpenseReciept;
     public $dueAmount;
+    public $currency;
     public function mount()
     {
         $this->expenseRecieptLines = array();

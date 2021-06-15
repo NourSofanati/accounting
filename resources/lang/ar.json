@@ -17,5 +17,19 @@
     "customers": "الزبائن",
     "taxes": "الضرائب",
     "invertories": "المخازن",
-    "employees": "الموظفين"
+    "employees": "الموظفين",
+    "Advertising": "تسويق",
+    "Car & Truck Expenses": "مصاريف السيارات و الشاحنات",
+    "Contractors": "المتعاقدون",
+    "Education and Training": "التعليم و التدريب",
+    "Employee Benefits": " فوائد الموظفين",
+    "Meals & Entertainment": " طعام و رفاهيات",
+    "Office Expenses & Postage": "نفقات مكتب",
+    "Other Expenses": "نفقات اخرى",
+    "Personal": "نفقات شخصية",
+    "Professional Services": "خدمات حرفية",
+    "Rent or Lease": "أجار",
+    "Supplies": "مستلزمات",
+    "Travel": "سفر و مواصلات",
+    "Utilities": "خدمات عامة "
 }
