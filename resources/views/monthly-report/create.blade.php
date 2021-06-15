@@ -10,7 +10,7 @@
             <form action="{{ route('monthly-report.store') }}" method="post">
                 @csrf
                 <x-jet-input type="number" required name="month" placeholder="الشهر" value="1"/>
-                <input type="submit" value="حفظ الفاتورة"
+                <input type="submit" value="عرض تقرير الشهر"
                             class="bg-green-500 text-white font-bold px-5 py-3 rounded-xl hover:bg-green-700 cursor-pointer">
             </form>
         </div>

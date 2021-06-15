@@ -39,14 +39,14 @@ export default class Pie {
         tooltip.classList.add('--svgchart-tooltip');
         newBase.appendChild(tooltip);
         container.appendChild(overlay);
-        container.style.width = "150px";
-        container.style.height = "150px";
+        container.style.width = "200px";
+        container.style.height = "200px";
         container.style.position = "relative";
         newBase.setAttribute("viewBox", "0 0 100 100");
         newBase.classList.add("--svgchart-circle");
         newBase.style.position = "relative";
-        newBase.style.width = "150px";
-        newBase.style.height = "150px";
+        newBase.style.width = "200px";
+        newBase.style.height = "200px";
         newBase.onmouseenter = () => {
             let tooltip = document.querySelector('.--svgchart-tooltip');
             tooltip.style.opacity = "1";

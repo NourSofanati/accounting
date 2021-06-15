@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+
     public function index(Request $request)
     {
         if (!$request->session()->has('currency_id')) {
@@ -23,9 +24,10 @@ class DashboardController extends Controller
                 array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => $a->balance()));
             }
         }
+        $parentCashAccount = Account::where('name', 'النقد')->first();
         $currency = Currency::all()->where('id', session('currency_id'))->first();
-
-        return view('dashboard.index', ['expenseAccounts' => $this->profits(), 'invoices' => $this->invoices(), 'currency' => $currency]);
+        //dd($parentCashAccount->children);
+        return view('dashboard.index', ['expenseAccounts' => $activeExpenseAccounts, 'invoices' => $this->invoices(), 'currency' => $currency, 'cashAccounts' => $parentCashAccount->children]);
     }
     public function invoices()
     {
