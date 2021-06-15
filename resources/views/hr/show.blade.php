@@ -91,15 +91,26 @@
                 <section id="payments">
                     <h1 class="text-xl pr-2s">الدفعات المسجلة</h1>
                     <div class="grid gap-3 mt-3">
-
+                        @php
+                            $total = 0;
+                        @endphp
                         @forelse ($employee->payments as $item)
                             <div class="bg-green-100 rounded p-2">
                                 {{ $item->amount }} بتاريخ
-                                {{ $item->payment_date  }}
+                                {{ $item->payment_date }}
                             </div>
+                            @php
+                                $total += $item->amount;
+                            @endphp
                         @empty
 
                         @endforelse
+                        @if ($total > 0)
+                            <div class="bg-green-300 rounded p-2">
+                                أجمالي تعاملاتي معه: <p class=" font-bold">{{$total}}</p>
+                            </div>
+
+                        @endif
                     </div>
                 </section>
             </div>

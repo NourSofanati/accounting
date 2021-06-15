@@ -13,7 +13,7 @@
                     إجمالي الفواتير
                 </header>
                 <section>
-                    <img src="{{asset('images/graph1.png')}}"/>
+                    <img src="{{asset('images/graph1.PNG')}}"/>
                 </section>
             </div>
             @include('dashboard.quick-actions')
