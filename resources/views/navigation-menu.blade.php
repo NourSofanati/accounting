@@ -146,30 +146,50 @@
             الديار للطاقة
         </div>
         <div class="pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
-                :name="'dashboard'" />
-            <x-jet-responsive-nav-link href="{{ route('accounts-chart') }}"
-                :active="request()->routeIs('accounts-chart')" :name="'accounts-chart'" />
-            <x-jet-responsive-nav-link href="{{ route('reports.index') }}"
-                :active="request()->routeIs('reports.index')" :name="'reports'" />
-            <x-jet-responsive-nav-link href="{{ route('vendors.index') }}"
-                :active="request()->routeIs('vendors.index')" :name="'vendors'" />
-            <x-jet-responsive-nav-link href="{{ route('purchases.index') }}"
-                :active="request()->routeIs('purchases.index')" :name="'purchases'" />
-            <x-jet-responsive-nav-link href="{{ route('expenses.index') }}"
-                :active="request()->routeIs('expenses.index')" :name="'expenses'" />
-            <x-jet-responsive-nav-link href="{{ route('invoices.index') }}"
-                :active="request()->routeIs('invoices.index')" :name="'invoices'" />
-            <x-jet-responsive-nav-link href="{{ route('customers.index') }}"
-                :active="request()->routeIs('customers.index')" :name="'customers'" />
-            <x-jet-responsive-nav-link href="{{ route('taxes.index') }}" :active="request()->routeIs('taxes.index')"
-                :name="'taxes'" />
-            <x-jet-responsive-nav-link href="{{ route('invertories.index') }}"
-                :active="request()->routeIs('invertories.index')" :name="'invertories'" />
-            <x-jet-responsive-nav-link href="{{ route('employees.index') }}"
-                :active="request()->routeIs('employees.index')" :name="'employees'" />
-            <x-jet-responsive-nav-link href="{{ route('archives') }}"
-                :active="request()->routeIs('archives')" :name="'archives'" />
+            @if (session('currency_id') == 1)
+                <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
+                    :name="'dashboard'" />
+                <x-jet-responsive-nav-link href="{{ route('accounts-chart') }}"
+                    :active="request()->routeIs('accounts-chart')" :name="'accounts-chart'" />
+                <x-jet-responsive-nav-link href="{{ route('reports.index') }}"
+                    :active="request()->routeIs('reports.index')" :name="'reports'" />
+                <x-jet-responsive-nav-link href="{{ route('vendors.index') }}"
+                    :active="request()->routeIs('vendors.index')" :name="'vendors'" />
+                <x-jet-responsive-nav-link href="{{ route('purchases.index') }}"
+                    :active="request()->routeIs('purchases.index')" :name="'purchases'" />
+                <x-jet-responsive-nav-link href="{{ route('expenses.index') }}"
+                    :active="request()->routeIs('expenses.index')" :name="'expenses'" />
+                <x-jet-responsive-nav-link href="{{ route('invoices.index') }}"
+                    :active="request()->routeIs('invoices.index')" :name="'invoices'" />
+                <x-jet-responsive-nav-link href="{{ route('customers.index') }}"
+                    :active="request()->routeIs('customers.index')" :name="'customers'" />
+                <x-jet-responsive-nav-link href="{{ route('taxes.index') }}"
+                    :active="request()->routeIs('taxes.index')" :name="'taxes'" />
+                <x-jet-responsive-nav-link href="{{ route('invertories.index') }}"
+                    :active="request()->routeIs('invertories.index')" :name="'invertories'" />
+                <x-jet-responsive-nav-link href="{{ route('employees.index') }}"
+                    :active="request()->routeIs('employees.index')" :name="'employees'" />
+                <x-jet-responsive-nav-link href="{{ route('archives') }}" :active="request()->routeIs('archives')"
+                    :name="'archives'" />
+            @else
+                <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
+                    :name="'dashboard'" />
+                <x-jet-responsive-nav-link href="{{ route('accounts-chart') }}"
+                    :active="request()->routeIs('accounts-chart')" :name="'accounts-chart'" />
+                <x-jet-responsive-nav-link href="{{ route('reports.index') }}"
+                    :active="request()->routeIs('reports.index')" :name="'reports'" />
+                <x-jet-responsive-nav-link href="{{ route('vendors.index') }}"
+                    :active="request()->routeIs('vendors.index')" :name="'vendors'" />
+                <x-jet-responsive-nav-link href="{{ route('purchases.index') }}"
+                    :active="request()->routeIs('purchases.index')" :name="'purchases'" />
+                <x-jet-responsive-nav-link href="{{ route('expenses.index') }}"
+                    :active="request()->routeIs('expenses.index')" :name="'expenses'" />
+                <x-jet-responsive-nav-link href="{{ route('invertories.index') }}"
+                    :active="request()->routeIs('invertories.index')" :name="'invertories'" />
+                <x-jet-responsive-nav-link href="{{ route('archives') }}" :active="request()->routeIs('archives')"
+                    :name="'archives'" />
+            @endif
+
 
 
 
@@ -179,10 +199,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             {{-- <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="flex-shrink-0 mr-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
-                            alt="{{ Auth::user()->name }}" />
-                    </div>
+                    
                 @endif
 
                 <div>

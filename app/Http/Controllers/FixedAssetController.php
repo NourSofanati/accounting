@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Currency;
+use App\Models\CurrencyExchange;
 use App\Models\Entry;
 use App\Models\FixedAsset;
 use App\Models\Invertory;
@@ -81,49 +82,26 @@ class FixedAssetController extends Controller
 
         $asset->account_id = $assetAccount->id;
         $asset->save();
-        $otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
-        $transaction = Transaction::create([
-            'transaction_name' => 'Asset ' . sprintf("%07d", $asset->id),
-            'transaction_date' => $asset->purchase_date,
-            'currency_value' => $asset->currency_value,
-            'currency_id' => $request->session()->get('currency_id'),
-        ]);
-        Entry::create([
-            'currency_value' => $asset->currency_value,
-            'currency_id' => $asset->currency_id,
-            'cr' => $asset->value,
-            'account_id' => $asset->purchase_account,
-            'transaction_id' => $transaction->id,
-        ]);
-        Entry::create([
-            'currency_value' => $asset->currency_value,
-            'currency_id' => $asset->currency_id,
-            'dr' => $asset->value,
-            'account_id' => $asset->account_id,
-            'transaction_id' => $transaction->id,
-        ]);
-        if ($otherCurrency->code == 'SYP') {
+        $usdCurrency = Currency::where('code', 'USD')->first();
+        $sypCurrency = Currency::where('code', 'SYP')->first();
+        if (session('currency_id') == $usdCurrency->id) {
+            $currencyVALUE = $this->processUsdFifo($asset->value);
+            if ($currencyVALUE == 'error') {
+                alert()->error('You don\'t have enought money exchanged to USD currency');
+                return redirect()->back();
+            }
+            $unMirroredTransaction = $this->createTransaction('شراء ' . $request->name, $request->purchase_date, $sypCurrency->id, $request->description);
+            $mirroredTransaction = $this->createTransaction('(قيد معكوس) شراء ' . $request->name, $request->purchase_date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
-            $sypTransaction = Transaction::create([
-                'transaction_name' => 'Asset ' . sprintf("%07d", $asset->id),
-                'transaction_date' => $asset->purchase_date,
-                'currency_value' => $asset->currency_value,
-                'currency_id' => $otherCurrency->id,
-            ]);
-            Entry::create([
-                'currency_value' => $asset->currency_value,
-                'currency_id' => $otherCurrency->id,
-                'cr' => $asset->value * $asset->currency_value,
-                'account_id' => $exchange_expense_account->id,
-                'transaction_id' => $sypTransaction->id,
-            ]);
-            Entry::create([
-                'currency_value' => $asset->currency_value,
-                'currency_id' => $otherCurrency->id,
-                'dr' => $asset->value * $asset->currency_value,
-                'account_id' => $asset->account_id,
-                'transaction_id' => $sypTransaction->id,
-            ]);
+            $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $asset->value * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $drRecord_mirrored = $this->createDebitEntry($asset->account_id, $sypCurrency->id, $asset->value * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $crRecord = $this->createCreditEntry($asset->purchase_account, $usdCurrency->id, $asset->value, $unMirroredTransaction, $currencyVALUE);
+            $drRecord = $this->createDebitEntry($asset->account_id, $usdCurrency->id, $asset->value, $unMirroredTransaction, $currencyVALUE);
+        } else {
+            $newTransaction = $this->createTransaction('شراء ' . $request->name, $request->purchase_date, $sypCurrency->id, $request->description);
+            $crRecord = $this->createCreditEntry($asset->purchase_account, $sypCurrency->id, $asset->value, $newTransaction, $request->currency_value);
+            $drRecord = $this->createDebitEntry($asset->account_id, $sypCurrency->id, $asset->value, $newTransaction, $request->currency_value);
+            alert()->success('Successfully completed transaction');
         }
         return redirect()->route('invertories.show', $request->invertory_id);
     }
@@ -171,5 +149,81 @@ class FixedAssetController extends Controller
     public function destroy(FixedAsset $fixedAsset)
     {
         //
+    }
+
+    function processUsdFifo($RecieptTotal)
+    {
+        $usdCurrency = Currency::where('code', 'USD')->first();
+        if (session('currency_id') != $usdCurrency->id) return;
+        $allExchanges = CurrencyExchange::whereColumn('amount', '>', 'amount_spent')->where('currency_to', $usdCurrency->id)->orderBy('date', 'asc')->orderBy('created_at', 'asc')->get();
+        $batches = array();
+        $amount = 0;
+        $totalAvailableAmount = 0;
+        $totalRemainingAmount = $RecieptTotal; // 2000
+        $totalAmountSyp = 0; // 0
+        $count = 0;
+        foreach ($allExchanges as $batch) {
+            $totalAvailableAmount += $batch->amount - $batch->amount_spent;
+            array_push($batches, $batch);
+            $count++;
+            if ($totalAvailableAmount >= $RecieptTotal) {
+                foreach ($batches as $b) {
+                    if ($b->amount - $b->amount_spent >= $totalRemainingAmount) {
+
+                        $amount += $totalRemainingAmount; // 1000$ + 1000$ = 2000$
+                        $totalAmountSyp += $totalRemainingAmount * $b->currency_value; //500,000s.p += 1000$ * 600 = 1,100,000
+                        $b->amount_spent += $totalRemainingAmount;
+                        $b->save();
+                        break;
+                    } else {
+                        $totalRemainingAmount -= ($b->amount - $b->amount_spent); //2000 - 1000 = 1000
+                        $amount += $b->amount - $b->amount_spent; // 1000
+                        $totalAmountSyp += $amount * $b->currency_value; // 1000 * 500 = 500,000
+                        $b->amount_spent += $b->amount - $b->amount_spent;
+                        $b->save();
+                    }
+                }
+                break;
+            }
+        }
+        if ($totalAvailableAmount < $RecieptTotal) {
+            return 'error';
+        }
+        toast()->success('Successfully spent ' . $totalAmountSyp . ' at the currency_value of ' . $totalAmountSyp / $amount);
+        return $totalAmountSyp / $amount; // array('TotalAmountSyp' => $totalAmountSyp, 'TotalAmountUsd' => $amount);
+    }
+
+    public function createTransaction($transaction_name, $transaction_date, $currency_id, $description)
+    {
+        $transaction = Transaction::create([
+            'transaction_name' => $transaction_name,
+            'transaction_date' => $transaction_date,
+            'currnecy_id' => $currency_id,
+            'description' => $description,
+        ]);
+        return $transaction;
+    }
+
+    public function createCreditEntry($account_id, $currency_id, $amount, Transaction $transaction, $currency_value)
+    {
+        $crEntry = Entry::create([
+            'cr' => $amount,
+            'account_id' => $account_id,
+            'currency_id' => $currency_id,
+            'currency_value' => $currency_value,
+            'transaction_id' => $transaction->id,
+        ]);
+        return $crEntry;
+    }
+    public function createDebitEntry($account_id, $currency_id, $amount, Transaction $transaction, $currency_value)
+    {
+        $drEntry = Entry::create([
+            'dr' => $amount,
+            'account_id' => $account_id,
+            'currency_id' => $currency_id,
+            'currency_value' => $currency_value,
+            'transaction_id' => $transaction->id,
+        ]);
+        return $drEntry;
     }
 }
