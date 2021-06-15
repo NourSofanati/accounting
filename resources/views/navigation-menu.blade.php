@@ -168,6 +168,8 @@
                 :active="request()->routeIs('invertories.index')" :name="'invertories'" />
             <x-jet-responsive-nav-link href="{{ route('employees.index') }}"
                 :active="request()->routeIs('employees.index')" :name="'employees'" />
+            <x-jet-responsive-nav-link href="{{ route('archives') }}"
+                :active="request()->routeIs('archives')" :name="'archives'" />
 
 
 

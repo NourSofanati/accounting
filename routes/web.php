@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CurrencyExchangeController;
@@ -48,7 +49,7 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/accounts-chart', [AccountTypeController::class, 'index'])->name('accounts-chart');
-
+Route::get('archives', [ArchiveController::class, 'index'])->name('archives');
 // الحسابات وانواعها
 Route::resource('types', AccountTypeController::class);
 Route::resource('accounts', AccountController::class);
