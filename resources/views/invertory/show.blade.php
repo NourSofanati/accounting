@@ -54,9 +54,10 @@
                         @forelse ($invertory->assets as $asset)
                             <tr class="text-center">
                                 <td>
-                                    <a href="{{ Storage::url('public/images/' .$asset->attachment->url) }}">
+                                    <a>
                                         {{ $asset->name }}
                                     </a>
+                                    <img src="{{ Storage::url('public/images/' . $asset->attachment->url) }}" />
                                 </td>
                                 <td>${{ $asset->value }}</td>
                                 <td>{{ $asset->supervisor }}</td>
