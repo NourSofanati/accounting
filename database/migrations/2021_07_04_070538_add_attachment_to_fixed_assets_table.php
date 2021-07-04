@@ -15,7 +15,7 @@ class AddAttachmentToFixedAssetsTable extends Migration
     public function up()
     {
         Schema::table('fixed_assets', function (Blueprint $table) {
-            $table->foreignIdFor(Attachment::class, 'attachment_id');
+            $table->foreignIdFor(Attachment::class, 'attachment_id')->nullable();
         });
     }
 
