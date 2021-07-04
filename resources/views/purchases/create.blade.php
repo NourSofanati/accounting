@@ -74,6 +74,12 @@
                         </select>
                     </div>
                     <div class="mt-3">
+                        <x-jet-label for="attachment"/>
+                            المرفق
+                        </x-jet-label>
+                        <x-jet-input type="text" name="attachment"/>
+                    </div>
+                    <div class="mt-3">
                         <input type="submit" value="إضافة الأصل"
                             class="block py-3 px-4 bg-indigo-600 text-white rounded cursor-pointer">
                     </div>

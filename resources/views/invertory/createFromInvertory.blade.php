@@ -53,11 +53,11 @@
                         <select class="w-full border-1 border-gray-300 rounded mt-2" name="purchase_account"
                             id="purchase_account">
                             @foreach ($equityAccounts as $pA)
-				
+
                                 @forelse ($pA->children as $child)
                                     <option value="{{ $child->id }}">{{ $child->name }}</option>
-				@empty
-				    <option value="{{$pA->id}}">{{$pA->name}}</option>
+                                @empty
+                                    <option value="{{ $pA->id }}">{{ $pA->name }}</option>
                                 @endforelse
                             @endforeach
                         </select>
@@ -75,6 +75,13 @@
 
                             @endforelse
                         </select>
+                    </div>
+                    <div class="mt-3">
+
+                        <label for="attachment">
+                            {{ __('attachment') }}
+                        </label>
+                        <input type="file" name="attachment" accept=".jpg,.jpeg,.png,.gif" />
                     </div>
                     <div class="mt-3">
                         <input type="submit" value="إضافة الأصل"

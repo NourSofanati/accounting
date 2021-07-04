@@ -16,13 +16,18 @@ class AccountItem extends Component
     public $usdBalance;
     public $currency;
     public $otherCurrency;
+    public $hidden = true;
+    public $parentId;
     public function mount()
     {
+        $this->parentId = $this->item->parent_id;
+        $this->key = $this->item->id;
         $this->balance = number_format($this->accountBalance($this->item), 2);
         $this->usdBalance = number_format($this->usdAccountBalance($this->item), 2);
         $this->currency = Currency::all()->where('id', session('currency_id'))->first();
         $this->otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
     }
+
 
     public function render()
     {

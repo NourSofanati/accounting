@@ -16,7 +16,6 @@ class AccountController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -71,7 +70,7 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        //
+        return view('accounts.edit')->with('account', $account);
     }
 
     /**
@@ -83,7 +82,14 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        //
+        $account->alias = $request->alias;
+        $account->save();
+        return redirect()->route('accounts.show', $account);
+    }
+
+    public function ledger(Account $account)
+    {
+        return view('accounts.ledger', ['account' => $account]);
     }
 
     /**

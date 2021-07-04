@@ -46,67 +46,67 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/accounts-chart', [AccountTypeController::class, 'index'])->name('accounts-chart');
-    Route::get('archives', [ArchiveController::class, 'index'])->name('archives');
-    // الحسابات وانواعها
-    Route::resource('types', AccountTypeController::class);
-    Route::resource('accounts', AccountController::class);
+//Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/accounts-chart', [AccountTypeController::class, 'index'])->name('accounts-chart');
+Route::get('archives', [ArchiveController::class, 'index'])->name('archives');
+// الحسابات وانواعها
+Route::resource('types', AccountTypeController::class);
+Route::resource('accounts', AccountController::class);
+Route::get('/accounts/{account}/ledger', [AccountController::class, 'ledger'])->name('accountledger');
+// اليومية والقيود
+Route::resource('journals', TransactionController::class);
+// التقارير
+Route::resource('reports', ReportController::class);
+Route::resource('monthly-report', MonthlyReportController::class);
+// المشتريات
+Route::resource('purchases', PurchaseController::class);
+// المصاريف
+Route::resource('expenses', ExpenseRecieptController::class);
+Route::get('/reciept/{reciept}/pay', [ExpenseRecieptController::class, 'addExpensePage'])->name('addExpense');
+Route::post('/reciept/{reciept}/pay', [ExpenseRecieptController::class, 'addExpense'])->name('addExpensePOST');
+// الموردين
+Route::resource('vendors', VendorController::class);
+// الفواتير والمبيعات
+Route::resource('invoices', InvoiceController::class);
+Route::post('/invoice/{invoice}/sent', [InvoiceController::class, 'sent'])->name('markInvoiceSent');
+Route::get('/invoice/{invoice}/pay', [InvoiceController::class, 'addPaymentPage'])->name('addPayment');
+Route::post('/invoice/{invoice}/pay', [InvoiceController::class, 'addPayment'])->name('addPayment');
+Route::get('invoice/{invoice}/pdf', [InvoiceController::class, 'generatePDF'])->name('generatePDF');
+Route::get('retains', [InvoiceController::class, 'claimRetains'])->name('claimRetains');
+Route::post('claimretains', [InvoiceController::class, 'claimRetainsStore'])->name('claimRetainsStore');
+// الزبائن
+Route::resource('customers', CustomerController::class);
+Route::get('currency/set/{currency}', [CurrencyController::class, 'setCurrency'])->name('setCurrency');
 
-    // اليومية والقيود
-    Route::resource('journals', TransactionController::class);
-    // التقارير
-    Route::resource('reports', ReportController::class);
-    Route::resource('monthly-report', MonthlyReportController::class);
-    // المشتريات
-    Route::resource('purchases', PurchaseController::class);
-    // المصاريف
-    Route::resource('expenses', ExpenseRecieptController::class);
-    Route::get('/reciept/{reciept}/pay', [ExpenseRecieptController::class, 'addExpensePage'])->name('addExpense');
-    Route::post('/reciept/{reciept}/pay', [ExpenseRecieptController::class, 'addExpense'])->name('addExpensePOST');
-    // الموردين
-    Route::resource('vendors', VendorController::class);
-    // الفواتير والمبيعات
-    Route::resource('invoices', InvoiceController::class);
-    Route::post('/invoice/{invoice}/sent', [InvoiceController::class, 'sent'])->name('markInvoiceSent');
-    Route::get('/invoice/{invoice}/pay', [InvoiceController::class, 'addPaymentPage'])->name('addPayment');
-    Route::post('/invoice/{invoice}/pay', [InvoiceController::class, 'addPayment'])->name('addPayment');
-    Route::get('invoice/{invoice}/pdf', [InvoiceController::class, 'generatePDF'])->name('generatePDF');
-    Route::get('retains', [InvoiceController::class, 'claimRetains'])->name('claimRetains');
-    Route::post('claimretains', [InvoiceController::class, 'claimRetainsStore'])->name('claimRetainsStore');
-    // الزبائن
-    Route::resource('customers', CustomerController::class);
-    Route::get('currency/set/{currency}', [CurrencyController::class, 'setCurrency'])->name('setCurrency');
+// الضرائبb
+Route::resource('taxes', TaxController::class);
 
-    // الضرائبb
-    Route::resource('taxes', TaxController::class);
+// المستودعات
+Route::resource('invertories', InvertoryController::class);
 
-    // المستودعات
-    Route::resource('invertories', InvertoryController::class);
+// الاصول الثابتة
+Route::resource('fixedAssets', FixedAssetController::class);
+Route::get('invertory/{invertory}/createAsset/', [FixedAssetController::class, 'createFromInvertory'])->name('createFromInvertory');
+Route::get('invertory/{invertory}/purchaseAsset/', [FixedAssetController::class, 'purchaseFromInvertory'])->name('purchaseFromInvertory');
 
-    // الاصول الثابتة
-    Route::resource('fixedAssets', FixedAssetController::class);
-    Route::get('invertory/{invertory}/createAsset/', [FixedAssetController::class, 'createFromInvertory'])->name('createFromInvertory');
-    Route::get('invertory/{invertory}/purchaseAsset/', [FixedAssetController::class, 'purchaseFromInvertory'])->name('purchaseFromInvertory');
+Route::resource('form', StupidFormController::class);
 
-    Route::resource('form', StupidFormController::class);
+//تحويل عملة
+Route::resource('exchange', CurrencyExchangeController::class);
+Route::resource('currency_rates', CurrencyRateController::class);
+// الموارد البشرية
+Route::resource('employees', EmployeeController::class);
+Route::resource('salary', EmployeePaymentsController::class);
+Route::get('paySalary/{employee}', [EmployeePaymentsController::class, 'showpayment'])->name('paySalary');
+// المناصب
+Route::resource('positions', PositionController::class);
 
-    //تحويل عملة
-    Route::resource('exchange', CurrencyExchangeController::class);
-    Route::resource('currency_rates', CurrencyRateController::class);
-    // الموارد البشرية
-    Route::resource('employees', EmployeeController::class);
-    Route::resource('salary', EmployeePaymentsController::class);
-    Route::get('paySalary/{employee}', [EmployeePaymentsController::class, 'showpayment'])->name('paySalary');
-    // المناصب
-    Route::resource('positions', PositionController::class);
-
-    // التقارير
-    Route::prefix('report')->group(function () {
-        Route::get('generalLedger', [GeneralLedgerController::class, 'index'])->name('General Ledger');
-        Route::get('profitLoss', [ProfitLossController::class, 'index'])->name('Profit & Loss');
-        Route::get('trialBalance', [TrialBalanceController::class, 'index'])->name('Trial Balance');
-        Route::get('balanceSheet', [BalanceSheetController::class, 'index'])->name('Balance Sheet');
-    });
+// التقارير
+Route::prefix('report')->group(function () {
+    Route::get('generalLedger', [GeneralLedgerController::class, 'index'])->name('General Ledger');
+    Route::get('profitLoss', [ProfitLossController::class, 'index'])->name('Profit & Loss');
+    Route::get('trialBalance', [TrialBalanceController::class, 'index'])->name('Trial Balance');
+    Route::get('balanceSheet', [BalanceSheetController::class, 'index'])->name('Balance Sheet');
 });
+//});

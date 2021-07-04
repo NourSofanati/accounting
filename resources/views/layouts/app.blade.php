@@ -21,7 +21,7 @@
 
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased overflow-hidden">
     @include('sweetalert::alert')
 
     <x-jet-banner />

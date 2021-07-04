@@ -25,7 +25,7 @@
                     إضافة مخزن
                 </span>
             </a>
-            <a href="{{ route('invertories.create') }}"
+            <a href="{{ route('invoices.create') }}"
                 class="w-full h-full bg-white  py-5 border border-gray-100 text-gray-700 hover:bg-gray-700 hover:text-white border-collapse">
                 <span class="grid place-items-center place-content-center">
                     @include('icons.invoices',['size'=>10])

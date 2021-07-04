@@ -1,6 +1,7 @@
-<tr class="border-t border-b bg-white hover:bg-indigo-50 cursor-pointer" wire:click.prevent="showItem({{ $item }})">
+<tr class="border-t border-b bg-white hover:bg-indigo-50 cursor-pointer" data-key="{{ $key }}"
+    data-depth="{{ $depth }}" data-parentid="{{ $parentId }}" data-expandchildren="false">
     <td class=" px-4 text-right ">
-        <div class="flex ">
+        <div class="flex " wire:click.prevent="showItem({{ $item }})">
             @if ($item->parent_id == null)
                 @switch($item->accountType->name)
                     @case('أصول')
@@ -55,7 +56,7 @@
             @endif
             <div class="flex flex-col">
                 <div class="text-sm font-medium text-gray-900">
-                    {{ $item->name }}
+                    {{ $item->alias ? $item->alias : $item->name }}
                 </div>
                 @if ($depth > 1)
                     <div class="text-sm text-gray-500">
@@ -76,5 +77,15 @@
         </span>
         <br>
         <span data-isHideable class="text-gray-400">({{ $usdBalance != 0 ? $usdBalance : abs($usdBalance) }})</span>
+    </td>
+    <td class=" px-4 py-6 ">
+        @if ($item->children->count() > 0)
+            <button
+                class="pb-1 rounded-full bg-gray-700 hover:bg-gray-800 opacity-50 hover:opacity-100 focus:outline-none transition duration-75  text-white font-bold px-2.5"
+                data-expandButton data-res={{ $key }} data-expandedStatus="expanded"
+                data-xparentid={{ $parentId }}>
+                +
+            </button>
+        @endif
     </td>
 </tr>

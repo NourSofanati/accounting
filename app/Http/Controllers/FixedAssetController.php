@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Attachment;
 use App\Models\Currency;
 use App\Models\CurrencyExchange;
 use App\Models\Entry;
@@ -61,6 +62,8 @@ class FixedAssetController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $asset = FixedAsset::create([
             'name' => $request->name,
             'value' => $request->value,
@@ -71,6 +74,16 @@ class FixedAssetController extends Controller
             'purchase_date' => $request->purchase_date,
             'invertory_id' => $request->invertory_id,
         ]);
+
+        if ($request->image) {
+            $imageName = time() . $asset->name . '.' . $request->image->extension();
+            $request->image->storeAs('attachments', $imageName, 'public');
+            $attachment = Attachment::create([
+                'url' => $imageName,
+            ]);
+            $asset->attachment_id = $attachment->id;
+            $asset->save();
+        }
 
         $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
 
@@ -103,6 +116,7 @@ class FixedAssetController extends Controller
             $drRecord = $this->createDebitEntry($asset->account_id, $sypCurrency->id, $asset->value, $newTransaction, $request->currency_value);
             alert()->success('Successfully completed transaction');
         }
+
         return redirect()->route('invertories.show', $request->invertory_id);
     }
 

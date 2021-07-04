@@ -189,10 +189,6 @@
                 <x-jet-responsive-nav-link href="{{ route('archives') }}" :active="request()->routeIs('archives')"
                     :name="'archives'" />
             @endif
-
-
-
-
         </div>
 
         <!-- Responsive Settings Options -->
