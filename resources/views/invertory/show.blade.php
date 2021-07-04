@@ -48,6 +48,7 @@
                             <th>اسم الأصل</th>
                             <th>قيمة الأصل</th>
                             <th>المسؤول</th>
+                            <th>الملفات المرفقة</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,10 +58,13 @@
                                     <a>
                                         {{ $asset->name }}
                                     </a>
-                                    <a href="{{ Storage::url('public/images/' . $asset->attachment->url) }}">الملف المرفق</a>
                                 </td>
                                 <td>${{ $asset->value }}</td>
                                 <td>{{ $asset->supervisor }}</td>
+                                <td>
+                                    <a href="{{ Storage::url('public/images/' . $asset->attachment->url) }}">الملف
+                                        المرفق</a>
+                                </td>
                             </tr>
                         @empty
 
