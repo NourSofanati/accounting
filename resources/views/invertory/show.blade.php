@@ -57,7 +57,7 @@
                                     <a>
                                         {{ $asset->name }}
                                     </a>
-                                    <img src="{{ Storage::url('public/images/' . $asset->attachment->url) }}" />
+                                    <a href="{{ Storage::url('public/images/' . $asset->attachment->url) }}">الملف المرفق</a>
                                 </td>
                                 <td>${{ $asset->value }}</td>
                                 <td>{{ $asset->supervisor }}</td>
