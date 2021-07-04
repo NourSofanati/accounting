@@ -64,8 +64,7 @@
                                 <td>{{ $asset->supervisor }}</td>
                                 <td>
                                     @if ($asset->attachment)
-                                        <a href="{{ Storage::url('public/image/' . $asset->attachment->url) }}">الملف
-                                            المرفق</a>
+                                        <img src="{{ Storage::url('public/image/' . $asset->attachment->url) }}">
                                     @endif
                                 </td>
                             </tr>
