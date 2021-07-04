@@ -18,10 +18,16 @@ class FixedAsset extends Model
         'purchase_date',
         'currency_id',
         'currency_value',
+        'attachment_id',
     ];
 
     public function invertory()
     {
         return $this->belongsTo(Invertory::class, 'invertory_id');
+    }
+
+    public function attachment()
+    {
+        return $this->hasOne(Attachment::class, 'attachment_id');
     }
 }
