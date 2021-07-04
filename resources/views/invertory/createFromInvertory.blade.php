@@ -78,10 +78,10 @@
                     </div>
                     <div class="mt-3">
 
-                        <label for="attachment">
+                        <label for="image">
                             {{ __('attachment') }}
                         </label>
-                        <input type="file" name="attachment" accept=".jpg,.jpeg,.png,.gif" />
+                        <input type="file" name="image" accept=".jpg,.jpeg,.png,.gif" />
                     </div>
                     <div class="mt-3">
                         <input type="submit" value="إضافة الأصل"
