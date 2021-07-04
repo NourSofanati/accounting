@@ -67,7 +67,7 @@ class FixedAssetController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()){
-            dd($validator);
+            dd($validator->errors());
         }
 
         $asset = FixedAsset::create([
