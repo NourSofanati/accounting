@@ -11,6 +11,7 @@ use App\Models\FixedAsset;
 use App\Models\Invertory;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FixedAssetController extends Controller
 {
@@ -62,10 +63,13 @@ class FixedAssetController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        if($validator->fails()){
+            dd($validator);
+        }
+
         $asset = FixedAsset::create([
             'name' => $request->name,
             'value' => $request->value,
