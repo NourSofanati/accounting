@@ -64,8 +64,6 @@ class FixedAssetController extends Controller
     {
 
         $request->validate([
-            'name' => 'required',
-            'value' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $asset = FixedAsset::create([
@@ -81,7 +79,7 @@ class FixedAssetController extends Controller
 
         if ($request->image) {
             $imageName = time() . $asset->name . '.' . $request->image->extension();
-            $request->image->storeAs('attachments', $imageName, 'public');
+            $request->image->storeAs('images', $imageName, 'public');
             $attachment = Attachment::create([
                 'url' => $imageName,
             ]);
