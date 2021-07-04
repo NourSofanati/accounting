@@ -28,6 +28,6 @@ class FixedAsset extends Model
 
     public function attachment()
     {
-        return $this->hasOne(Attachment::class, 'attachment_id');
+        return $this->belongsTo(Attachment::class, 'attachment_id');
     }
 }
