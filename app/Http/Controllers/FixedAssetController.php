@@ -83,8 +83,8 @@ class FixedAssetController extends Controller
             $attachment = Attachment::create([
                 'url' => $imageName,
             ]);
-            $asset->attachment_id = $attachment->id;
-            $asset->save();
+            //$asset->attachment_id = $attachment->id;
+            //$asset->save();
         }
 
         $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
