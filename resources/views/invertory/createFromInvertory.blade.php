@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-lg rounded">
-            <form action="{{ route('fixedAssets.store') }}" method="post">
+            <form action="{{ route('fixedAssets.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="p-5">
                     <div class="mt-3">
@@ -81,7 +81,7 @@
                         <label for="image">
                             {{ __('attachment') }}
                         </label>
-                        <input type="file" name="image" accept=".jpg,.jpeg,.png,.gif" />
+                        <input type="file" name="image" />
                     </div>
                     <div class="mt-3">
                         <input type="submit" value="إضافة الأصل"
