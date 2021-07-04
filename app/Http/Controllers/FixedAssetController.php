@@ -63,7 +63,11 @@ class FixedAssetController extends Controller
     public function store(Request $request)
     {
 
-
+        $request->validate([
+            'name' => 'required',
+            'value' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
         $asset = FixedAsset::create([
             'name' => $request->name,
             'value' => $request->value,
