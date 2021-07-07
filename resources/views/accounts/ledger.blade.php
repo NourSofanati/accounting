@@ -28,8 +28,10 @@
                                         <td class="py-4 text-right whitespace-nowrap">
                                             {{ $entry->transaction->transaction_name }}</td>
                                         <td class="py-4 ">{{ $entry->transaction->transaction_date }}</td>
-                                        <td class="py-4 ">{{ $entry['dr'] ? '$' . $entry['dr'] : '' }}</td>
-                                        <td class="py-4 ">{{ $entry['cr'] ? '$' . $entry['cr'] : '' }}</td>
+                                        <td class="py-4 ">
+                                            {{ $entry['dr'] ? $currency->sign . ' ' . $entry['dr'] : '' }}</td>
+                                        <td class="py-4 ">
+                                            {{ $entry['cr'] ? $currency->sign . ' ' . $entry['cr'] : '' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -40,11 +42,11 @@
                                     @if ($account->ledgerCredit() > $account->ledgerDebit())
                                         <td class=""></td>
                                         <td class="py-4 ">
-                                            ${{ $account->ledgerCredit() - $account->ledgerDebit() }}
+                                            {{ $currency->sign . ' ' . ($account->ledgerCredit() - $account->ledgerDebit()) }}
                                         </td>
                                     @else
                                         <td class="py-4 ">
-                                            ${{ $account->ledgerDebit() - $account->ledgerCredit() }}
+                                            {{ $currency->sign . ' ' . ($account->ledgerDebit() - $account->ledgerCredit()) }}
                                         </td>
                                         <td class=""></td>
                                     @endif

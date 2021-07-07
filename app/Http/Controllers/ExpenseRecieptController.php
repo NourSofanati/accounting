@@ -24,7 +24,7 @@ class ExpenseRecieptController extends Controller
      */
     public function index()
     {
-        return view('expenses.index')->with('expenses', ExpenseReciept::all())->with('currency',Currency::all()->where('id',session('currency_id'))->first());
+        return view('expenses.index')->with('expenses', ExpenseReciept::all())->with('currency', Currency::all()->where('id', session('currency_id'))->first());
     }
 
     /**
@@ -43,7 +43,7 @@ class ExpenseRecieptController extends Controller
             ->with('vendors', $vendors)
             ->with('draftexpenseReciept', $draftexpenseReciept)
             ->with('categories', $categories)
-            ->with('currency',Currency::all()->where('id',session('currency_id'))->first());
+            ->with('currency', Currency::all()->where('id', session('currency_id'))->first());
     }
 
     /**
@@ -183,10 +183,10 @@ class ExpenseRecieptController extends Controller
         $accounts = Account::all()->where('parent_id', $cA->id);
         return view('expenses.payment')->with('reciept', $reciept)->with('parentAccounts', $accounts);
     }
-    
+
     public function addExpense(Request $request, ExpenseReciept $reciept)
     {
-        
+
         $usdCurrency = Currency::where('code', 'USD')->first();
         $sypCurrency = Currency::where('code', 'SYP')->first();
         $transaction = Transaction::find($reciept->transaction_id);
@@ -199,13 +199,14 @@ class ExpenseRecieptController extends Controller
             $unMirroredTransaction = Transaction::find($reciept->transaction_id);
             $mirroredTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
-            $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $reciept->total() * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
-            $drRecord_mirrored = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $reciept->total() * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
-            $crRecord = $this->createCreditEntry($request->designatedAccountId, $usdCurrency->id, $reciept->total(), $unMirroredTransaction, $currencyVALUE);
-            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $usdCurrency->id, $reciept->total(), $unMirroredTransaction, $currencyVALUE);
+            $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $request->paidAmount * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $drRecord_mirrored = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $request->paidAmount * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $crRecord = $this->createCreditEntry($request->designatedAccountId, $usdCurrency->id, $request->paidAmount, $unMirroredTransaction, $currencyVALUE);
+            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $usdCurrency->id, $request->paidAmount, $unMirroredTransaction, $currencyVALUE);
         } else {
-            $crRecord = $this->createCreditEntry($request->designatedAccountId, $sypCurrency->id, $reciept->total(), $transaction, $request->currency_value);
-            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $reciept->total(), $transaction, $request->currency_value);
+            $newTransaction = $this->createTransaction('دفعة للفاتورة ' . sprintf('%08d', $reciept->id), $request->date, $sypCurrency->id, 'تسديد دفعة للفاتورة');
+            $crRecord = $this->createCreditEntry($request->designatedAccountId, $sypCurrency->id, $request->paidAmount, $transaction, $request->currency_value);
+            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $request->paidAmount, $transaction, $request->currency_value);
             alert()->success('Successfully completed transaction');
         }
         ExpenseRecieptPayment::create([
@@ -236,7 +237,7 @@ class ExpenseRecieptController extends Controller
         return view('expenses.show')
             ->with('reciept', $expenseReciept)
             ->with('dueAmount', $dueAmount)
-            ->with('currency',Currency::all()->where('id',session('currency_id'))->first());
+            ->with('currency', Currency::all()->where('id', session('currency_id'))->first());
     }
 
     /**

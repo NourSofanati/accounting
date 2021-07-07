@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\AccountType;
+use App\Models\Currency;
+use App\Models\HR\EmployeeDetails;
 use App\Models\Invoice;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
@@ -58,8 +61,12 @@ class AccountController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Account $account)
+
     {
-        return view('transactions.view')->with('account', $account);
+        $vendor = Vendor::where('account_id', $account->id)->orWhere('loss_account_id', $account->id)->first();
+        //$vendor = Vendor::where('account_id', $account->id)->orWhere('loss_account_id', $account->id)->first();
+        $employee = EmployeeDetails::where('liability_account_id', $account->id)->orWhere('expense_account_id', $account->id)->first();
+        return view('transactions.view')->with('account', $account)->with('vendor', $vendor)->with('employee', $employee);
     }
 
     /**
@@ -89,7 +96,9 @@ class AccountController extends Controller
 
     public function ledger(Account $account)
     {
-        return view('accounts.ledger', ['account' => $account]);
+
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
+        return view('accounts.ledger', ['account' => $account, 'currency' => $currency, 'vendor' => $vendor]);
     }
 
     /**

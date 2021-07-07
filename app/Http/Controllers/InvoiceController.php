@@ -52,7 +52,7 @@ class InvoiceController extends Controller
                 $revenueSplit["retains"] += $invoice->totalRetains();
             }
         }
-        $currency = Currency::all()->where('id',session('currency_id'))->first();
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
 
         return view('invoices.index')->with('invoices', $invoices)->with('colors', $colors)->with('revenue', $revenueSplit)->with('currency', $currency);
     }
@@ -134,7 +134,7 @@ class InvoiceController extends Controller
             $key->paid = true;
             $key->save();
         }
-	return redirect()->route('invoices.index');
+        return redirect()->route('invoices.index');
     }
 
     /**
@@ -205,9 +205,9 @@ class InvoiceController extends Controller
         foreach ($invoice->taxes as $item) {
             $dueAmount += $item->amount;
         }
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
 
-
-        return view('invoices.show')->with('invoice', $invoice)->with('dueAmount', $dueAmount);
+        return view('invoices.show')->with('invoice', $invoice)->with('dueAmount', $dueAmount)->with('currency', $currency);
     }
 
     /**

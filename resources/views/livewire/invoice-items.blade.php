@@ -45,12 +45,13 @@
                     <span class="text-gray-500">المبلغ المستحق</span>
                     <h1 class="text-black text-xl">
                         <span>{{ $dueAmount }}</span>
-                        {{ $currency[session('currency_id') - 1]->sign }}
+                        {{ $currency->sign }}
                     </h1>
                 </div>
                 <div class="flex flex-col pt-4">
                     <span class="text-gray-500">سعر العملة</span>
-                    <input type="number" name="currency_value" id="currnecy_value" placeholder="price" class="border-0" value="{{ $USDprice }}">
+                    <input type="number" name="currency_value" id="currnecy_value" placeholder="price" class="border-0"
+                        value="{{ $USDprice }}">
                 </div>
             </div>
         </div>
@@ -110,5 +111,5 @@
             </tr>
         </tfoot>
     </table>
-    
+
 </div>

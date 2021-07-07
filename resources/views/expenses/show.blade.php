@@ -12,10 +12,10 @@
                 <div class="flex my-5">
                     @if ($reciept->totalDue() != 0)
                         <a href=" {{ route('addExpense', $reciept) }} "
-                            class="bg-green-500 text-white font-bold px-5 py-3 rounded-xl hover:bg-green-700 cursor-pointer">تسجيل
+                            class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">تسجيل
                             دفعة</a>
                     @endif
-                    <a class="bg-gray-200 text-gray-500 font-bold px-5 py-3 rounded-xl hover:bg-gray-300 cursor-pointer mr-5"
+                    <a class="bg-gray-200 text-gray-500 hover:bg-gray-300 px-3 mr-5 py-2 rounded block shadow-md font-bold duration-100 transition-all cursor-pointer"
                         href="{{ route('expenses.index') }}">الرجوع لصفحة الفواتير</a>
                 </div>
 
@@ -65,7 +65,8 @@
                             <div class="">
                                 <div class="flex flex-col">
                                     <span class="text-gray-500">المبلغ المستحق</span>
-                                    <h1 class="text-black text-xl"><span>{{ $currency->sign. ' '.$reciept->totalDue() }}</span>
+                                    <h1 class="text-black text-xl">
+                                        <span>{{ $currency->sign . ' ' . $reciept->totalDue() }}</span>
                                     </h1>
                                 </div>
                             </div>

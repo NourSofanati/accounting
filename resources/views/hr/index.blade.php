@@ -9,9 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-5">
                 <div class="flex">
-                    <a href="{{ route('employees.create') }}"
-                        class="bg-indigo-500 text-white font-bold px-5 py-3 rounded hover:bg-indigo-800 transition-all duration-75">إضافة
-                        موظف جديد</a>
+                    @if ($hasPositions)
+                        <a href="{{ route('employees.create') }}"
+                            class="bg-indigo-500 text-white font-bold px-5 py-3 rounded hover:bg-indigo-800 transition-all duration-75">إضافة
+                            موظف جديد</a>
+                    @endif
                     <a href="{{ route('positions.create') }}"
                         class="bg-green-500 mr-5 text-white font-bold px-5 py-3 rounded hover:bg-green-800 transition-all duration-75">إضافة
                         منصب جديد</a>
@@ -30,12 +32,12 @@
                                 class="rounded-full border-4 border-gray-300" width="126" height="126">
                         @endif
                         <div class="flex flex-col mr-5 pt-3">
-                            <h1 class=" font-semibold text-2xl ">{{ $item->fullName() }}</h1>
-                            <h2 class=" text-xl text-gray-600">
+                            <h1 class="font-semibold text-2xl ">{{ $item->fullName() }}</h1>
+                            <h2 class="text-xl text-gray-600">
                                 {{ $item->invertory->name }} /
                                 {{ $item->position->name }}
                             </h2>
-                            <p class=" font-thin text-lg text-gray-500">
+                            <p class="font-thin text-lg text-gray-500">
                                 {{ \Carbon\Carbon::parse($item->birthDate)->diff(\Carbon\Carbon::now())->format('%y سنة') }}
                             </p>
 

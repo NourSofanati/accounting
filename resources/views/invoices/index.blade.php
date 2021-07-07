@@ -67,7 +67,7 @@
                                             </div>
                                             <div class="text-center px-2">
                                                 <hr>
-                                                <span class=" text-lg">${{ $invoice->total() }}</span>
+                                                <span class=" text-lg">{{ $invoice->total().' '.$currency->sign }}</span>
                                             </div>
                                         </div>
                                         <div

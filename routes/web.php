@@ -104,9 +104,9 @@ Route::resource('positions', PositionController::class);
 
 // التقارير
 Route::prefix('report')->group(function () {
-    Route::get('generalLedger', [GeneralLedgerController::class, 'index'])->name('General Ledger');
-    Route::get('profitLoss', [ProfitLossController::class, 'index'])->name('Profit & Loss');
-    Route::get('trialBalance', [TrialBalanceController::class, 'index'])->name('Trial Balance');
-    Route::get('balanceSheet', [BalanceSheetController::class, 'index'])->name('Balance Sheet');
+    Route::resource('generalledger', GeneralLedgerController::class);
+    Route::resource('profitloss', ProfitLossController::class);
+    Route::resource('trialbalance', TrialBalanceController::class);
+    Route::resource('balancesheet', BalanceSheetController::class)  ;
 });
 //});

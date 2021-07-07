@@ -59,10 +59,10 @@
                                         {{ $asset->name }}
                                     </a>
                                 </td>
-                                <td>${{ $asset->value }}</td>
+                                <td>{{ $currency->sign . ' ' . $asset->value }}</td>
                                 <td>{{ $asset->supervisor }}</td>
                                 <td>
-                                    <a href="{{ Storage::url('public/images/' . $asset->attachment->url) }}" target="_blank`">الملف
+                                    <a href="{{ Storage::url('public/images/' . @$asset->attachment->url) }}" target="_blank`">الملف
                                         المرفق</a>
                                 </td>
                             </tr>

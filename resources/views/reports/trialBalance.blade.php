@@ -41,14 +41,14 @@
                                             ---
                                         </td>
                                         <td class="w-2/12 px-3 py-4 text-center">
-                                            ${{ abs($account->ledgerBalance()) }}
+                                            {{ $currency->sign . ' ' .abs($account->ledgerBalance()) }}
                                         </td>
                                         @php
                                             $crTotal += abs($account->ledgerBalance());
                                         @endphp
                                     @else
                                         <td class="w-2/12 px-3 py-4 text-center">
-                                            ${{ abs($account->ledgerBalance()) }}
+                                            {{ $currency->sign . ' ' .abs($account->ledgerBalance()) }}
                                         </td>
                                         <td class="w-2/12 px-3 py-4 text-center">
                                             ---
@@ -65,8 +65,8 @@
                     <tfoot class="border-t-4 border-double">
                         <tr class="text-center">
                             <td colspan="2" class=""></td>
-                            <td class="px-3 py-4">${{ $drTotal }}</td>
-                            <td class="px-3 py-4">${{ $crTotal }}</td>
+                            <td class="px-3 py-4">{{ $currency->sign . ' ' .$drTotal }}</td>
+                            <td class="px-3 py-4">{{ $currency->sign . ' ' .$crTotal }}</td>
                         </tr>
                     </tfoot>
                 </table>

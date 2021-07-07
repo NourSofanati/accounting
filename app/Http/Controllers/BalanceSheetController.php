@@ -17,4 +17,8 @@ class BalanceSheetController extends Controller
 
         return view('reports.balanceSheet', ['types' => $types, 'currency' => $currency, 'otherCurrency' => $otherCurrency]);
     }
+    public function create()
+    {
+        
+    }
 }

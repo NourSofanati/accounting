@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('المصاريف') }}
+            {{ __('expenses') }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
             <div class="p-5">
                 <div class="flex">
                     <a href="{{ route('expenses.create') }}"
-                        class="bg-indigo-500 text-white font-bold px-5 py-3 rounded hover:bg-indigo-800 transition-all duration-75">إنشاء
+                        class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">إنشاء
                         فاتورة جديدة</a>
                 </div>
                 <hr class="my-5">

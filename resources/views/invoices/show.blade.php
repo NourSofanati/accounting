@@ -77,7 +77,7 @@
                             <div class="">
                                 <div class="flex flex-col">
                                     <span class="text-gray-500">المبلغ المستحق</span>
-                                    <h1 class="text-black text-xl">$ <span>{{ $invoice->totalDue() }}</span> </h1>
+                                    <h1 class="text-black text-xl"><span>{{ $currency->sign. ' '.$invoice->totalDue() }}</span> </h1>
                                 </div>
                             </div>
                         </div>
@@ -100,13 +100,13 @@
                                         {{ $line->description }}
                                     </td>
                                     <td class="text-center">
-                                        ${{ $line->rate }}
+                                        {{ $currency->sign. ' '.$line->rate }}
                                     </td>
                                     <td class="text-center">
                                         {{ $line->qty }}
                                     </td>
                                     <td class="text-left px-3 py-4">
-                                        ${{ $line->qty * $line->rate }}
+                                        {{ $currency->sign. ' '.$line->qty * $line->rate }}
                                     </td>
                                 </tr>
                             @endforeach

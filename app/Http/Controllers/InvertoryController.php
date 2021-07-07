@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Invertory;
 use Illuminate\Http\Request;
 
@@ -61,8 +62,9 @@ class InvertoryController extends Controller
      */
     public function show(Invertory $invertory)
     {
-        
-        return view('invertory.show', ['invertory' => $invertory]);
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
+
+        return view('invertory.show', ['invertory' => $invertory,'currency'=>$currency]);
     }
 
     /**

@@ -100,7 +100,8 @@ class EmployeeController extends Controller
     public function index()
     {
         $this->checkLiabilities();
-        return view('hr.index', ['employees' => EmployeeDetails::all()]);
+        $hasPositions = Position::all()->count();
+        return view('hr.index', ['employees' => EmployeeDetails::all(), 'hasPositions' => $hasPositions]);
     }
 
     /**

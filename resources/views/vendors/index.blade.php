@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('الموردون') }}
+            {{ __('vendors') }}
         </h2>
     </x-slot>
 
@@ -10,34 +10,32 @@
             <div class="p-5">
                 <div class="flex">
                     <a href="{{ route('vendors.create') }}"
-                        class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-green-400 ">إضافة مورد
+                        class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">إضافة
+                        مورد
                         جديد</a>
-                    {{-- <a href="{{ route('journals.create') }}"
-                        class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-indigo-400 mr-4">ادخال قيود
-                        جديدة</a> --}}
                 </div>
                 <hr class=" my-4">
-                @if ($vendors->count())
-                    <table class="min-w-full text-center">
-                        <thead>
-                            <tr class=" border-dotted border-b">
-                                <th class="px-3 py-4">الاسم</th>
-                                <th class="px-3 py-4">رقم الهاتف</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($vendors as $vendor)
-                                <tr>
-                                    <td class="px-3 py-4">{{ $vendor->name }}</td>
-                                    <td class="px-3 py-4">{{ $vendor->phone }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
+                @forelse ($vendors as $vendor)
+                    <a class="flex bg-white shadow rounded-xl w-full mb-5" href="{{ route('vendors.show', $vendor) }}">
+                        <div class="p-5">
+                            <img src="https://lh3.googleusercontent.com/proxy/QFYt4j4cgj_-WOjq0Lmba1liUARCUVK74O86vwvK-2hNpzqSDJpjULGzq9pJ0K_lk0MHss8v9piM38m5cYqpGSejqSIvLy-kK9yORzxP6iE"
+                                class="h-20 rounded-full w-20 my-auto ring-4" />
+                        </div>
+                        <div class="p-5 text-right">
+                            <h1 class="font-bold text-xl text-gray-700">
+                                {{ $vendor->name }}
+                            </h1>
+                            <h2 class="text-gray-600 font-semibold" dir="ltr">
+                                {{ $vendor->phone }}
+                            </h2>
+                            <p class="text-gray-600">
+                                {{ $vendor->address }}
+                            </p>
+                        </div>
+                    </a>
+                @empty
                     لا يوجد مورّدون حاليا.
-                @endif
-
+                @endforelse
             </div>
         </div>
     </div>

@@ -18,9 +18,9 @@
                         </div>
                         <div class="mt-5 flex">
                             <input type="submit" value="إضافة الزبون"
-                                class="rounded-md shadow-md bg-indigo-600 text-white font-bold px-3 py-3 block w-50 hover:shadow-xl transition-shadow ease-linear duration-200"></a>
+                                class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer"></a>
                             <a href="{{ route('customers.index') }}"
-                                class="rounded-md bg-gray-100 text-gray-500 font-bold px-10 py-3 block mr-5 hover:shadow-xl transition-shadow ease-linear duration-200">إلغاء</a>
+                                class=" bg-gray-100 text-gray-500 px-3 py-2 rounded block shadow-md font-bold  hover:bg-gray-200 mr-5 duration-100 transition-all">إلغاء</a>
                         </div>
                     </form>
                 </div>

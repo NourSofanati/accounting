@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Currency;
 use App\Models\Tax;
 use Livewire\Component;
 
@@ -16,6 +17,7 @@ class InvoiceItems extends Component
     public $currency;
     public function mount()
     {
+        $this->currency = Currency::all()->where('id', session('currency_id'))->first();
         $this->dueAmount = 0;
         $this->invoiceLines = [['description' => '', 'rate' => 0, 'qty' => 1, 'total' => '']];
     }

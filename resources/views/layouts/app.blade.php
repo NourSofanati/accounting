@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}" id="tailwindcss">
     <link rel="stylesheet" href="https://cdn.nayzac.online/svgCharts/css/style.css"/>
 
     @livewireStyles

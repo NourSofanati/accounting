@@ -18,7 +18,6 @@ class MonthlyReportController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -39,8 +38,8 @@ class MonthlyReportController extends Controller
      */
     public function store(Request $request)
     {
-        $fromData = Carbon::create(2021, $request->month, 1);
-        $toData = Carbon::create(2021, $request->month, 31);
+        $fromData = Carbon::create($request->fromData);
+        $toData = Carbon::create($request->toData);
         $transactions = Transaction::all()->whereBetween('transaction_date', array($fromData, $toData));
         $income = 0;
         $grossIncome = 0;

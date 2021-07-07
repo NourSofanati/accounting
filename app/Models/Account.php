@@ -115,6 +115,37 @@ class Account extends Model
         return $this->accountType->name == 'أصول' && $balance != 0 ? $balance : $balance * -1;
     }
 
+    public function dateLedgerCredit($fromDate, $toDate)
+    {
+        $cr = 0;
+        foreach ($this->entries as $entry) {
+            if (($fromDate) <= $entry->transaction->transaction_date && ($toDate) >= $entry->transaction->transaction_date)
+                $cr += $entry['currency_id'] == session('currency_id') ? $entry['cr'] : 0;
+        }
+        return $cr;
+    }
+
+    public function dateLedgerDebit($fromDate, $toDate)
+    {
+        $dr = 0;
+        foreach ($this->entries as $entry) {
+            if ($entry->transaction->transaction_date >= ($fromDate)  && ($toDate) >= $entry->transaction->transaction_date)
+                $dr += $entry['currency_id'] == session('currency_id') ? $entry['dr'] : 0;
+        }
+        return $dr;
+    }
+
+    public function dateLedgerBalance($fromDate, $toDate)
+    {
+        $balance = $this->dateLedgerDebit($fromDate, $toDate) - $this->dateLedgerCredit($fromDate, $toDate);
+
+        return $this->accountType->name == 'أصول' && $balance != 0 ? $balance : $balance * -1;
+    }
+
+
+
+
+
     public function entries()
     {
         return $this->hasMany(Entry::class, 'account_id');
@@ -130,9 +161,9 @@ class Account extends Model
         foreach ($this->entries as $entry) {
             if ($entry['currency_id'] == session('currency_id')) {
                 if ($currency->code == 'SYP') {
-                    $sum += $this->grandparent()->name == 'النقد' ? $entry['cr'] :  $entry['cr'] / $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' || $this->grandparent()->name == 'الحسابات المستحقة' ? $entry['cr'] :  $entry['cr'] / $entry['currency_value'];
                 } else {
-                    $sum += $this->grandparent()->name == 'النقد' ? $entry['cr'] :  $entry['cr'] * $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' || $this->grandparent()->name == 'الحسابات المستحقة' ? $entry['cr'] :  $entry['cr'] * $entry['currency_value'];
                 }
             }
         }
@@ -153,9 +184,9 @@ class Account extends Model
         foreach ($this->entries as $entry) {
             if ($entry['currency_id'] == session('currency_id')) {
                 if ($currency->code == 'SYP') {
-                    $sum += $this->grandparent()->name == 'النقد' ? $entry['dr'] : $entry['dr'] / $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' || $this->grandparent()->name == 'الحسابات المستحقة' ? $entry['dr'] : $entry['dr'] / $entry['currency_value'];
                 } else {
-                    $sum += $this->grandparent()->name == 'النقد' ? $entry['dr'] : $entry['dr'] * $entry['currency_value'];
+                    $sum += $this->grandparent()->name == 'النقد' || $this->grandparent()->name == 'الحسابات المستحقة' ? $entry['dr'] : $entry['dr'] * $entry['currency_value'];
                 }
             }
         }
@@ -181,7 +212,7 @@ class Account extends Model
             $sum = $this->usdDebit() - $this->usdCredit();
         }
         $currency = Currency::all()->where('id', session('currency_id'))->first();
-        if ($this->grandparent()->name == 'النقد') {
+        if ($this->grandparent()->name == 'النقد' || $this->grandparent()->name == 'الحسابات المستحقة') {
             $latestRate = CurrencyRate::orderBy('created_at', 'desc')->first();
 
             //dd($currency);

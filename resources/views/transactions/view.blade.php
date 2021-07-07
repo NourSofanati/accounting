@@ -4,10 +4,23 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ $account->alias }} <span class="text-gray-400">({{ $account->name }})</span>
             </h2>
+            @if ($vendor)
+                <a href="{{ route('vendors.show', $vendor) }}"
+                    class="mr-5 rounded px-5 bg-lime hover:bg-lime-dark transition duration-75 py-2 text-white font-bold ">
+                    عرض حساب المورد
+                </a>
+            @endif
+            @if ($employee)
+                <a href="{{ route('employees.show', $employee) }}"
+                    class="mr-5 rounded px-5 bg-lime hover:bg-lime-dark transition duration-75 py-2 text-white font-bold ">
+                    عرض حساب الموظف
+                </a>
+            @endif
             <a class="mr-5 rounded px-5 bg-lime hover:bg-lime-dark transition duration-75 py-2 text-white font-bold "
                 href="{{ route('accountledger', ['account' => $account]) }}">{{ __('Ledger') }}</a>
-            <a class="mr-2 rounded px-5 bg-gray-700 hover:bg-gray-800 transition duration-75 py-2 text-white font-bold "
+            <a class="mr-5 rounded px-5 bg-gray-700 hover:bg-gray-800 transition duration-75 py-2 text-white font-bold "
                 href="{{ route('accounts.edit', ['account' => $account]) }}">{{ __('Edit account') }}</a>
+
         </div>
     </x-slot>
     <div class="py-12">
