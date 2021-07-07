@@ -1,5 +1,5 @@
 @if (isset($isTransaction) && $isTransaction == true)
-    
+
     @if ($item->children->count() == 0)
         <option value="{{ $item->id }}">{{ $item->name }}</option>
     @endif

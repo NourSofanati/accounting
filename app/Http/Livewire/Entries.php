@@ -10,8 +10,8 @@ use Livewire\Component;
 
 class Entries extends Component
 {
-    public $accountTypes = [];
-    public $entries = [];
+    public $accountTypes;
+    public $entries;
     public $totalDr;
     public $totalCr;
     public $totalDrUSD;
@@ -26,10 +26,7 @@ class Entries extends Component
         $this->currency = Currency::where('id', session('currency_id'))->first();
         $this->accountTypes = AccountType::all();
         $this->lastValue = $this->USDprice;
-        //dd($this->USDprice);
         $this->entries = [['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => $this->USDprice], ['account_id' => 0, 'cr' => 0, 'dr' => 0, 'currency_value' => $this->USDprice]];
-        // for ($i = 0; $i < 300; $i++)
-        //     $this->addEntry();
         $this->totalCr = 0;
         $this->totalDr = 0;
         $this->diff = 0;
