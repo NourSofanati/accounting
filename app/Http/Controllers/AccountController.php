@@ -98,7 +98,7 @@ class AccountController extends Controller
     {
 
         $currency = Currency::all()->where('id', session('currency_id'))->first();
-        return view('accounts.ledger', ['account' => $account, 'currency' => $currency, 'vendor' => $vendor]);
+        return view('accounts.ledger', ['account' => $account, 'currency' => $currency]);
     }
 
     /**

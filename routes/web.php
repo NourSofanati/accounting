@@ -17,6 +17,7 @@ use App\Http\Controllers\FixedAssetController;
 use App\Http\Controllers\GeneralLedgerController;
 use App\Http\Controllers\InvertoryController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfitLossController;
@@ -107,6 +108,7 @@ Route::prefix('report')->group(function () {
     Route::resource('generalledger', GeneralLedgerController::class);
     Route::resource('profitloss', ProfitLossController::class);
     Route::resource('trialbalance', TrialBalanceController::class);
-    Route::resource('balancesheet', BalanceSheetController::class)  ;
+    Route::resource('balancesheet', BalanceSheetController::class);
+    Route::resource('logbook', LogBookController::class);
 });
 //});

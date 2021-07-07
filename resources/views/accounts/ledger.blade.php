@@ -26,7 +26,9 @@
                                 @foreach ($account->entries as $entry)
                                     <tr class="text-gray-500 border-dotted border-b border-t">
                                         <td class="py-4 text-right whitespace-nowrap">
-                                            {{ $entry->transaction->transaction_name }}</td>
+                                            <a href="{{ route('journals.show', $entry->transaction->id) }}">
+                                                {{ $entry->transaction->transaction_name }}</a>
+                                        </td>
                                         <td class="py-4 ">{{ $entry->transaction->transaction_date }}</td>
                                         <td class="py-4 ">
                                             {{ $entry['dr'] ? $currency->sign . ' ' . $entry['dr'] : '' }}</td>

@@ -1,8 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ $transaction->transaction_name }}
-        </h2>
+
+        <div class="flex place-items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ $transaction->transaction_name }}
+            </h2>
+            <a class="mr-5 rounded px-5 bg-lime hover:bg-lime-dark transition duration-75 py-2 text-white font-bold "
+                href="{{ route('journals.edit', $transaction) }}">{{ __('تعديل القيود') }}</a>
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -43,9 +48,6 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-            <div class="mt-5">
-                <a href="{{ route('accounts.show',$account) }}">الرجوع</a>
             </div>
         </div>
     </div>

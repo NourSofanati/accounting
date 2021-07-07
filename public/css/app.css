@@ -1819,6 +1819,10 @@ select {
   grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
+.grid-rows-2 {
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1877,6 +1881,10 @@ select {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-10 {
+  gap: 2.5rem;
 }
 
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {

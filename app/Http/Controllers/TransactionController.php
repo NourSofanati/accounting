@@ -78,7 +78,7 @@ class TransactionController extends Controller
         $sypCurrency = Currency::where('code', 'SYP')->first();
         if (session('currency_id') == $usdCurrency->id) {
             $currencyVALUE = $this->processUsdFifo($request);
-            if($currencyVALUE=='error'){
+            if ($currencyVALUE == 'error') {
                 alert()->error('You don\'t have enought money exchanged to USD currency');
                 return redirect()->back();
             }
@@ -195,9 +195,8 @@ class TransactionController extends Controller
     public function show(Request $request, $transaction_id)
     {
         $transaction = Transaction::find($transaction_id);
-        $arr = explode("/", $request->session()->previousUrl());
-        $account = Account::find($arr[count($arr) - 1]);
-        return view('transactions.show')->with('transaction', $transaction)->with('account', $account);
+
+        return view('transactions.show')->with('transaction', $transaction);
     }
 
     /**
@@ -206,9 +205,14 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transaction)
+    public function edit($transaction_id)
     {
-        //
+        
+        $transaction = Transaction::find($transaction_id);
+        
+        $entries = $transaction->entries;
+
+        return view('journal.edit', ['entries' => $entries]);
     }
 
     /**
