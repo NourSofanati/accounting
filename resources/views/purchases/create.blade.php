@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-lg rounded">
             <form action="{{ route('fixedAssets.store') }}" method="post">
-                @csrf
+            @csrf
                 <div class="p-5">
                     <div class="mt-3">
                         <label for="name">
