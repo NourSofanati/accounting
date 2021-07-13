@@ -44,12 +44,20 @@
                 <div class="mt-4">
                     @livewire('invoice-tax')
                 </div>
+                <div class="mt-3">
+
+                        <label for="image">
+                            {{ __('attachment') }}
+                        </label>
+                        <input type="file" name="image" />
+                    </div>
                 <div class="mt-5 flex">
                     <input type="submit" value="إضافة دفعة"
                         class="rounded-md shadow-md bg-indigo-600 text-white font-bold px-3 py-3 block w-50 hover:shadow-xl transition-shadow ease-linear duration-200"></a>
                     <a href="{{ route('dashboard') }}"
                         class="rounded-md bg-gray-100 text-gray-500 font-bold px-10 py-3 block mr-5 hover:shadow-xl transition-shadow ease-linear duration-200">إلغاء</a>
                 </div>
+                
             </form>
         </div>
     </div>

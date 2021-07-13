@@ -13,6 +13,7 @@ class FixedAsset extends Model
         'value',
         'supervisor',
         'account_id',
+        'expense_account_id',
         'invertory_id',
         'purchase_account',
         'purchase_date',
@@ -29,5 +30,10 @@ class FixedAsset extends Model
     public function attachment()
     {
         return $this->hasOne(Attachment::class, 'id', 'attachment_id');
+    }
+
+    public function expensesGroup()
+    {
+        return $this->hasOne(FixedAssetExpenseGroup::class, 'asset_id');
     }
 }

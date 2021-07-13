@@ -17,11 +17,11 @@ class DashboardController extends Controller
             session(['currency_id' => 1]);
         }
         $accounts = Account::all();
-        $expenseAccounts = $accounts->where('parent_id', null)->where('account_type', 5);
+        $expenseAccounts = $accounts->where('account_type', 5);
         $activeExpenseAccounts = [];
         foreach ($expenseAccounts as $a) {
-            if ($a->balance()) {
-                array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => $a->balance()));
+            if ($a->ledgerBalance()) {
+                array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => abs($a->ledgerBalance()), 'parent' => $a->parent->name, 'id' => $a->id));
             }
         }
         $parentCashAccount = Account::where('name', 'النقد')->first();

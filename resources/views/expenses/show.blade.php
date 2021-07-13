@@ -2,6 +2,7 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             الفاتورة رقم {{ sprintf('%06d', $reciept->id) }} <span class="text-gray-400 font-thin"></span>
+            <x-print-button />
         </h2>
     </x-slot>
 
@@ -12,14 +13,19 @@
                 <div class="flex my-5">
                     @if ($reciept->totalDue() != 0)
                         <a href=" {{ route('addExpense', $reciept) }} "
-                            class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">تسجيل
+                            class="px-3 py-2 ml-5 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">تسجيل
                             دفعة</a>
                     @endif
-                    <a class="bg-gray-200 text-gray-500 hover:bg-gray-300 px-3 mr-5 py-2 rounded block shadow-md font-bold duration-100 transition-all cursor-pointer"
+                    @if ($reciept->totalPaid() != 0)
+                        <a href=" {{ route('refundReciept', $reciept) }} "
+                            class="px-3 py-2 ml-5 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">تسجيل
+                            الفاتورة كمرتجع</a>
+                    @endif
+                    <a class="bg-gray-200 text-gray-500 hover:bg-gray-300 px-3 ml-5 py-2 rounded block shadow-md font-bold duration-100 transition-all cursor-pointer"
                         href="{{ route('expenses.index') }}">الرجوع لصفحة الفواتير</a>
                 </div>
 
-                <div class="rounded bg-white shadow-xl p-5">
+                <div class="rounded bg-white shadow-xl p-5" data-printable>
                     <header>
                         <div class="flex justify-between pb-8 ">
                             <div>
@@ -39,19 +45,14 @@
                         <div class="flex justify-between pb-8">
                             <div>
                                 <span class="text-gray-500 block">فاتورة</span>
-                                {{-- <p>{{ $reciept->vendor->name }}</p> --}}
+                                <p><span class="text-gray-400">{{ $reciept->expenseaccount->name . '-' }}</span>
+                                    {{ $reciept->asset->name }}</p>
                             </div>
                             <div class="">
                                 <div class="flex flex-col">
                                     <span class="text-gray-500">تاريخ اصدار الفاتورة</span>
                                     <input type="date" name="issueDate" id="issueDate"
                                         class="border-none text-right text-xs" value="{{ $reciept->issueDate }}"
-                                        disabled>
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="text-gray-500">تاريخ الإستحقاق</span>
-                                    <input type="date" name="dueDate" id="dueDate"
-                                        class="border-none text-right text-xs" value="{{ $reciept->dueDate }}"
                                         disabled>
                                 </div>
                             </div>

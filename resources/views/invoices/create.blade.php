@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('invoices.store') }}" method="post">
+            <form action="{{ route('invoices.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="p-5">
                     <div class="flex my-5">

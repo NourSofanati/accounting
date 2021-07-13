@@ -3,13 +3,14 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             الفاتورة رقم {{ sprintf('%06d', $invoice->id) }} <span
                 class="text-gray-400 font-thin">({{ $invoice->status == 'مرسلة' && $invoice->totalDue() != $invoice->total() ? 'مدفوعة جزئيا' : $invoice->status }})</span>
+            <x-print-button />
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="p-5">
+            <div class="p-5" >
                 <div class="flex my-5">
                     @if ($invoice->status == 'مسودة')
                         <form action="{{ route('markInvoiceSent', $invoice) }}" method="post">
@@ -30,7 +31,7 @@
                         href="{{ route('invoices.index') }}">الرجوع لصفحة الفواتير</a>
                 </div>
 
-                <div class="rounded bg-white shadow-xl p-5">
+                <div class="rounded bg-white shadow-xl p-5" data-printable>
                     <header>
                         <div class="flex justify-between pb-8 ">
                             <div>

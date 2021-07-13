@@ -9,7 +9,7 @@ class ExpenseRecieptPayment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'reciept_id', 'amount', 'date','currency_id','currency_value'
+        'reciept_id', 'amount', 'date', 'currency_id', 'currency_value', 'paid_from', 'refunded'
     ];
     public function amount()
     {

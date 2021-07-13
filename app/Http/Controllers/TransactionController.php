@@ -207,12 +207,12 @@ class TransactionController extends Controller
      */
     public function edit($transaction_id)
     {
-        
+
         $transaction = Transaction::find($transaction_id);
-        
+
         $entries = $transaction->entries;
 
-        return view('journal.edit', ['entries' => $entries]);
+        return view('journal.edit', ['entries' => $entries, 'transaction' => $transaction]);
     }
 
     /**

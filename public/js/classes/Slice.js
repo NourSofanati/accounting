@@ -23,9 +23,10 @@ export default class Slice {
         this.calcEnd();
     }
     hashLabel(x) {
-        let toBeHashed = 0;
-        x.split("").forEach(char => toBeHashed += (char.charCodeAt(0) * 100));
-        return (toBeHashed * 3);
+        // let toBeHashed = 0;
+        // x.split("").forEach(char => toBeHashed += (char.charCodeAt(0) * 100));
+        // return (toBeHashed * 3);
+        return x * x + x;
     }
     draw() {
         this.color = `hsl(${this.hashLabel(this.label)},95%,65%)`;

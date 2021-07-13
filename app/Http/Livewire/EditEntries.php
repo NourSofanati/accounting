@@ -4,12 +4,14 @@ namespace App\Http\Livewire;
 
 use App\Models\AccountType;
 use App\Models\Currency;
+use App\Models\Entry;
 use App\Models\Transaction;
 use Illuminate\Http\Client\Request;
 use Livewire\Component;
 
 class EditEntries extends Component
 {
+    public $transaction;
     public $accountTypes;
     public $entries;
     public $totalDr;
@@ -21,8 +23,15 @@ class EditEntries extends Component
     public $lastValue = 0;
     public $USDprice;
     public $currency;
+    protected $rules = [
+        
+        'entries.*.cr' => ['decimal'],
+        'entries.*.dr' => ['decimal'],
+        
+    ];
     public function mount()
     {
+        
         $this->currency = Currency::where('id', session('currency_id'))->first();
         $this->accountTypes = AccountType::all();
         $this->lastValue = $this->USDprice;

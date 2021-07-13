@@ -76,7 +76,7 @@
             {{ $currency->sign }}
         </span>
         <br>
-        <span data-isHideable class="text-gray-400">({{ $usdBalance != 0 ? $usdBalance : abs($usdBalance) }})</span>
+        <span data-isHideable class="text-gray-400 hidden">({{ $usdBalance != 0 ? $usdBalance : abs($usdBalance) }})</span>
     </td>
     <td class=" px-4 py-6 ">
         @if ($item->children->count() > 0)

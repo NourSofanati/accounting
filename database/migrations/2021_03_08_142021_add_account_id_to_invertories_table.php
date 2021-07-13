@@ -15,8 +15,9 @@ class AddAccountIdToInvertoriesTable extends Migration
     public function up()
     {
         Schema::table('invertories', function (Blueprint $table) {
-            
+
             $table->foreignIdFor(Account::class, 'account_id')->nullable();
+            $table->foreignIdFor(Account::class, 'expense_account_id')->nullable();
         });
     }
 

@@ -12,12 +12,12 @@
                 @csrf
                 <div>
                     <x-jet-label for="fromData" class="text-xl mb-1">من تاريخ</x-jet-label>
-                    <x-jet-input type="date" required name="fromData" placeholder="الشهر" value="1" />
+                    <x-jet-input type="date" required name="fromData" placeholder="الشهر" value="{{$firstDate}}" />
                 </div>
 
                 <div>
                     <x-jet-label for="toData" class="text-xl mt-5 mb-1">إلى تاريخ</x-jet-label>
-                    <x-jet-input type="date" required name="toData" placeholder="الشهر" value="1" />
+                    <x-jet-input type="date" required name="toData" placeholder="الشهر" value="{{$lastDate}}" />
                 </div>
 
                 <input type="submit" value="عرض تقرير الأرباح والخسائر"

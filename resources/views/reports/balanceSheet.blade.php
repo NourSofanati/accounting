@@ -2,12 +2,13 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('التقارير') }}
+            <x-print-button />
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5" data-printable>
                 <div class="flex justify-between pb-8 ">
                     <div>
                         <h1 class="font-semibold text-4xl pb-5" style="color:#526BC5">
@@ -42,7 +43,7 @@
                                                 {{ $child->balance() . ' ' . $currency->sign }}
                                                 <br>
                                                 <span
-                                                    class="text-gray-500 text-sm">({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                                    class="text-gray-500 text-sm hidden" data-isHideable>({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -54,7 +55,7 @@
                                             {{ $account->balance() . ' ' . $currency->sign }}
                                             <br>
                                             <span
-                                                class="text-gray-500 text-sm">({{ $account->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                                class="text-gray-500 text-sm hidden" data-isHideable>({{ $account->usdBalance() . ' ' . $otherCurrency->sign }})</span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -70,7 +71,7 @@
                         <div class="font-bold px-3 py-4 text-left">{{ $types[0]->balance() . ' ' . $currency->sign }}
                             <br>
                             <span
-                                class="text-gray-500 text-sm">({{ $types[0]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                class="text-gray-500 text-sm hidden" data-isHideable>({{ $types[0]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
                         </div>
                     </div>
                 </div>

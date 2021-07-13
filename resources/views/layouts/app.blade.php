@@ -13,7 +13,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" id="tailwindcss">
-    <link rel="stylesheet" href="https://cdn.nayzac.online/svgCharts/css/style.css"/>
+    <link rel="stylesheet" href="https://cdn.nayzac.online/svgCharts/css/style.css" />
 
     @livewireStyles
 
@@ -50,12 +50,14 @@
 
     @livewireScripts
 
+
     <script src="{{ mix('js/app.js') }}"></script>
 
-    <script src="{{ asset('js/classes/IDrawable.js')}}" type="module"></script>
-    <script src="{{ asset('js/classes/Pie.js')}}" type="module"></script>
-    <script src="{{ asset('js/classes/Slice.js')}}" type="module"></script>
-    <script src="{{ asset('js/main.js')}}" type="module"></script>
+    <script src="{{ asset('js/classes/IDrawable.js') }}" type="module"></script>
+    <script src="{{ asset('js/classes/Pie.js') }}" type="module"></script>
+    <script src="{{ asset('js/classes/Slice.js') }}" type="module"></script>
+    <script src="{{ asset('js/main.js') }}" type="module"></script>
+
     @yield('footerScripts')
 </body>
 

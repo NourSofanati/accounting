@@ -19,6 +19,6 @@ class BalanceSheetController extends Controller
     }
     public function create()
     {
-        
+        return redirect()->route('balancesheet.index');
     }
 }

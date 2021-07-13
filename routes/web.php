@@ -66,6 +66,7 @@ Route::resource('purchases', PurchaseController::class);
 Route::resource('expenses', ExpenseRecieptController::class);
 Route::get('/reciept/{reciept}/pay', [ExpenseRecieptController::class, 'addExpensePage'])->name('addExpense');
 Route::post('/reciept/{reciept}/pay', [ExpenseRecieptController::class, 'addExpense'])->name('addExpensePOST');
+Route::get('/reciept/{reciept}/refund', [ExpenseRecieptController::class, 'refund'])->name('refundReciept');
 // الموردين
 Route::resource('vendors', VendorController::class);
 // الفواتير والمبيعات

@@ -7,3 +7,8 @@ function drawChart(div) {
     pie.AddSlice(500, "ماء");
     pie.AddSlice(2500, "انترنت");
 }
+
+let hideables = document.querySelectorAll('[data-isHideable]');
+hideables.forEach(e=>{
+    e.classList.add('hidden');
+});

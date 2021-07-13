@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Attachment;
+use App\Models\AttachmentGroup;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Entry;
@@ -164,6 +166,11 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
+        $this->validate($request, [
+            'filenames' => 'required',
+            'filenames.*' => 'mimes:jpeg,jpg,png,gif,doc,pdf,docx,zip'
+        ]);
         $invoice = Invoice::find($request->invoiceNumber);
         $invoice->issueDate = $request->issueDate;
         $invoice->dueDate = $request->dueDate;
@@ -178,7 +185,22 @@ class InvoiceController extends Controller
         $invoice->transaction_id = $invoiceTransaction->id;
         $invoice->currency_id = $request->session()->get('currency_id');
         $invoice->currency_value = $request->currency_value;
+        $attachment_group = AttachmentGroup::create();
+        $invoice->attachment_group_id = $attachment_group->id;
         $invoice->save();
+        if ($request->hasfile('filenames')) {
+            foreach ($request->file('filenames') as $file) {
+                // $name = time() . '.' . $file->extension();
+                // $file->move(public_path() . '/files/', $name);
+                // $data[] = $name;
+                $imageName = "invoice" . sprintf("%08d", $invoice->id) . ' ' . $file->name . ' .' . $file->extension();
+                $file->storeAs('images', $imageName, 'public');
+                $attachment = Attachment::create([
+                    'url' => $imageName,
+                    'group_id' => $invoice->attachment_group_id
+                ]);
+            }
+        }
         foreach ($request->entries as $index => $entry) {
             InvoiceItem::create([
                 'invoice_id' => $invoice->id,
@@ -187,6 +209,7 @@ class InvoiceController extends Controller
                 'description' => $entry['description'],
             ]);
         }
+
         return redirect()->route('invoices.index');
     }
 

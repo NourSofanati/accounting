@@ -6,8 +6,9 @@
         <div class="grid grid-cols-2 gap-5">
             <div class="mb-5 col-span-1">
                 <x-jet-label for="name" value="{{ __('اسم القيد') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-                    autofocus autocomplete="name" />
+                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name"
+                    wire.model="transaction.transaction_name" required autofocus autocomplete="name" />
+                    
             </div>
             <div class="mb-5 col-span-1">
                 <x-jet-label for="date" value="{{ __('تاريخ القيد') }}" />
@@ -64,8 +65,7 @@
                         <td class="px-1">
                             <x-jet-input id="entries[{{ $index }}][dr]" name="entries[{{ $index }}][dr]"
                                 type="number" placeholder="أدخل قيمة المدين"
-                                wire:model.lazy="entries.{{ $index }}.dr"
-                                :value="{{ $entries[$index]['dr'] }}"
+                                wire:model="entries.{{ $index }}.dr"
                                 disabled="{{ $entries[$index]['cr'] != 0 }}"
                                 class="{{ $entries[$index]['cr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }}  w-full"
                                 min=0 data-inputType="debit" />
@@ -73,7 +73,7 @@
                         <td class="px-1">
                             <x-jet-input id="entries[{{ $index }}][cr]" name="entries[{{ $index }}][cr]"
                                 type="number" placeholder="أدخل قيمة الدائن"
-                                wire:model.lazy="entries.{{ $index }}.cr"
+                                wire:model="entries.{{ $index }}.cr"
                                 disabled="{{ $entries[$index]['dr'] != 0 }}"
                                 class="{{ $entries[$index]['dr'] != 0 ? ' bg-gray-100 text-gray-300 border-gray-200' : '' }}  w-full"
                                 min=0 data-inputType="credit" />

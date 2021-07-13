@@ -76,6 +76,11 @@
                             @endforelse
                         </select>
                     </div>
+
+                    {{-- نفقات صيانة 
+                    نفقات بانزين
+                    نفقات عمل --}}
+                    @livewire('fixed-asset-expenses')
                     <div class="mt-3">
 
                         <label for="image">
@@ -86,9 +91,11 @@
                     <div class="mt-3">
                         <input type="submit" value="إضافة الأصل"
                             class="block py-3 px-4 bg-indigo-600 text-white rounded cursor-pointer">
+
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    
 </x-app-layout>

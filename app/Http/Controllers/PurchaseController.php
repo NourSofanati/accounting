@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Currency;
+use App\Models\FixedAsset;
 use App\Models\Invertory;
 use App\Models\Purchase;
-use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -17,7 +18,10 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return view('purchases.index')->with('purchases', Purchase::all());
+        $currency = Currency::all()->where('id', session('currency_id'))->first();
+        
+        return view('purchases.index')
+        ->with('purchases', FixedAsset::all())->with('currency', $currency);
     }
 
     /**

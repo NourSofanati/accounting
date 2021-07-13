@@ -19,8 +19,8 @@ class CreateInvoiceItemsTable extends Migration
             $table->text('name')->nullable();
             $table->text('description')->nullable();
             $table->integer('qty')->nullable();
-            $table->decimal('rate')->nullable();
-            $table->foreignIdFor(Invoice::class,'invoice_id');
+            $table->decimal('rate', 16, 2)->nullable();
+            $table->foreignIdFor(Invoice::class, 'invoice_id');
             $table->timestamps();
         });
     }

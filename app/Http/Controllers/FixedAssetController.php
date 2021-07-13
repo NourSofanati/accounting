@@ -8,6 +8,8 @@ use App\Models\Currency;
 use App\Models\CurrencyExchange;
 use App\Models\Entry;
 use App\Models\FixedAsset;
+use App\Models\FixedAssetExpenseGroup;
+use App\Models\FixedAssetExpenses;
 use App\Models\Invertory;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -66,7 +68,7 @@ class FixedAssetController extends Controller
         $validator = Validator::make($request->all(), [
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             dd($validator->errors());
         }
 
@@ -92,14 +94,21 @@ class FixedAssetController extends Controller
         }
 
         $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
-
         $assetAccount = Account::create([
             'name' => $asset->name,
             'parent_id' => $asset->invertory->account_id,
             'account_type' => $fixedAccount->account_type,
         ]);
 
+        $expenseAccount = Account::all()->where('name', 'نفقات الأصول')->first();
+        $assetExpenseAccount = Account::create([
+            'name' => $asset->name,
+            'parent_id' => $asset->invertory->expense_account_id,
+            'account_type' => $expenseAccount->account_type,
+        ]);
+
         $asset->account_id = $assetAccount->id;
+        $asset->expense_account_id = $assetExpenseAccount->id;
         $asset->save();
         $usdCurrency = Currency::where('code', 'USD')->first();
         $sypCurrency = Currency::where('code', 'SYP')->first();
@@ -123,7 +132,30 @@ class FixedAssetController extends Controller
             alert()->success('Successfully completed transaction');
         }
 
+        $this->generateExpenseAccounts($request, $asset);
+
         return redirect()->route('invertories.show', $request->invertory_id);
+    }
+
+    public function generateExpenseAccounts(Request $request, FixedAsset $asset)
+    {
+        if ($request->expenses) {
+            $group = FixedAssetExpenseGroup::create([
+                'asset_id' => $asset->id,
+            ]);
+            foreach ($request->expenses as $index => $expense) {
+                $expenseAccount = Account::create([
+                    'name' => $request->expenses[$index]['expense_name'],
+                    'parent_id' => $asset->expense_account_id,
+                    'account_type' => 5,
+                ]);
+                FixedAssetExpenses::create([
+                    'name' => $request->expenses[$index]['expense_name'],
+                    'group_id' => $group->id,
+                    'account_id' => $expenseAccount->id,
+                ]);
+            }
+        }
     }
 
     /**

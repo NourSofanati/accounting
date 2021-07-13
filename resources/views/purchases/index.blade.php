@@ -10,29 +10,51 @@
             <div class="p-5">
                 <div class="flex">
                     <a href="{{ route('purchases.create') }}"
-                        class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-green-400 ">شراء أصول جديدة</a>
+                        class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-green-400 ">شراء أصول
+                        جديدة</a>
                     {{-- <a href="{{ route('journals.create') }}"
                         class="px-3 py-4 text-white block rounded-xl shadow-md font-bold bg-indigo-400 mr-4">ادخال قيود
                         جديدة</a> --}}
                 </div>
                 <hr class=" my-4">
-                @if (false)
-                    {{-- <table class="min-w-full text-center">
+                @if ($purchases->count())
+
+                    <table class="min-w-full text-center">
                         <thead>
                             <tr class=" border-dotted border-b">
                                 <th class="px-3 py-4">الاسم</th>
-                                <th class="px-3 py-4">رقم الهاتف</th>
+                                <th class="px-3 py-4">المستودع</th>
+                                <th class="px-3 py-4">القيمة</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($vendors as $vendor)
+                            @php
+                                $totalValue = 0;
+                            @endphp
+                            @foreach ($purchases as $p)
                                 <tr>
-                                    <td class="px-3 py-4">{{ $vendor->name }}</td>
-                                    <td class="px-3 py-4">{{ $vendor->phone }}</td>
+                                    <td class="px-3 py-4">{{ $p->name }}</td>
+                                    <td class="px-3 py-4">
+                                        <a href="{{ route('invertories.show', $p->invertory) }}">
+                                            {{ $p->invertory->name }}
+                                        </a>
+                                    </td>
+                                    <td class="px-3 py-4">{{ $p->value . ' ' . $currency->sign }}</td>
                                 </tr>
+                                @php
+                                    $totalValue += $p->value;
+                                @endphp
                             @endforeach
                         </tbody>
-                    </table> --}}
+                        <tfoot>
+                            <tr class="border-t-4 border-double font-bold">
+                                <td class="px-3 py-4">المجموع:</td>
+                                <td class="px-3 py-4">
+                                </td>
+                                <td class="px-3 py-4">{{ $totalValue . ' ' . $currency->sign }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 @else
                     لا يوجد مشتريات حاليا.
                 @endif

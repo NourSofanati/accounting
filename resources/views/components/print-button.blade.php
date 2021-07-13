@@ -1,0 +1,1 @@
+<button class="px-3 py-2 bg-lime text-white font-bold rounded mb-3" id="printButton">طباعة</button>

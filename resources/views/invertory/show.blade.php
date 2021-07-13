@@ -52,17 +52,24 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalValue = 0;
+                        @endphp
                         @forelse ($invertory->assets as $asset)
                             <tr class="text-center">
-                                <td>
+                                <td class="py-2">
                                     <a>
                                         {{ $asset->name }}
                                     </a>
                                 </td>
-                                <td>{{ $currency->sign . ' ' . $asset->value }}</td>
-                                <td>{{ $asset->supervisor }}</td>
-                                <td>
-                                    <a href="{{ Storage::url('public/images/' . @$asset->attachment->url) }}" target="_blank`">الملف
+                                <td class="py-2">{{ $currency->sign . ' ' . $asset->value }}</td>
+                                @php
+                                    $totalValue += $asset->value;
+                                @endphp
+                                <td class="py-2">{{ $asset->supervisor }}</td>
+                                <td class="py-2">
+                                    <a href="{{ Storage::url('public/images/' . @$asset->attachment->url) }}"
+                                        target="_blank`">الملف
                                         المرفق</a>
                                 </td>
                             </tr>
@@ -70,6 +77,14 @@
 
                         @endforelse
                     </tbody>
+                    <tfoot>
+                        <tr class="text-center  border-double border-t-4 pt-5"> 
+                            <td class="py-2 font-bold">المجموع:</td>
+                            <td class="py-2 font-bold">{{ $currency->sign . ' ' .$totalValue }}</td>
+                            <td class="py-2 font-bold"></td>
+                            <td class="py-2 font-bold"></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

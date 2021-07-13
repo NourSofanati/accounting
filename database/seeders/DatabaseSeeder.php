@@ -215,6 +215,11 @@ class DatabaseSeeder extends Seeder
                 'parent_id' => null,
             ),
             array(
+                'name' => 'نفقات الأصول',
+                'account_type' => AccountType::where('name', 'نفقات')->first()->id,
+                'parent_id' => null,
+            ),
+            array(
                 'name' => 'مصاريف الموردين',
                 'account_type' => AccountType::where('name', 'نفقات')->first()->id,
                 'parent_id' => null,

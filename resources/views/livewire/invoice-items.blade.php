@@ -111,5 +111,11 @@
             </tr>
         </tfoot>
     </table>
+    <div class="mt-3">
 
+        <label for="filenames">
+            {{ __('attachment') }}
+        </label>
+        <input type="file" name="filenames" multiple/>
+    </div>
 </div>

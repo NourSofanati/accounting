@@ -9,7 +9,7 @@ class Invoice extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id', 'customer_id', 'transaction_id', 'status', 'dueDate', 'issueDate', 'currency_id', 'currency_value'
+        'id', 'customer_id', 'transaction_id', 'status', 'dueDate', 'issueDate', 'currency_id', 'currency_value', 'attachment_group_id'
     ];
     public function customer()
     {

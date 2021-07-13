@@ -39,20 +39,17 @@
             console.log(data);
 
             function hashLabel(x) {
-                let toBeHashed = 0;
-                x.split("").forEach(char => toBeHashed += (char.charCodeAt(0) * 100));
-                return (toBeHashed * 3);
+                return x*x + x;
             }
 
             function drawChart(div) {
                 let pie = new Pie("expenses-chart");
                 data.forEach(e => {
-                    pie.AddSlice(e.balance, e.name);
+                    pie.AddSlice(e.balance, e.id);
                     document.getElementById('labels').innerHTML +=
-                        `<p style="border:1px solid hsl(${hashLabel(e.name)},75%,60%);padding:2px 5px;"><span style="background:hsl(${hashLabel(e.name)},75%,60%);display:inline-block;width:15px;">­</span> ${e.name} : ${e.balance}</p>`
+                        `<p style="border:1px solid hsl(${hashLabel(e.id)},75%,60%);padding:2px 5px;"><span style="background:hsl(${hashLabel(e.id)},75%,60%);display:inline-block;width:15px;">­</span> ${e.name} ${e.parent} : ${e.balance}</p>`
                 });
             }
-
         </script>
     @endsection
 </x-app-layout>

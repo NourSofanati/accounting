@@ -18,7 +18,7 @@
                             قيود
                             جديدة</a>
                     </div>
-                    <form class="flex" action="{{ route('currency_rates.store') }}" method="post">
+                    <form class="hidden flex" action="{{ route('currency_rates.store') }}" method="post" data-isHideable>
                         @csrf
                         <x-jet-input type="number" placeholder="سعر العملة" name="currency_rate"
                             value="{{ $currency_rate ? $currency_rate->currency_rate : 1 }}" />
@@ -29,7 +29,7 @@
                 <hr>
                 <div class="p-5">
                     <table class="border min-w-full text-center table-fixed  rounded-t-xl">
-                        <thead class=" border table-header-group	rounded-t-xl">
+                        <thead class=" border table-header-group rounded-t-xl">
                             <tr class=" border">
                                 <th class="tracking-wide w-4/12 px-4 py-3 text-right">الحساب</th>
                                 <th class="tracking-wide w-4/12 px-4 py-3">نوع الحساب</th>

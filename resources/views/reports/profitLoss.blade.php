@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <button class="px-3 py-2 bg-lime text-white font-bold rounded mb-3" id="printButton">طباعة</button>
+            <x-print-button />
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <div data-printable>
                     @include('reports.header',['reportName'=>'الارباح والخسائر'])
@@ -94,24 +94,4 @@
             </div>
         </div>
     </div>
-    @section('footerScripts')
-        <script>
-            let printBtn = document.querySelector('#printButton');
-            printBtn.onclick = () => {
-                let report = document.querySelector('[data-printable]');
-                let report_prime = report.cloneNode(true);
-                let printableWindow = window.open('', 'mywindow', `status=1,width=${report.width},height=${report.height}`);
-                printableWindow.document.write(
-                    `<!DOCTYPE HTML><html dir="rtl"><head><title>Print Me</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">${document.querySelector('#tailwindcss').outerHTML}</head>`
-                );
-                printableWindow.document.write('<body class="p-5" onafterprint="self.close()">');
-                printableWindow.document.write(report_prime.innerHTML);
-                let scrpt = printableWindow.document.createElement('script');
-                scrpt.innerText = 'print();';
-                printableWindow.document.write(scrpt.outerHTML);
-                printableWindow.document.write('</body></html>');
-            }
-        </script>
-    @endsection
 </x-app-layout>

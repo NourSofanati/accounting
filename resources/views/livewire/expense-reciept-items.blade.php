@@ -17,17 +17,19 @@
         <div class="flex justify-between pb-8">
             <div>
                 <span class="text-gray-500 block">فاتورة</span>
-                <select name="vendor_id" id="vendor_id" class="border-none">
-                    @forelse ($vendors as $vendor)
-                        <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
+                <select name="asset_id" id="asset_id" class="border-none" wire.model="selectedAsset"
+                    wire:change='changeEvent($event.target.value)'>
+                    @forelse ($FixedAssets as $index=>$fixedAsset)
+                        <option value="{{ $fixedAsset->id }}" wire:key="{{ $fixedAsset->id }}">
+                            {{ __($fixedAsset->name) }}</option>
                     @empty
 
                     @endforelse
                 </select>
                 <span class="text-gray-500 block">الصنف</span>
-                <select name="category_id" id="category_id" class="border-none">
-                    @forelse ($categories as $category)
-                        <option value="{{ $category->id }}">{{ __($category->name) }}</option>
+                <select name="expense_id" id="expense_id" class="border-none" wire.model="selectedExpense">
+                    @forelse ($expenses as $expense)
+                        <option value="{{ $expense->account->id }}">{{ __($expense->name) }}</option>
                     @empty
 
                     @endforelse
@@ -37,10 +39,6 @@
                 <div class="flex flex-col">
                     <span class="text-gray-500">تاريخ اصدار الفاتورة</span>
                     <input type="date" name="issueDate" id="issueDate" class="border-none text-right text-xs">
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-gray-500">تاريخ الإستحقاق</span>
-                    <input type="date" name="dueDate" id="dueDate" class="border-none text-right text-xs">
                 </div>
             </div>
             <div class="">
@@ -53,12 +51,12 @@
             <div class="">
                 <div class="flex flex-col">
                     <span class="text-gray-500">المبلغ المستحق</span>
-                    <h1 class="text-black text-xl"><span>{{ $currency->sign. ' '.$dueAmount }}</span> </h1>
+                    <h1 class="text-black text-xl"><span>{{ $currency->sign . ' ' . $dueAmount }}</span> </h1>
                 </div>
-		<div class="flex flex-col">
-			<span class="text-gray-500">Currency Value</span>
-			<input required type="number" name="currency_value"/>
-		</div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500">Currency Value</span>
+                    <input required type="number" name="currency_value" />
+                </div>
             </div>
         </div>
         <div class="rounded h-1 w-full my-5" style="background: #526BC5"></div>
@@ -117,4 +115,11 @@
             </tr>
         </tfoot>
     </table>
+    <div class="mt-3">
+
+        <label for="image">
+            {{ __('attachment') }}
+        </label>
+        <input type="file" name="image" />
+    </div>
 </div>

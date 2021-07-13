@@ -68,12 +68,13 @@
                 </span>
             </a>
         </div>
-        <div class="py-2 ">
-            <a href="{{ route('balancesheet.index') }}" class="flex">@include('icons.reports') تقرير الميزانية</a>
+        <div class="py-2 text-gray-700">
+            <a href="{{ route('balancesheet.index') }}" class="flex ">@include('icons.reports') تقرير الميزانية</a>
             <a href="{{ route('generalledger.index') }}" class="mt-3 flex">@include('icons.reports') دفتر الإستاذ</a>
             <a href="{{ route('profitloss.create') }}" class="mt-3 flex">@include('icons.reports') تقرير الأرباح
                 والخسائر</a>
-            <a href="{{ route('trialbalance.index') }}" class="mt-3 flex">@include('icons.reports') تقرير ميزان المراجعة</a>
+            <a href="{{ route('trialbalance.index') }}" class="mt-3 flex">@include('icons.reports') تقرير ميزان
+                المراجعة</a>
             <a href="{{ route('monthly-report.create') }}" class="mt-3 flex">@include('icons.reports') التقرير
                 الشهري</a>
 

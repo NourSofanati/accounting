@@ -1,7 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            تسجيل دفعة للفاتورة {{ __($reciept->id) }} لجهة {{ $reciept->vendor->name }}
+            تسجيل دفعة للفاتورة {{ __($reciept->id) }} لجهة {{ $reciept->Asset->name }}
+            ({{ $reciept->ExpenseAccount->name }})
         </h2>
     </x-slot>
     <div class="py-12">
@@ -18,10 +19,11 @@
                     <x-jet-input id="date" class="block mt-1 w-full" type="date" name="date"
                         value="{{ now()->toDateString() }}" required autofocus autocomplete="date" />
                 </div>
-		<div class="mt-4">
-			<label for="currency_value" value="Currency Value">Currency Value</label>
-			<input class="w-full border-gray-500 rounded " id="currency_value" name="currency_value" type="number" required/>
-		</div>
+                <div class="mt-4">
+                    <label for="currency_value" value="Currency Value">Currency Value</label>
+                    <input class="w-full border-gray-500 rounded " id="currency_value" name="currency_value"
+                        type="number" required />
+                </div>
                 {{-- @include('accounts.selectAccount') --}}
                 <div class="mt-4">
                     <x-jet-label for="designatedAccountId" value="{{ __('دفع المبلغ من حساب') }}" />

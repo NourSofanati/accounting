@@ -43,13 +43,22 @@ class InvertoryController extends Controller
 
         $invertory = Invertory::create($request->only('name', 'parent_id'));
         $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
+        $expenseAccount = Account::all()->where('name', 'نفقات الأصول')->first();
         $invertoryAccount = Account::create([
             'name' => $request->name,
             'parent_id' => $invertory->parent_id ?
                 $invertory->parent->account_id : $fixedAccount->id,
-            'account_type' => 1 
+            'account_type' => 1
         ]);
+        $invertoryExpenseAccount = Account::create([
+            'name' => $request->name,
+            'parent_id' => $invertory->parent_id ?
+                $invertory->parent->expense_account_id : $expenseAccount->id,
+            'account_type' => 5
+        ]);
+
         $invertory->account_id = $invertoryAccount->id;
+        $invertory->expense_account_id = $invertoryExpenseAccount->id;
         $invertory->save();
         return redirect()->route('invertories.index');
     }
@@ -64,7 +73,7 @@ class InvertoryController extends Controller
     {
         $currency = Currency::all()->where('id', session('currency_id'))->first();
 
-        return view('invertory.show', ['invertory' => $invertory,'currency'=>$currency]);
+        return view('invertory.show', ['invertory' => $invertory, 'currency' => $currency]);
     }
 
     /**

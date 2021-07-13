@@ -19,6 +19,7 @@ class CreateFixedAssetsTable extends Migration
         Schema::create('fixed_assets', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class, 'account_id')->nullable();
+            $table->foreignIdFor(Account::class, 'expense_account_id')->nullable();
             $table->foreignIdFor(Invertory::class, 'invertory_id')->nullable();
             $table->foreignIdFor(Account::class, 'purchase_account')->nullable();
             $table->foreignIdFor(Currency::class, 'currency_id')->default(1);

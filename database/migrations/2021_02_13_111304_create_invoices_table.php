@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AttachmentGroup;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Transaction;
@@ -25,6 +26,7 @@ class CreateInvoicesTable extends Migration
             $table->foreignIdFor(Transaction::class, 'transaction_id')->nullable();
             $table->foreignIdFor(Customer::class, 'customer_id')->nullable();
             $table->foreignIdFor(Currency::class, 'currency_id')->nullable();
+            $table->foreignIdFor(AttachmentGroup::class, 'attachment_group_id')->nullable();
             $table->timestamps();
         });
     }

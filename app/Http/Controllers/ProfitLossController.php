@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Currency;
 use App\Models\AccountType;
 use App\Models\ExpenseCategory;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class ProfitLossController extends Controller
@@ -15,7 +16,10 @@ class ProfitLossController extends Controller
     }
     public function create()
     {
-        return view('profit-loss.create');
+        $transactions = Transaction::where('transaction_date', '!=', null)->orderBy('transaction_date', 'asc')->get();
+        $firstDate = $transactions->first()->transaction_date;
+        $lastDate = $transactions->last()->transaction_date;
+        return view('profit-loss.create', ['firstDate' => $firstDate, 'lastDate' => $lastDate]);
     }
     public function store(Request $request)
     {
