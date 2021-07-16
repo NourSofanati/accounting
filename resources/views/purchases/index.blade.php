@@ -35,7 +35,7 @@
                                 <tr>
                                     <td class="px-3 py-4">
                                         {{
-                                            
+                                            $p->name
                                         }}
                                     </td>
                                     <td class="px-3 py-4">

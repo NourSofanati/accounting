@@ -29,7 +29,7 @@
                             @csrf
                             <div>
                                 <x-jet-label for="fromDate">من تاريخ</x-jet-label>
-                                <x-jet-input type="date" required name="fromDate" />
+                                <x-jet-input type="date" required name="fromDate" value="{{ $today }}" />
                             </div>
                             <div class="mt-2">
                                 <x-jet-label for="enableRange">ليوم واحد؟</x-jet-label>
@@ -39,21 +39,7 @@
                                 <x-jet-label for="toDate">إلى تاريخ</x-jet-label>
                                 <x-jet-input type="date" name="toDate" id="enableOnChecked" />
                             </div>
-                            <div class="mt-2">
-                                <x-jet-label for="account">الحساب</x-jet-label>
-                                <select name="account" required
-                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                    @foreach ($accountTypes as $type)
-                                        <optgroup label="◀{{ $type->name }}">
-                                            @if ($type->accounts->count() > 0)
-                                                @foreach ($type->accounts as $item)
-                                                    @include('accounts.listAccounts',['isTransaction'=>$isTransaction=false])
-                                                @endforeach
-                                            @endif
-                                        </optgroup>
-                                    @endforeach
-                                </select>
-                            </div>
+                            
                             <input type="submit" value="طلب التقرير"
                                 class=" mt-5 rounded px-5 bg-lime hover:bg-lime-dark transition duration-75 py-2 text-white font-bold " />
                         </form>
@@ -70,8 +56,6 @@
                     document.getElementById('hideOnEnable').classList.add('hidden');
                 else
                     document.getElementById('hideOnEnable').classList.remove('hidden');
-
-
             }
         </script>
     @endsection

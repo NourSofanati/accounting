@@ -9,6 +9,8 @@
     <title>{{ config('app.name', 'Accounting software') }}</title>
 
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
 
     <!-- Styles -->
@@ -90,9 +92,14 @@
         <!-- Page Heading -->
         <div class="overflow-auto w-full">
             @if (isset($header))
-                <header class="bg-white border-b border-gray-300">
-                    <div class="w-full py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white border-b border-gray-300 ">
+                    <div class="w-full py-6 px-4 sm:px-6 lg:px-8 relative">
                         {{ $header }}
+                        @if (URL::previous())
+                            <a href="{{ URL::previous() }}"
+                                class="rounded-full text-lime flex top-0 text-xl left-8 bottom-0 my-auto absolute"><span
+                                    class="my-auto">الرجوع</span></a>
+                        @endif
                     </div>
                 </header>
             @endif

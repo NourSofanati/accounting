@@ -24,40 +24,50 @@
                                 fill="#526BC5"></path>
                         </svg>
                     </div>
-                    <div class="my-10">
-                        <div class="grid grid-cols-2 gap-10 grid-rows-2 w-full">
+                    <div class="">
+                        <div class="mb-5">
                             <div>
-                                <h1>اسم الحساب</h1>
-                                <h2>{{ $account->name }}</h2>
-                            </div>
-                            <div class="text-left">
-                                <h1>رقم الحساب</h1>
-                                <h2>{{ sprintf('%08d', $account->id) }}</h2>
-                            </div>
-                            <div>
-                                <h1>الفترة الزمنية</h1>
-                                <h2></h2>
+                                <h1>{{ $toDate ? 'الفترة الزمنية' : 'التاريخ' }}</h1>
+                                <h2>{{ $fromDate }} {{ $toDate ? '->' . $toDate : '' }}</h2>
                             </div>
                         </div>
-                        <hr/>
+                        <hr />
                         <div>
-                            <table>
+                            <table class="min-w-full border-collapse">
                                 <thead>
                                     <tr>
-                                        <th>المدين</th>
-                                        <th>الدائن</th>
-                                        <th>البيان</th>
-                                        <th>التاريخ</th>
+                                        <th class="py-3 border text-right pr-3">الحساب</th>
+                                        <th class="py-3 border text-center">مدين</th>
+                                        <th class="py-3 border text-center">دائن</th>
+                                        <th class="py-3 border {{ $toDate ? 'text-center' : 'text-left pl-3' }}">القيد
+                                        </th>
+                                        @if ($toDate)
+
+                                            <th class="py-3 border pl-3 text-left">التاريخ</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($transactions as $transaction)
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        @foreach ($transaction->entries as $entry)
+                                            <tr class="border-b hover:bg-gray-100">
+                                                <td class="py-2 border pr-3">{{ $entry->account->name }}</td>
+                                                <td class="py-2 border text-center">
+                                                    {{ $entry->dr ? number_format($entry->dr) : '----' }}</td>
+                                                <td class="py-2 border text-center">
+                                                    {{ $entry->cr ? number_format($entry->cr) : '----' }}
+                                                </td>
+                                                <td
+                                                    class="py-2 border {{ $toDate ? 'text-center' : 'text-left pl-3' }}">
+                                                    <a
+                                                        href="{{ route('journals.show', $transaction) }}">{{ $transaction->transaction_name }}</a>
+                                                </td>
+                                                @if ($toDate)
+                                                    <td class="py-2 border text-left pl-3">
+                                                        {{ $transaction->transaction_date }}</td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>

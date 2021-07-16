@@ -2,25 +2,25 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "devcss":"",
+        "devcss": "",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
-        "tailwind":"npx tailwindcss -i resources/css/app.css -o public/css/app.css -w -c tailwind.config.js",
-        "tailwind:prod":"NODE_ENV=production npx tailwindcss -i resources/css/app.css -o public/css/app.css -c tailwind.config.js --minify"
+        "tailwind": "npx tailwindcss -i resources/css/app.css -o public/css/app.css -w -c tailwind.config.js",
+        "tailwind:prod": "NODE_ENV=production npx tailwindcss -i resources/css/app.css -o public/css/app.css -c tailwind.config.js --minify"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.2.1",
         "@tailwindcss/typography": "^0.3.0",
-        "alpinejs": "^2.7.3",
-        "autoprefixer": "^10.0.2",
+        "alpinejs": "^2.8.2",
+        "autoprefixer": "^10.3.1",
         "axios": "^0.21",
-        "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
-        "postcss": "^8.2.6",
+        "laravel-mix": "^6.0.25",
+        "lodash": "^4.17.21",
+        "postcss": "^8.3.5",
         "postcss-import": "^12.0.1",
         "tailwindcss": "^2.2.4"
     },

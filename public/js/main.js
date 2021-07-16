@@ -31,6 +31,6 @@ document.onkeydown = e =>{
 
 
 if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register(window.location.origin + '/sw.js');
 }
 

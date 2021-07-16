@@ -60,7 +60,7 @@
                     @foreach ($transaction->attachment_group->attachments as $attachment)
                         <li class="py-3 border-b">
                             <a
-                                href="{{ asset('attachments/' . $attachment->url) }}">{{ $attachment->name }}</a>
+                                href="{{ asset('attachments/' . $attachment->url) }}" target="_blank" >{{ $attachment->name }}</a>
                         </li>
                     @endforeach
                 </ul>

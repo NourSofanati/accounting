@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\LogBook;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LogBookController extends Controller
@@ -17,7 +18,7 @@ class LogBookController extends Controller
      */
     public function index()
     {
-        //
+        return view('logbook.show');
     }
 
     /**
@@ -27,8 +28,10 @@ class LogBookController extends Controller
      */
     public function create()
     {
+        $today = Carbon::today()->format('d/m/Y');
+
         $accountTypes = AccountType::all();
-        return view('logbook.create', ['accountTypes' => $accountTypes]);
+        return view('logbook.create', ['accountTypes' => $accountTypes, 'today' => $today]);
     }
 
     /**
@@ -39,15 +42,17 @@ class LogBookController extends Controller
      */
     public function store(Request $request)
     {
-
-        $account = Account::find($request->account);
-        $entries = $account->entries;
-        $transactions = array();
-        foreach ($entries as $entry) {
-            array_push($transactions, $entry->transaction);
+        $transactions = [];
+        //dd($request->fromDate);
+        if ($request->toDate) {
+            $transactions = Transaction::whereBetween('transaction_date', [$request->fromDate, $request->toDate])->get();
+        } else {
+            $transactions = Transaction::where('transaction_date', $request->fromDate)->get();
         }
-        $transactions = (array_unique($transactions));
-        return view('logbook.show', ['transactions' => $transactions, 'account' => $account]);
+        
+        //$fromData;
+
+        return view('logbook.show', ['transactions' => $transactions,'fromDate' => $request->fromDate,'toDate' => $request->toDate]);
     }
 
     /**
