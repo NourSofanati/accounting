@@ -12,6 +12,7 @@ class FixedAsset extends Model
         'name',
         'value',
         'supervisor',
+        'vendor_id',
         'account_id',
         'expense_account_id',
         'invertory_id',
@@ -26,6 +27,12 @@ class FixedAsset extends Model
     {
         return $this->belongsTo(Invertory::class, 'invertory_id');
     }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
 
     public function attachment()
     {

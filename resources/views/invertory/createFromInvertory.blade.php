@@ -28,8 +28,7 @@
                         <label for="currency_value">
                             قيمة العملة
                         </label>
-                        <input type="number" name="currency_value" id="currency_value"
-                            class="w-full h-full border-1 border-gray-300 rounded mt-2" required>
+                        <x-currency-input class="w-full h-full"/>
                     </div>
                     <div class="mt-3">
                         <label for="purchase_date">

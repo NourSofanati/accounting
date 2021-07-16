@@ -33,7 +33,11 @@
                             @endphp
                             @foreach ($purchases as $p)
                                 <tr>
-                                    <td class="px-3 py-4">{{ $p->name }}</td>
+                                    <td class="px-3 py-4">
+                                        {{
+                                            
+                                        }}
+                                    </td>
                                     <td class="px-3 py-4">
                                         <a href="{{ route('invertories.show', $p->invertory) }}">
                                             {{ $p->invertory->name }}

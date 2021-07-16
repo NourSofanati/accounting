@@ -2692,11 +2692,6 @@ select {
   color: rgba(249, 250, 251, var(--tw-text-opacity));
 }
 
-.text-green-300 {
-  --tw-text-opacity: 1;
-  color: rgba(110, 231, 183, var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration: underline;
 }

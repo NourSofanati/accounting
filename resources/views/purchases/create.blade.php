@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-lg rounded">
             <form action="{{ route('fixedAssets.store') }}" method="post">
-            @csrf
+                @csrf
                 <div class="p-5">
                     <div class="mt-3">
                         <label for="name">
@@ -28,8 +28,7 @@
                         <label for="currency_value">
                             قيمة العملة
                         </label>
-                        <input type="number" name="currency_value" id="currency_value"
-                            class="w-full h-full border-1 border-gray-300 rounded mt-2" required>
+                        <x-currency-input />
                     </div>
                     <div class="mt-3">
                         <label for="purchase_date">
@@ -74,10 +73,10 @@
                         </select>
                     </div>
                     <div class="mt-3">
-                        <x-jet-label for="attachment"/>
-                            المرفق
+                        <x-jet-label for="attachment" />
+                        المرفق
                         </x-jet-label>
-                        <x-jet-input type="text" name="attachment"/>
+                        <x-jet-input type="text" name="attachment" />
                     </div>
                     <div class="mt-3">
                         <input type="submit" value="إضافة الأصل"

@@ -7,9 +7,9 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-lg rounded">
-            <form action="{{ route('employees.store') }}" method="post" class="p-5 grid grid-cols-3">
+            <form action="{{ route('employees.update', $e) }}" method="post" class="p-5 grid grid-cols-3">
                 @csrf
-
+                @method("PUT")
                 <div class=" col-span-2">
                     <div class="mt-3">
                         <label for="firstName">
@@ -44,7 +44,8 @@
                         <select name="invertory_id" id="invertory_id"
                             class="w-full h-full border-1 border-gray-300 rounded mt-2">
                             @forelse ($invertories as $item)
-                                <option value="{{ $item->id }}" {{ $item->id == $e->invertory_id ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}"
+                                    {{ $item->id == $e->invertory_id ? 'selected' : '' }}>
                                     {{ $item->name }}</option>
                             @empty
                                 <option value="" disabled>لا يوجد مواقع</option>

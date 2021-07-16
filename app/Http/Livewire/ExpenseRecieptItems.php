@@ -35,7 +35,7 @@ class ExpenseRecieptItems extends Component
     public function render()
     {
 
-        $this->expenses = $this->selectedAsset->expensesGroup->expenses;
+        $this->expenses = @$this->selectedAsset->expensesGroup->expenses;
         $this->dueAmount = 0;
         foreach ($this->expenseRecieptLines as $index => $line) {
             $this->expenseRecieptLines[$index]['total'] = $line['rate'] * $line['qty'];

@@ -84,6 +84,10 @@ class TransactionController extends Controller
             }
             $unMirroredTransaction = $this->createTransaction($request->name, $request->date, $sypCurrency->id, $request->description);
             $mirroredTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
+            $unMirroredTransaction->mirror_id = $mirroredTransaction->id;
+            $unMirroredTransaction->save();
+            $mirroredTransaction->mirror_id = $unMirroredTransaction->id;
+            $mirroredTransaction->save();
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
             foreach ($request->entries as $entry) {
                 if (isset($entry['cr'])) {
@@ -95,7 +99,7 @@ class TransactionController extends Controller
                 }
             }
         } else {
-            $newTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
+            $newTransaction = $this->createTransaction($request->name, $request->date, $sypCurrency->id, $request->description);
             foreach ($request->entries as $entry) {
                 if (isset($entry['cr'])) {
                     $crRecord = $this->createCreditEntry($entry['account_id'], $sypCurrency->id, $entry['cr'], $newTransaction, $entry['currency_value']);
@@ -209,10 +213,9 @@ class TransactionController extends Controller
     {
 
         $transaction = Transaction::find($transaction_id);
+        $USDprice = (int) $this->getUSDprice()[0]->bid;
 
-        $entries = $transaction->entries;
-
-        return view('journal.edit', ['entries' => $entries, 'transaction' => $transaction]);
+        return view('journal.edit', ['transaction' => $transaction, 'USDprice' => $USDprice]);
     }
 
     /**
@@ -222,9 +225,24 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Request $request, $transaction_id)
     {
-        //
+        $transaction = Transaction::find($transaction_id);
+        $transaction->update($request->all());
+        $entries = $transaction->entries;
+        foreach ($entries as $entry) {
+            $entry->delete();
+        }
+        $transaction->save();
+        foreach ($request->entries as $entry) {
+            if (isset($entry['cr'])) {
+                $crRecord = $this->createCreditEntry($entry['account_id'], $transaction->currency_id, $entry['cr'], $transaction, $entry['currency_value']);
+            } else if (isset($entry['dr'])) {
+                $drRecord = $this->createDebitEntry($entry['account_id'], $transaction->currency_id, $entry['dr'], $transaction, $entry['currency_value']);
+            }
+        }
+        alert()->success('تم تعديل العملية بنجاح');
+        return redirect()->route('journals.show', $transaction->id);
     }
 
     /**

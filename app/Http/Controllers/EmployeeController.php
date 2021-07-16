@@ -207,7 +207,40 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, EmployeeDetails $employee)
     {
-        //
+        $request->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'birthDate' => 'required|date',
+            'startDate' => 'required|date',
+            'payday' => 'required',
+            'gender' => 'required',
+            'monthlySalary' => 'required',
+            'position_id' => 'required|integer',
+            'invertory_id' => 'required|integer',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $employee->firstName =  $request->firstName;
+        $employee->lastName =  $request->lastName;
+        $employee->birthDate =  $request->birthDate;
+        $employee->startDate =  $request->startDate;
+        $employee->gender =  $request->gender;
+        $employee->payday =  $request->payday;
+        $employee->monthlySalary =  $request->monthlySalary;
+        $employee->position_id =  $request->position_id;
+        $employee->invertory_id =  $request->invertory_id;
+        $employee->save();
+        if ($request->image) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->storeAs('images', $imageName, 'public');
+            // $picture = EmployeePicture::create([
+            //     'employee_id' => $employee_details->id,
+            //     'uri' => $imageName,
+            // ]);
+            $employee->picture->uri = $imageName;
+            $employee->picture->save();
+        }
+
+        return redirect()->route('employees.show', $employee);
     }
 
     /**

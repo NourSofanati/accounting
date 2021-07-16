@@ -3,6 +3,7 @@
 use App\Models\Currency;
 use App\Models\ExpenseReciept;
 use App\Models\Invoice;
+use App\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ class CreateTransactionsTable extends Migration
             $table->foreign('reciept_id')->references('id')->on('expense_reciepts')->cascadeOnDelete();
             $table->enum('ref_type', ['reciept', 'invoice'])->nullable();
             $table->foreignIdFor(Currency::class, 'currency_id')->nullable();
+            $table->foreignIdFor(Transaction::class, 'mirror_id')->nullable();
             $table->timestamps();
         });
     }

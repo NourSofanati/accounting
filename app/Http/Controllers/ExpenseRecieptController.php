@@ -63,6 +63,7 @@ class ExpenseRecieptController extends Controller
         $reciept = ExpenseReciept::find($request->expenseRecieptNumber);
         $reciept->issueDate = $request->issueDate;
         $reciept->dueDate = $request->dueDate;
+        $reciept->vendor_id = $request->vendor_id;
         $reciept->asset_id = $request->asset_id;
         $reciept->expense_id = $request->expense_id;
         $recieptTransaction = Transaction::create([

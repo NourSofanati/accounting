@@ -1,24 +1,23 @@
-<form method="POST" action="{{ route('journals.store') }}">
-    <input type="number" value="{{ $newTransaction->id }}" class="sr-only" name="transaction_id">
+<form method="POST" action="{{ route('journals.update', $transaction) }}">
     @csrf
-
+    @method("PUT")
     <div class="w-full">
         <div class="grid grid-cols-2 gap-5">
             <div class="mb-5 col-span-1">
-                <x-jet-label for="name" value="{{ __('اسم القيد') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name"
-                    wire.model="transaction.transaction_name" required autofocus autocomplete="name" />
-                    
+                <x-jet-label for="transaction_name" value="{{ __('اسم القيد') }}" />
+                <x-jet-input id="transaction_name" class="block mt-1 w-full" type="text" name="transaction_name"
+                    wire:model="transaction.transaction_name" required autofocus autocomplete="name" />
+
             </div>
             <div class="mb-5 col-span-1">
-                <x-jet-label for="date" value="{{ __('تاريخ القيد') }}" />
-                <x-jet-input id="date" class="block mt-1 w-full" type="date" name="date" :value="old('date')" required
-                    autofocus autocomplete="date" />
+                <x-jet-label for="transaction_date" value="{{ __('تاريخ القيد') }}" />
+                <x-jet-input id="transaction_date" class="block mt-1 w-full" type="date" name="transaction_date" :value="old('date')" required
+                    wire:model='transaction.transaction_date' autofocus autocomplete="date" />
             </div>
         </div>
         <div class="mb-5">
             <x-jet-label for="وصف القيد" value="{{ __('وصف القيد') }}" />
-            <textarea name="description" id="description" cols="30" rows="2 "
+            <textarea name="description" id="description" cols="30" rows="2 " wire:model='transaction.description'
                 class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
         </div>
     </div>
@@ -83,7 +82,7 @@
                                 <x-jet-input id="entries[{{ $index }}][currency_value]"
                                     name="entries[{{ $index }}][currency_value]" type="number"
                                     placeholder="أدخل قيمة الدائن"
-                                    wire:model.lazy="entries.{{ $index }}.currency_value" min=0 />
+                                    wire:model="entries.{{ $index }}.currency_value" min=0 />
                             </td>
                         @endif
                         @if (count($entries) > 2)
@@ -123,10 +122,10 @@
         </table>
     </div>
     <div class="mt-5 flex">
-        <input type="submit" value="إضافة القيد"
+        <input type="submit" value="تعديل القيد"
             class="rounded-md shadow-md font-bold px-3 py-3 block w-50 hover:shadow-xl transition-shadow ease-linear duration-200 {{ $diff != 0 ? ' cursor-not-allowed bg-gray-400 text-gray-600' : 'bg-indigo-600 cursor-pointer text-white' }}"
             {{ $diff != 0 ? 'disabled' : '' }}></a>
-        <a wire:click.prevent="cancelTransaction"
+        <a href="{{ URL::previous() }}"
             class="rounded-md bg-gray-100 text-gray-500 font-bold px-10 py-3 block mr-5 hover:shadow-xl transition-shadow ease-linear duration-200">إلغاء</a>
     </div>
 </form>

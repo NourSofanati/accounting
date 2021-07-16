@@ -11,10 +11,10 @@ class ExpenseReciept extends Model
     protected $fillable = [
         'date', 'attachment_id', 'transaction_id', 'issueDate', 'dueDate', 'vendor_id', 'category_id', 'asset_id', 'expense_id', 'paid_from', 'refunded'
     ];
-    // public function vendor()
-    // {
-    //     return $this->belongsTo(Vendor::class, 'vendor_id');
-    // }
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
     public function Asset()
     {
         return $this->belongsTo(FixedAsset::class, 'asset_id');

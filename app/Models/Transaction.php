@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'transaction_name', 'transaction_date', 'description', 'currency_id'
+        'transaction_name', 'transaction_date', 'description', 'currency_id','mirror_id'
     ];
     public function entries()
     {
@@ -18,5 +18,9 @@ class Transaction extends Model
     public function invoice()
     {
         return $this->hasOne(Invoice::class, 'transaction_id');
+    }
+    public function mirror()
+    {
+        return $this->hasOne(Transaction::class, 'mirror_id');
     }
 }

@@ -28,11 +28,23 @@
                 </select>
                 <span class="text-gray-500 block">الصنف</span>
                 <select name="expense_id" id="expense_id" class="border-none" wire.model="selectedExpense">
-                    @forelse ($expenses as $expense)
-                        <option value="{{ $expense->account->id }}">{{ __($expense->name) }}</option>
-                    @empty
+                    @if ($expenses)
+                        @forelse ($expenses as $expense)
+                            <option value="{{ $expense->account->id }}">{{ __($expense->name) }}</option>
+                        @empty
 
-                    @endforelse
+                        @endforelse
+                    @endif
+                </select>
+                <span class="text-gray-500 block">المورد</span>
+                <select name="vendor_id" id="vendor_id" class="border-none" wire.model="selectedVendor">
+                    @if ($vendors)
+                        @forelse ($vendors as $vendor)
+                            <option value="{{ $vendor->id }}">{{ __($vendor->name) }}</option>
+                        @empty
+
+                        @endforelse
+                    @endif
                 </select>
             </div>
             <div class="">
@@ -54,8 +66,8 @@
                     <h1 class="text-black text-xl"><span>{{ $currency->sign . ' ' . $dueAmount }}</span> </h1>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-gray-500">Currency Value</span>
-                    <input required type="number" name="currency_value" />
+                    <span class="text-gray-500">قيمة العملة</span>
+                    <x-currency-input />
                 </div>
             </div>
         </div>
