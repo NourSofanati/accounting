@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\AccountType;
+use App\Models\Attachment;
+use App\Models\AttachmentGroup;
 use App\Models\Currency;
 use App\Models\CurrencyExchange;
 use App\Models\Entry;
@@ -74,8 +76,10 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+
         $usdCurrency = Currency::where('code', 'USD')->first();
         $sypCurrency = Currency::where('code', 'SYP')->first();
+        $transactions = [];
         if (session('currency_id') == $usdCurrency->id) {
             $currencyVALUE = $this->processUsdFifo($request);
             if ($currencyVALUE == 'error') {
@@ -88,6 +92,8 @@ class TransactionController extends Controller
             $unMirroredTransaction->save();
             $mirroredTransaction->mirror_id = $unMirroredTransaction->id;
             $mirroredTransaction->save();
+            $transactions[] = $mirroredTransaction;
+            $transactions[] = $unMirroredTransaction;
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
             foreach ($request->entries as $entry) {
                 if (isset($entry['cr'])) {
@@ -108,7 +114,21 @@ class TransactionController extends Controller
                 }
             }
             alert()->success('Successfully completed transaction');
+            $transactions[] = $newTransaction;
         }
+        $files = ($request->file('attachment'));
+        if ($request->hasFile('attachment')) {
+            $fileNameArr = [];
+            foreach ($files as $file) {
+                $uri = time() . '-' . $file->getClientOriginalName();
+                $fileNameArr[] = $uri;
+                $file->move(public_path('attachments'), $uri);
+                foreach ($transactions as $transaction) {
+                    Attachment::create(['url' => $uri, 'group_id' => $transaction->attachment_group_id, 'name' => $file->getclientOriginalName()]);
+                }
+            }
+        }
+
         return redirect()->route('accounts-chart');
     }
 
@@ -158,11 +178,13 @@ class TransactionController extends Controller
 
     public function createTransaction($transaction_name, $transaction_date, $currency_id, $description)
     {
+        $attachmentGroup = AttachmentGroup::create([]);
         $transaction = Transaction::create([
             'transaction_name' => $transaction_name,
             'transaction_date' => $transaction_date,
             'currnecy_id' => $currency_id,
             'description' => $description,
+            'attachment_group_id' => $attachmentGroup->id,
         ]);
         return $transaction;
     }
@@ -228,7 +250,9 @@ class TransactionController extends Controller
     public function update(Request $request, $transaction_id)
     {
         $transaction = Transaction::find($transaction_id);
+        $currency_id = $transaction->currency_id;
         $transaction->update($request->all());
+        $transaction_currency_id = $currency_id;
         $entries = $transaction->entries;
         foreach ($entries as $entry) {
             $entry->delete();

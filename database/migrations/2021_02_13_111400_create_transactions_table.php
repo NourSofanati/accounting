@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AttachmentGroup;
 use App\Models\Currency;
 use App\Models\ExpenseReciept;
 use App\Models\Invoice;
@@ -28,6 +29,7 @@ class CreateTransactionsTable extends Migration
             $table->enum('ref_type', ['reciept', 'invoice'])->nullable();
             $table->foreignIdFor(Currency::class, 'currency_id')->nullable();
             $table->foreignIdFor(Transaction::class, 'mirror_id')->nullable();
+            $table->foreignIdFor(AttachmentGroup::class,'attachment_group_id')->nullable();
             $table->timestamps();
         });
     }

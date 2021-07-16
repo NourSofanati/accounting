@@ -50,5 +50,22 @@
                 </table>
             </div>
         </div>
+        <div class="max-w-2xl mt-3 mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-2">
+                <h1 class="text-2xl capitalize">
+                    {{ __('attachments') }}
+                </h1>
+
+                <ul>
+                    @foreach ($transaction->attachment_group->attachments as $attachment)
+                        <li class="py-3 border-b">
+                            <a
+                                href="{{ asset('attachments/' . $attachment->url) }}">{{ $attachment->name }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
     </div>
+
 </x-app-layout>

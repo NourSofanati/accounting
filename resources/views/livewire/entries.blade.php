@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('journals.store') }}">
+<form method="POST" action="{{ route('journals.store') }}"  enctype="multipart/form-data">
     <input type="number" value="{{ $newTransaction->id }}" class="sr-only" name="transaction_id">
     @csrf
 
@@ -102,11 +102,12 @@
                 <tr>
                     <td class="
                         @if ($diff !=0) text-red-500 @endif ">الفرق: {{ $diff }}</td>
-                    <td>المدين الكلي: <x-jet-input value="{{ $totalDr }}" name="totalDr"/>
-                        <br>
-                        <span class=" text-gray-500">(${{ number_format($totalDrUSD, 2) }})</span>
+                    <td>المدين الكلي: <x-jet-input value=" {{ $totalDr }}" name="totalDr" />
+                    <br>
+                    <span class=" text-gray-500">(${{ number_format($totalDrUSD, 2) }})</span>
                     </td>
-                    <td>الدائن الكلي: <x-jet-input value="{{ $totalCr }}" name="totalCr"/>
+                    <td>الدائن الكلي:
+                        <x-jet-input value="{{ $totalCr }}" name="totalCr" />
                         <br>
                         <span class="text-gray-500">(${{ number_format($totalCrUSD, 2) }})</span>
                     </td>
@@ -119,6 +120,7 @@
                 </tr>
             </tbody>
         </table>
+        <input type="file" multiple name="attachment[]" class="border border-dashed border-gray-400 text-sm py-3 mt-3 rounded-xl" placeholder="أرفق ملفات"/>
     </div>
     <div class="mt-5 flex">
         <input type="submit" value="إضافة القيد"
@@ -128,5 +130,3 @@
             class="rounded-md bg-gray-100 text-gray-500 font-bold px-10 py-3 block mr-5 hover:shadow-xl transition-shadow ease-linear duration-200">إلغاء</a>
     </div>
 </form>
-
-

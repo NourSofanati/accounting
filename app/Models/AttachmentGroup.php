@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class AttachmentGroup extends Model
 {
     use HasFactory;
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class, 'group_id');
+    }
 }

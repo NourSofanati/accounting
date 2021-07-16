@@ -16,6 +16,7 @@ class CreateAttachmentsTable extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
+            $table->text('name')->nullable();
             $table->foreignIdFor(AttachmentGroup::class,'group_id')->nullable();
             $table->longText('url')->nullable();
             $table->timestamps();
