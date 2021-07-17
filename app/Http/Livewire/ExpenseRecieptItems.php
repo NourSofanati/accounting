@@ -22,8 +22,12 @@ class ExpenseRecieptItems extends Component
     {
         $this->expenseRecieptLines = array();
         $this->FixedAssets = FixedAsset::all();
-        $this->selectedAsset = $this->FixedAssets[0];
-        
+        if ($this->FixedAssets->count() > 0)
+            $this->selectedAsset = $this->FixedAssets[0];
+        else {
+            alert()->error('يجب إضافة أصل أولاً');
+            return redirect()->route('purchases.create');
+        }
     }
 
     public function changeEvent($event)

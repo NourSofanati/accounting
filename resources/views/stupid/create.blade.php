@@ -8,7 +8,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-5 bg-white">
                 <div class="" style="width: 100%;
-                aspect-ratio: 1/1.294;" contenteditable="true">
+                aspect-ratio: 1/1.294;">
                     <style>
                         table,
                         th,
@@ -20,7 +20,6 @@
 
                         td,
                         th {
-                            padding: 10px;
                             text-align: center;
                             font-weight: bold;
                         }
@@ -69,7 +68,7 @@ justify-content: space-between; ">
                             شهر
                             {{ 'haha' }}
                             , يرجى صرف مستحقاتنا والبالغلة
-                            {{ '0' }}$
+                            <span id="totalNumber" class="underline">صفر</span>
                             دولار امريكي
                             الأساس خلال شهر
                             {{ 'month' }} {{ 'year' }}
@@ -89,26 +88,28 @@ justify-content: space-between; ">
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-
+                                    <td class="p-0"><input type="text" id="rowMonth"
+                                            class="w-full h-full border-none focus:outline-none focus:border-none active:border-none active:outline-none text-center" />
                                     </td>
-                                    <td>
-
+                                    <td class="p-0"><input type="number" value="0" id="rowBarrels"
+                                            class="w-full h-full border-none focus:outline-none focus:border-none active:border-none active:outline-none text-center" />
                                     </td>
-                                    <td>
-                                        $
+                                    <td class="p-0"><input type="number" value="0" id="rowPerBarrel"
+                                            class="w-full h-full border-none focus:outline-none focus:border-none active:border-none active:outline-none text-center" />
                                     </td>
-                                    <td>
-                                        $
+                                    <td class="p-0"><input type="text" id="rowTotalFuel" disabled value="$0"
+                                            class="w-full h-full border-none focus:outline-none focus:border-none active:border-none active:outline-none text-center" />
                                     </td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td>المجموع</td>
-                                    <td></td>
-                                    <td>$</td>
-                                    <td>$</td>
+                                    <td class="p-0"><input type="number" id="totalFuel" disabled
+                                            class="w-full h-full border-none focus:outline-none focus:border-none active:border-none active:outline-none" />
+                                    </td>
+                                    <td>$<span id="costPerBarrel"></span></td>
+                                    <td>$<span id="totalPrice"></span></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -120,9 +121,9 @@ justify-content: space-between; ">
                         </p>
                         <br>
                         <br>
-                        <center>
-                            <p>شاكرين حسن تعاونكم </p>
-                        </center>
+
+                        <p style="text-align:center;">شاكرين حسن تعاونكم </p>
+
                         <br>
 
                         <br>
@@ -135,4 +136,21 @@ justify-content: space-between; ">
             </div>
         </div>
     </div>
+    @section('footerScripts')
+        <script>
+            const input = document.getElementById('total');
+            const totalNumber = document.getElementById('totalNumber');
+            const rowBarrels = document.getElementById('rowBarrels');
+            const rowPerBarrel = document.getElementById('rowPerBarrel');
+            const rowTotalFuel = document.getElementById('rowTotalFuel');
+            rowBarrels.onkeyup = () => handleChange();
+            rowPerBarrel.onkeyup = () => handleChange();
+
+            function handleChange() {
+                let rowMoney = (rowBarrels.value * rowPerBarrel.value);
+                rowTotalFuel.value = "$" + rowMoney;
+                totalNumber.innerText = tafqit(rowMoney);
+            }
+        </script>
+    @endsection
 </x-app-layout>

@@ -118,6 +118,8 @@
 
     <script src="{{ mix('js/app.js') }}"></script>
 
+    
+    <script src="{{ asset('js/tafqit.js') }}"></script>
     <script src="{{ asset('js/classes/IDrawable.js') }}" type="module"></script>
     <script src="{{ asset('js/classes/Pie.js') }}" type="module"></script>
     <script src="{{ asset('js/classes/Slice.js') }}" type="module"></script>

@@ -1,9 +1,9 @@
 <nav x-data="{ open: false }" class="border-gray-300 border-l">
-    
+
     <!-- Responsive Navigation Menu -->
     <div class="bg-white text-black w-56 h-full ">
         <div class="bg-gray-700 font-black py-6 text-center text-white w-full">
-            الديار للطاقة
+            <a href="{{ route('dashboard') }}">الديار للطاقة</a>
         </div>
         <div class="pb-3 space-y-1">
             @if (session('currency_id') == 1)
