@@ -250,19 +250,19 @@ class TransactionController extends Controller
     public function update(Request $request, $transaction_id)
     {
         $transaction = Transaction::find($transaction_id);
-        $currency_id = $transaction->currency_id;
         $transaction->update($request->all());
-        $transaction_currency_id = $currency_id;
+
         $entries = $transaction->entries;
+        $currency_id = $entries[0]['currency_id'];
         foreach ($entries as $entry) {
             $entry->delete();
         }
         $transaction->save();
         foreach ($request->entries as $entry) {
             if (isset($entry['cr'])) {
-                $crRecord = $this->createCreditEntry($entry['account_id'], $transaction->currency_id, $entry['cr'], $transaction, $entry['currency_value']);
+                $crRecord = $this->createCreditEntry($entry['account_id'], $currency_id, $entry['cr'], $transaction, $entry['currency_value']);
             } else if (isset($entry['dr'])) {
-                $drRecord = $this->createDebitEntry($entry['account_id'], $transaction->currency_id, $entry['dr'], $transaction, $entry['currency_value']);
+                $drRecord = $this->createDebitEntry($entry['account_id'], $currency_id, $entry['dr'], $transaction, $entry['currency_value']);
             }
         }
         alert()->success('تم تعديل العملية بنجاح');
