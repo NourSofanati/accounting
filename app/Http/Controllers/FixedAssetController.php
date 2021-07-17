@@ -81,6 +81,7 @@ class FixedAssetController extends Controller
             'purchase_account' => $request->purchase_account,
             'purchase_date' => $request->purchase_date,
             'invertory_id' => $request->invertory_id,
+            'vendor_id' => $request->vendor_id,
         ]);
 
         if ($request->image) {
@@ -123,11 +124,11 @@ class FixedAssetController extends Controller
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
             $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $asset->value * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
             $drRecord_mirrored = $this->createDebitEntry($asset->account_id, $sypCurrency->id, $asset->value * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
-            $crRecord = $this->createCreditEntry($asset->purchase_account, $usdCurrency->id, $asset->value, $unMirroredTransaction, $currencyVALUE);
+            $crRecord = $this->createCreditEntry($asset->vendor->account_id, $usdCurrency->id, $asset->value, $unMirroredTransaction, $currencyVALUE);
             $drRecord = $this->createDebitEntry($asset->account_id, $usdCurrency->id, $asset->value, $unMirroredTransaction, $currencyVALUE);
         } else {
             $newTransaction = $this->createTransaction('شراء ' . $request->name, $request->purchase_date, $sypCurrency->id, $request->description);
-            $crRecord = $this->createCreditEntry($asset->purchase_account, $sypCurrency->id, $asset->value, $newTransaction, $request->currency_value);
+            $crRecord = $this->createCreditEntry($asset->vendor->account_id, $sypCurrency->id, $asset->value, $newTransaction, $request->currency_value);
             $drRecord = $this->createDebitEntry($asset->account_id, $sypCurrency->id, $asset->value, $newTransaction, $request->currency_value);
             alert()->success('Successfully completed transaction');
         }

@@ -87,6 +87,17 @@
                             class="w-full mt-3 p-2 rounded bg-gray-100 border-none" disabled
                             value="{{ __($employee->gender) }}">
                     </div>
+                    <div class="mt-5">
+                        <label for="gender" class="text-xl pr-2">الشهادات</label>
+                        {{-- <input type="text" name="gender" id="gender"
+                            class="w-full mt-3 p-2 rounded bg-gray-100 border-none" disabled
+                            value="{{ __($employee->gender) }}"> --}}
+                        @foreach ($employee->achievments as $item)
+                            <div class="w-full mt-3 p-2 rounded bg-gray-100">
+                                {{$item->achievment}}
+                            </div>
+                        @endforeach
+                    </div>
                 </section>
                 <section id="payments">
                     <h1 class="text-xl pr-2s">الدفعات المسجلة</h1>
@@ -107,7 +118,7 @@
                         @endforelse
                         @if ($total > 0)
                             <div class="bg-green-300 rounded p-2">
-                                أجمالي تعاملاتي معه: <p class=" font-bold">{{$total}}</p>
+                                أجمالي تعاملاتي معه: <p class=" font-bold">{{ $total }}</p>
                             </div>
 
                         @endif

@@ -16,7 +16,8 @@
             </div>
         @endif
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-lg rounded">
-            <form action="{{ route('employees.store') }}" method="post" class="p-5 grid grid-cols-3" enctype="multipart/form-data">
+            <form action="{{ route('employees.store') }}" method="post" class="p-5 grid grid-cols-3"
+                enctype="multipart/form-data">
                 @csrf
 
                 <div class=" col-span-2">
@@ -114,6 +115,18 @@
                             <input type='file' class="hidden" name="image" />
                         </label>
                     </div>
+                </div>
+                {{-- <input type="file" multiple name="attachment[]" class="border border-dashed border-gray-400 text-sm py-3 mt-3 rounded-xl" placeholder="أرفق ملفات"/> --}}
+                <div class="col-span-2">
+                    <label for="attachment" class="block my-2">
+                        الملفات المرفقة
+                    </label>
+                    <input type="file" multiple name="attachment[]"
+                        class="block w-full border border-dashed border-gray-400 text-sm py-3 px-2 mt-3 rounded-xl"
+                        placeholder="أرفق ملفات" />
+                </div>
+                <div class="col-span-2">
+                    @livewire('employee-achievment-item')
                 </div>
                 <div class="col-span-3">
                     <hr class="my-5">

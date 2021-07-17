@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Attachment;
+use App\Models\AttachmentGroup;
+use App\Models\EmployeeAchivement;
 use App\Models\EmployeeLiability;
 use App\Models\Entry;
 use App\Models\HR\Employee;
@@ -122,6 +125,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'firstName' => 'required',
             'lastName' => 'required',
@@ -151,6 +155,7 @@ class EmployeeController extends Controller
             'parent_id' => $expenses->id,
         ]);
 
+        $attachmentGroup = AttachmentGroup::create([]);
         $employee_details = EmployeeDetails::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
@@ -163,7 +168,9 @@ class EmployeeController extends Controller
             'expense_account_id' => $employee_expense_account->id,
             'position_id' => $request->position_id,
             'invertory_id' => $request->invertory_id,
+            'attachment_group_id' => $attachmentGroup->id,
         ]);
+
         if ($request->image) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->storeAs('images', $imageName, 'public');
@@ -172,7 +179,24 @@ class EmployeeController extends Controller
                 'uri' => $imageName,
             ]);
         }
+        foreach ($request->achievments as $index => $achievment) {
+            EmployeeAchivement::create([
+                'type' => $achievment['type'],
+                'achievment' => $achievment['achievment'],
+                'employee_id' => $employee_details['id'],
+            ]);
+        }
 
+        $files = ($request->file('attachment'));
+        if ($request->hasFile('attachment')) {
+            $fileNameArr = [];
+            foreach ($files as $file) {
+                $uri = time() . '-' . $file->getClientOriginalName();
+                $fileNameArr[] = $uri;
+                $file->move(public_path('attachments'), $uri);
+                Attachment::create(['url' => $uri, 'group_id' => $employee_details->attachment_group_id, 'name' => $file->getclientOriginalName()]);
+            }
+        }
         return redirect()->route('employees.index');
     }
 
@@ -232,13 +256,20 @@ class EmployeeController extends Controller
         if ($request->image) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->storeAs('images', $imageName, 'public');
-            // $picture = EmployeePicture::create([
-            //     'employee_id' => $employee_details->id,
-            //     'uri' => $imageName,
-            // ]);
             $employee->picture->uri = $imageName;
             $employee->picture->save();
         }
+        $files = ($request->file('attachment'));
+        if ($request->hasFile('attachment')) {
+            $fileNameArr = [];
+            foreach ($files as $file) {
+                $uri = time() . '-' . $file->getClientOriginalName();
+                $fileNameArr[] = $uri;
+                $file->move(public_path('attachments'), $uri);
+                Attachment::create(['url' => $uri, 'group_id' => $employee->attachment_group_id, 'name' => $file->getclientOriginalName()]);
+            }
+        }
+
 
         return redirect()->route('employees.show', $employee);
     }

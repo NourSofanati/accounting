@@ -2,6 +2,7 @@
 
 namespace App\Models\HR;
 
+use App\Models\EmployeeAchivement;
 use App\Models\EmployeeLiability;
 use App\Models\Invertory;
 use App\Models\Position;
@@ -23,7 +24,19 @@ class EmployeeDetails extends Model
         'expense_account_id',
         'position_id',
         'invertory_id',
+        'attachment_group_id'
     ];
+
+
+    public function attachment_group()
+    {
+        return $this->belongsTo(AttachmentGroup::class, 'attachment_group_id');
+    }
+
+    public function achievments()
+    {
+        return $this->hasMany(EmployeeAchivement::class, 'employee_id', 'id');
+    }
 
     public function fullName()
     {

@@ -25,10 +25,22 @@
                             class="w-full h-full border-1 border-gray-300 rounded mt-2" required>
                     </div>
                     <div class="mt-3">
+                        <label for="value">
+                            المورد
+                        </label>
+                        {{-- <input type="number" name="value" id="value"
+                            class="w-full h-full border-1 border-gray-300 rounded mt-2" required> --}}
+                        <select name="vendor_id" class="w-full h-full border-1 border-gray-300 rounded mt-2">
+                            @foreach ($vendors as $vendor)
+                                <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mt-3">
                         <label for="currency_value">
                             قيمة العملة
                         </label>
-                        <x-currency-input class="w-full h-full"/>
+                        <x-currency-input class="w-full h-full" />
                     </div>
                     <div class="mt-3">
                         <label for="purchase_date">
@@ -96,5 +108,5 @@
             </form>
         </div>
     </div>
-    
+
 </x-app-layout>

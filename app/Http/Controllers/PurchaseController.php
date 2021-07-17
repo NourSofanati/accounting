@@ -7,6 +7,7 @@ use App\Models\Currency;
 use App\Models\FixedAsset;
 use App\Models\Invertory;
 use App\Models\Purchase;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -19,9 +20,9 @@ class PurchaseController extends Controller
     public function index()
     {
         $currency = Currency::all()->where('id', session('currency_id'))->first();
-        
+
         return view('purchases.index')
-        ->with('purchases', FixedAsset::all())->with('currency', $currency);
+            ->with('purchases', FixedAsset::all())->with('currency', $currency);
     }
 
     /**
@@ -33,9 +34,12 @@ class PurchaseController extends Controller
     {
         $cA = Account::all()->where('name', 'النقد')->first();
         $accounts = Account::all()->where('parent_id', $cA->id);
+        $vendors = Vendor::all();
+
         return view('invertory.createFromInvertory', [
             'invertories' => Invertory::all(),
             'equityAccounts' => $accounts,
+            'vendors' => $vendors
         ]);
     }
 
