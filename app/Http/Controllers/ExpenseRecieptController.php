@@ -81,7 +81,10 @@ class ExpenseRecieptController extends Controller
                 'currency_value' => $request->currency_value,
                 'currency_id' => $request->session()->get('currency_id'),
             ]);
+            $this->createCreditEntry($reciept->vendor->account_id, $sypCurrency, $entry['rate'] * $entry['qty'], $recieptTransaction, $request->currency_value);
+            $this->createDebitEntry($reciept->expense_id, $sypCurrency->id, $request->paidAmount, $recieptTransaction, $request->currency_value);
         }
+
         $reciept->save();
         return redirect()->route('expenses.index');
     }
@@ -186,13 +189,13 @@ class ExpenseRecieptController extends Controller
             $mirroredTransaction = $this->createTransaction('(قيد معكوس) ' . $request->name, $request->date, $sypCurrency->id, 'هذا القيد معكوس...\n' . $request->description);
             $exchange_expense_account = Account::all()->where('name', 'مصاريف تحويل عملة')->first();
             $crRecord_mirrored = $this->createCreditEntry($exchange_expense_account->id, $sypCurrency->id, $request->paidAmount * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
-            $drRecord_mirrored = $this->createDebitEntry($reciept->expense_id, $sypCurrency->id, $request->paidAmount * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
+            $drRecord_mirrored = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $request->paidAmount * $currencyVALUE, $mirroredTransaction, $currencyVALUE);
             $crRecord = $this->createCreditEntry($request->designatedAccountId, $usdCurrency->id, $request->paidAmount, $unMirroredTransaction, $currencyVALUE);
-            $drRecord = $this->createDebitEntry($reciept->expense_id, $usdCurrency->id, $request->paidAmount, $unMirroredTransaction, $currencyVALUE);
+            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $usdCurrency->id, $request->paidAmount, $unMirroredTransaction, $currencyVALUE);
         } else {
             $newTransaction = $this->createTransaction('دفعة للفاتورة ' . sprintf('%08d', $reciept->id), $request->date, $sypCurrency->id, 'تسديد دفعة للفاتورة');
             $crRecord = $this->createCreditEntry($request->designatedAccountId, $sypCurrency->id, $request->paidAmount, $transaction, $request->currency_value);
-            $drRecord = $this->createDebitEntry($reciept->expense_id, $sypCurrency->id, $request->paidAmount, $transaction, $request->currency_value);
+            $drRecord = $this->createDebitEntry($reciept->vendor->account_id, $sypCurrency->id, $request->paidAmount, $transaction, $request->currency_value);
             alert()->success('Successfully completed transaction');
         }
 
