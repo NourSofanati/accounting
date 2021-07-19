@@ -11,7 +11,7 @@
                 <div>
                     <x-jet-label for="paidAmount" value="{{ __('قيمة الدفعة') }}" />
                     <x-jet-input id="paidAmount" class="block mt-1 w-full" type="text" name="paidAmount"
-                        value="{{ $invoice->totalDue() }}" required autofocus autocomplete="paidAmount" />
+                        value="{{ $invoice->totalDue() * $invoice->currency_value }}" required autofocus autocomplete="paidAmount" />
                 </div>
                 <div class="mt-4">
                     <x-jet-label for="retainAmount" value="{{ __('التوقيفات') }}" />

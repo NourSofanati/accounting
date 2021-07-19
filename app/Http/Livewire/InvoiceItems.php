@@ -8,6 +8,7 @@ use Livewire\Component;
 
 class InvoiceItems extends Component
 {
+    public $months = [];
     public $dueAmount;
     public $invoiceLines = [];
     public $draftInvoice;
@@ -15,8 +16,23 @@ class InvoiceItems extends Component
     public $cashAccounts;
     public $USDprice;
     public $currency;
+    public $selectedMonth;
     public function mount()
     {
+        $this->months = [
+            "كانون الثاني",
+            "شباط",
+            "آذار",
+            "نيسان",
+            "أيار",
+            "حزيران",
+            "تموز",
+            "آب",
+            "أيلول",
+            "تشرين الأول",
+            "تشرين الثاني",
+            "كانون الأول",
+        ];
         $this->currency = Currency::all()->where('id', session('currency_id'))->first();
         $this->dueAmount = 0;
         $this->invoiceLines = [['description' => '', 'rate' => 0, 'qty' => 1, 'total' => '']];
@@ -43,4 +59,5 @@ class InvoiceItems extends Component
     {
         $this->taxItems[] = ['tax_id' => 1, 'tax_amount' => 0];
     }
+    
 }

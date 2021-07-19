@@ -10,7 +10,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="p-5">
+            <div class="p-5" >
                 <div class="flex my-5">
                     @if ($invoice->status == 'مسودة')
                         <form action="{{ route('markInvoiceSent', $invoice) }}" method="post">
@@ -31,7 +31,7 @@
                         href="{{ route('invoices.index') }}">الرجوع لصفحة الفواتير</a>
                 </div>
 
-                {{-- <div class="rounded bg-white shadow-xl p-5" data-printable>
+                <div class="rounded bg-white shadow-xl p-5" data-printable>
                     <header>
                         <div class="flex justify-between pb-8 ">
                             <div>
@@ -170,112 +170,8 @@
                             </tbody>
                         </table>
                     @endif
-                </div> --}}
-                <div class="rounded bg-white shadow-xl p-5" style="width: 100%;
-aspect-ratio: 1/1.294;" data-printable>
-                    <header>
-                        <div class="flex justify-between pb-8 ">
-                            <img src="https://diyarpower.com/scripts/Wells/inilogo.png" class="w-64" />
-                            <div class="text-left  font-bold" dir="ltr">
-                                IOI SYSTEM Tech S.A.L<br>Production Engineering ‘s<br>Middle East Company<br>
-                                FAX : +963112240004<br>
-                                No.{{ $invoice->id }}<br>
-                                DATE : {{ $invoice->issueDate }}
-                            </div>
-
-                    </header>
-                    <div class="w-10/12 mx-auto mt-10" style="font-family:'Times New Roman', Times, serif">
-                        <div class="text-center" style="font-family:'Times New Roman', Times, serif">
-                            السادة : {{ $invoice->customer->name }} المحترمين
-                        </div>
-                        <p class="font-bold">
-                            إشارة إلى العقد رقم 101/2019 الموقع مع شركتكم لتحسين إنتاج خمسة وعشرين بئراً في حقل وادي
-                            عبيد , وإشارة إلى
-                            محضر
-                            الاجتماع المشترك رقم /11/ المتضمن الكشف الشهري بكميات النفط الإضافي الزائد عن نفط الأساس
-                            خلال شهر
-                            {{$months[$invoice->invoice_month ]}}
-                            ,
-                            يرجى
-                            صرف مستحقاتنا والبالغلة <span id="totalNumber" class="underline">صفر</span> دولار امريكي
-                            الأساس خلال شهر
-                            {{$months[$invoice->invoice_month ]}}
-                            وفق مايلي:
-                        </p>
-                        <table class="min-w-full border border-collapse border-black table-fixed text-center mt-10">
-                            <thead>
-                                <tr>
-                                    <th class="border border-collapse border-black w-1/4 col-1 text-center">الشهر</th>
-                                    <th class="border border-collapse border-black w-1/4 col-1 text-center">كمية النفط
-                                        الزائدة
-                                        <br />
-                                        برميل
-                                    </th>
-                                    <th class="border border-collapse border-black w-1/4 col-1 text-center">أجرة برميل
-                                        الواحد
-                                        <br />
-                                        دولار اميركي
-                                    </th>
-                                    <th class="border border-collapse border-black w-1/4 col-1 text-center">الإجرة
-                                        المستحقة
-                                        <br />
-                                        دولار امريكي
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($invoice->items as $index => $line)
-                                    <tr>
-
-                                        <td class="w-1/4 border border-black text-center relative">
-                                            {{ $line->description }}
-                                        </td>
-                                        <td class="w-1/4 border border-black text-center">
-                                            {{ $line->qty }}
-                                        </td>
-                                        <td class="w-1/4 border border-black text-center">
-                                            ${{ $line->rate }}
-                                        </td>
-                                        <td class="w-1/4 border border-black text-center">
-                                            ${{ $line->rate * $line->qty }}
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr class="font-bold">
-                                    <td class="border border-black py-2">المجموع</td>
-                                    <td class="border border-black py-2"></td>
-                                    <td class="border border-black py-2"></td>
-                                    <td class="border border-black py-2">
-                                        ${{ $dueAmount }}
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        <h1 class="font-bold"> وذلك نقداً بالليرات السورية حسب المادة العاشرة من العقد وفق نشرة المصارف
-                            والصرافة الصادرة
-                            عن مصرف سورية
-                            المركزي بتاريخ الإستحقاق</h1>
-
-                        <h1 class="font-bold mt-10 text-center">شاكرين حسن تعاونكم
-                        </h1>
-
-                        <h1 class="font-bold mt-10 text-left">المدير العام
-                        </h1>
-                    </div>
-                    @section('footerScripts')
-                        <script>
-                            totalNumber.innerText = tafqit({{ $dueAmount }});
-                            // const totalNumber = document.getElementById('totalNumber');
-
-                            // let input = document.getElementById('dueAmount');
-                            // setInterval(() => {
-                            // }, 50);
-                        </script>
-                    @endsection
                 </div>
             </div>
         </div>
+    </div>
 </x-app-layout>

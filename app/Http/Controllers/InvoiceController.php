@@ -46,10 +46,10 @@ class InvoiceController extends Controller
         );
         foreach ($invoices as $invoice) {
             if ($invoice->status == "مسودة") {
-                $revenueSplit["draft"] += $invoice->totalDue();
+                $revenueSplit["draft"] += $invoice->totalDue() * $invoice->currency_value;
             } else {
-                $revenueSplit["recievables"] += $invoice->totalDue();
-                $revenueSplit["paid"] += $invoice->totalPaid() - $invoice->totalTaxes();
+                $revenueSplit["recievables"] += $invoice->totalDue() * $invoice->currency_value;
+                $revenueSplit["paid"] += ($invoice->totalPaid() * $invoice->currency_value) - $invoice->totalTaxes();
                 $revenueSplit["paidTaxes"] += $invoice->totalTaxes();
                 $revenueSplit["retains"] += $invoice->totalRetains();
             }
@@ -128,7 +128,7 @@ class InvoiceController extends Controller
             ]);
             InvoicePayment::create([
                 'date' => $request->date,
-                'amount' => $key->amount,
+                'amount' => $key->amount / $invoice->currency_value,
                 'invoice_id' => $invoice->id,
                 'currency_id' => $invoice->currency_id,
                 'currency_value' => $request->currency_value
@@ -168,13 +168,15 @@ class InvoiceController extends Controller
     {
 
         $this->validate($request, [
-           
+
             'filenames.*' => 'mimes:jpeg,jpg,png,gif,doc,pdf,docx,zip'
         ]);
         $invoice = Invoice::find($request->invoiceNumber);
         $invoice->issueDate = $request->issueDate;
         $invoice->dueDate = $request->dueDate;
         $invoice->customer_id = $request->customer_id;
+        $invoice->invoice_date = $request->invoice_date;
+        $invoice->invoice_month = $request->invoice_month;
         $invoiceTransaction = Transaction::create([
             'transaction_name' => 'Invoice ' . sprintf("%07d", $invoice->id),
             'transaction_date' => $invoice->issueDate,
@@ -190,9 +192,6 @@ class InvoiceController extends Controller
         $invoice->save();
         if ($request->hasfile('filenames')) {
             foreach ($request->file('filenames') as $file) {
-                // $name = time() . '.' . $file->extension();
-                // $file->move(public_path() . '/files/', $name);
-                // $data[] = $name;
                 $imageName = "invoice" . sprintf("%08d", $invoice->id) . ' ' . $file->name . ' .' . $file->extension();
                 $file->storeAs('images', $imageName, 'public');
                 $attachment = Attachment::create([
@@ -229,8 +228,21 @@ class InvoiceController extends Controller
             $dueAmount += $item->amount;
         }
         $currency = Currency::all()->where('id', session('currency_id'))->first();
-
-        return view('invoices.show')->with('invoice', $invoice)->with('dueAmount', $dueAmount)->with('currency', $currency);
+        $months = [
+            "كانون الثاني",
+            "شباط",
+            "آذار",
+            "نيسان",
+            "أيار",
+            "حزيران",
+            "تموز",
+            "آب",
+            "أيلول",
+            "تشرين الأول",
+            "تشرين الثاني",
+            "كانون الأول",
+        ];
+        return view('invoices.show')->with('invoice', $invoice)->with('dueAmount', $dueAmount)->with('currency', $currency)->with('months', $months);
     }
 
     /**
@@ -249,14 +261,14 @@ class InvoiceController extends Controller
         Entry::create([
             'currency_value' => $invoice->currency_value,
             'currency_id' => $invoice->currency_id,
-            'cr' => $invoice->total(),
+            'cr' => $invoice->total() * $invoice->currency_value,
             'account_id' => $invoice->customer->profit_account_id,
             'transaction_id' => $transaction->id,
         ]);
         Entry::create([
             'currency_value' => $invoice->currency_value,
             'currency_id' => $invoice->currency_id,
-            'dr' => $invoice->total(),
+            'dr' => $invoice->total() * $invoice->currency_value,
             'account_id' => $invoice->customer->account_id,
             'transaction_id' => $transaction->id,
         ]);
@@ -327,7 +339,7 @@ class InvoiceController extends Controller
         ]);
         InvoicePayment::create([
             'date' => $request->date,
-            'amount' => $request->paidAmount - $request->retainAmount,
+            'amount' => ($request->paidAmount - $request->retainAmount) / $invoice->currency_value,
             'invoice_id' => $invoice->id,
             'currency_id' => $request->session()->get('currency_id'),
             'currency_value' => $request->currency_value

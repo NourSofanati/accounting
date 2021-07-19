@@ -23,6 +23,8 @@ class CreateInvoicesTable extends Migration
             $table->date('dueDate')->nullable();
             $table->enum('status', ['مسودة', 'مرسلة', 'مدفوعة'])->default('مسودة');
             $table->integer('currency_value')->nullable();
+            $table->integer('invoice_month')->nullable();
+            $table->text('invoice_date')->nullable();
             $table->foreignIdFor(Transaction::class, 'transaction_id')->nullable();
             $table->foreignIdFor(Customer::class, 'customer_id')->nullable();
             $table->foreignIdFor(Currency::class, 'currency_id')->nullable();
