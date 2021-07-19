@@ -132,5 +132,7 @@
             <li> <a href="{{ route('exchange.index') }}">تحويل عملة</a></li>
 
         </ul>
+         <a href="{{ route('reset') }}">تصفير البرنامج</a>
+
     </div>
 </nav>

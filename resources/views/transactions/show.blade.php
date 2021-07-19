@@ -57,12 +57,16 @@
                 </h1>
 
                 <ul>
-                    @foreach ($transaction->attachment_group->attachments as $attachment)
+                    @if($transaction->attachment_group)
+                    @forelse ($transaction->attachment_group->attachments as $attachment)
                         <li class="py-3 border-b">
                             <a
                                 href="{{ asset('attachments/' . $attachment->url) }}" target="_blank" >{{ $attachment->name }}</a>
                         </li>
-                    @endforeach
+			        @empty
+			            No Attachments
+                    @endforelse
+                    @endif
                 </ul>
             </div>
         </div>

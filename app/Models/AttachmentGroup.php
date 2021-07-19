@@ -10,6 +10,6 @@ class AttachmentGroup extends Model
     use HasFactory;
     public function attachments()
     {
-        return $this->hasMany(Attachment::class, 'group_id');
+        return $this->hasMany(Attachment::class, 'group_id','id');
     }
 }

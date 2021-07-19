@@ -98,6 +98,9 @@
                             </div>
                         @endforeach
                     </div>
+                    <div class="mt-5">
+                        
+                    </div>
                 </section>
                 <section id="payments">
                     <h1 class="text-xl pr-2s">الدفعات المسجلة</h1>

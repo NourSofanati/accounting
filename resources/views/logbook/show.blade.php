@@ -2,6 +2,7 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('التقارير') }}
+            <x-print-button/>
         </h2>
     </x-slot>
 
@@ -48,6 +49,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $totalCr=0;
+                                        $totalDr=0;
+                                    @endphp
                                     @foreach ($transactions as $transaction)
                                         @foreach ($transaction->entries as $entry)
                                             <tr class="border-b hover:bg-gray-100">
@@ -66,10 +71,22 @@
                                                     <td class="py-2 border text-left pl-3">
                                                         {{ $transaction->transaction_date }}</td>
                                                 @endif
+                                                @php
+                                                    $totalCr+=$entry['cr'];
+                                                    $totalDr+=$entry['dr'];
+                                                @endphp
                                             </tr>
                                         @endforeach
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr class="border-b hover:bg-gray-200 bg-gray-50 font-bold" >
+                                        <td class="py-2 border pr-3">المجموع</td>
+                                        <td class="py-2 border text-center">{{number_format($totalCr)}}</td>
+                                        <td class="py-2 border text-center">{{number_format($totalDr)}}</td>
+                                        <td class="py-2 border pl-3"></td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

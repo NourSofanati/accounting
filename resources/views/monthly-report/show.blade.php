@@ -4,6 +4,13 @@
             {{ __('إنشاء فاتورة جديدة') }}
         </h2>
     </x-slot>
+    <form class="hidden flex" action="{{ route('currency_rates.store') }}" method="post" data-isHideable>
+                        @csrf
+                        <x-jet-input type="number" placeholder="سعر العملة" name="currency_rate"
+                            value="{{ $currency_rate ? $currency_rate->currency_rate : 1 }}" />
+                        <x-jet-input type="submit" value="تعديل"
+                            class="px-3 bg-gray-700 shadow-md font-bold text-white mr-2" />
+                    </form>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-5 bg-white rounded-xl shadow-xl">

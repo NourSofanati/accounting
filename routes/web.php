@@ -55,6 +55,10 @@ Route::get('archives', [ArchiveController::class, 'index'])->name('archives');
 Route::resource('types', AccountTypeController::class);
 Route::resource('accounts', AccountController::class);
 Route::get('/accounts/{account}/ledger', [AccountController::class, 'ledger'])->name('accountledger');
+Route::get('/migrate', function(){
+    \Artisan::call('migrate:fresh --seed');
+    dd('تم التصفير');
+})->name('reset');
 // اليومية والقيود
 Route::resource('journals', TransactionController::class);
 // التقارير

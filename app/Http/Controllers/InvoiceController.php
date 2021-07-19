@@ -168,7 +168,7 @@ class InvoiceController extends Controller
     {
 
         $this->validate($request, [
-            'filenames' => 'required',
+           
             'filenames.*' => 'mimes:jpeg,jpg,png,gif,doc,pdf,docx,zip'
         ]);
         $invoice = Invoice::find($request->invoiceNumber);

@@ -24,7 +24,9 @@
                         <input type="number" name="value" id="value"
                             class="w-full h-full border-1 border-gray-300 rounded mt-2" required>
                     </div>
+		    @if(@$vendors)
                     <div class="mt-3">
+			
                         <label for="value">
                             المورد
                         </label>
@@ -36,6 +38,7 @@
                             @endforeach
                         </select>
                     </div>
+		    @endif
                     <div class="mt-3">
                         <label for="currency_value">
                             قيمة العملة

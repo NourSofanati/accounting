@@ -38,11 +38,13 @@
                                             $p->name
                                         }}
                                     </td>
+					@if($p->invertory)
                                     <td class="px-3 py-4">
                                         <a href="{{ route('invertories.show', $p->invertory) }}">
                                             {{ $p->invertory->name }}
                                         </a>
                                     </td>
+					@endif
                                     <td class="px-3 py-4">{{ $p->value . ' ' . $currency->sign }}</td>
                                 </tr>
                                 @php
