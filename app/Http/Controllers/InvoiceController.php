@@ -48,7 +48,7 @@ class InvoiceController extends Controller
             if ($invoice->status == "مسودة") {
                 $revenueSplit["draft"] += $invoice->totalDue() * $invoice->currency_value;
             } else {
-                $revenueSplit["recievables"] += $invoice->totalDueSyp();
+                $revenueSplit["recievables"] += $invoice->totalDue();
                 $revenueSplit["paid"] += ($invoice->totalPaid() * $invoice->currency_value) - $invoice->totalTaxes();
                 $revenueSplit["paidTaxes"] += $invoice->totalTaxes();
                 $revenueSplit["retains"] += $invoice->totalRetains();
