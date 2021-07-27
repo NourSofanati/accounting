@@ -51,7 +51,7 @@ class InvoiceController extends Controller
                 $revenueSplit["recievables"] += $invoice->totalDue();
                 $revenueSplit["paid"] += ($invoice->totalPaid() * $invoice->currency_value) - $invoice->totalTaxes();
                 $revenueSplit["paidTaxes"] += $invoice->totalTaxes();
-                $revenueSplit["retains"] += $invoice->totalRetains();
+                $revenueSplit["retains"] += $invoice->totalRetains() * $invoice->currency_value;
             }
         }
         $currency = Currency::all()->where('id', session('currency_id'))->first();
