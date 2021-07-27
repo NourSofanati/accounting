@@ -52,7 +52,7 @@ class Invoice extends Model
             if ($key->paid != true)
                 $total += $key->amount;
         }
-        return $total;
+        return $total / $this->currency_value;
     }
 
     public function totalPaid()
