@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $activeExpenseAccounts = [];
         foreach ($expenseAccounts as $a) {
             if ($a->ledgerBalance()) {
-                array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => abs($a->ledgerBalance()), 'parent' => $a->parent->name, 'id' => $a->id));
+                array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => abs($a->ledgerBalance()), 'parent' => $a->parent? $a->parent->name : '', 'id' => $a->id));
             }
         }
         $parentCashAccount = Account::where('name', 'النقد')->first();
