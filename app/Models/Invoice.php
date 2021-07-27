@@ -80,4 +80,8 @@ class Invoice extends Model
     {
         return ($this->total() - $this->totalPaid()) - $this->totalRetains();
     }
+    public function totalDueSyp()
+    {
+        return ($this->totalSyp() - $this->totalPaid()) - $this->totalRetains();
+    }
 }
