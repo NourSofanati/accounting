@@ -32,6 +32,11 @@ class Invoice extends Model
         }
         return $total;
     }
+
+    public function totalSyp()
+    {
+        return $this->total() * $this->currency_value;
+    }
     public function payments()
     {
         return $this->hasMany(InvoicePayment::class, 'invoice_id');
