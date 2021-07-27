@@ -224,9 +224,9 @@ class InvoiceController extends Controller
         foreach ($invoice->items as $item) {
             $dueAmount += ($item->qty * $item->rate);
         }
-        foreach ($invoice->taxes as $item) {
-            $dueAmount += $item->amount;
-        }
+        // foreach ($invoice->taxes as $item) {
+        //     $dueAmount += $item->amount;
+        // }
         $currency = Currency::all()->where('id', session('currency_id'))->first();
         $months = [
             "كانون الثاني",
