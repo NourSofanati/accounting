@@ -17,7 +17,7 @@
                                 :value="old('name')" required autofocus autocomplete="name" />
                         </div>
                         <div class="mt-5 flex">
-                            <input type="submit" value="إضافة الزبون"
+                            <input type="submit" value="إضافة الزبون" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
                                 class="px-3 py-2 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer"></a>
                             <a href="{{ route('customers.index') }}"
                                 class=" bg-gray-100 text-gray-500 px-3 py-2 rounded block shadow-md font-bold  hover:bg-gray-200 mr-5 duration-100 transition-all">إلغاء</a>

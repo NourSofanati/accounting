@@ -32,7 +32,7 @@
                         </select>
                     </div>
                     <div class="mt-3">
-                        <input type="submit" value="إضافة المستودع" class="block py-3 px-4 bg-indigo-600 text-white rounded cursor-pointer">
+                        <input type="submit" value="إضافة المستودع" class="block py-3 px-4 bg-indigo-600 text-white rounded cursor-pointer" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;">
                     </div>
                 </div>
             </form>

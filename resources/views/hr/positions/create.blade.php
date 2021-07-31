@@ -11,7 +11,7 @@
                 <label for="name">اسم المنصب</label>
                 <input type="text" required name="name" class="w-full h-full border-1 border-gray-300 rounded mt-2">
 
-                <input type="submit" value="إضافة المنصب" class="px-4 py-2 bg-indigo-500 text-white mt-3 rounded-lg">
+                <input type="submit" value="إضافة المنصب" class="px-4 py-2 bg-indigo-500 text-white mt-3 rounded-lg"  onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;">
             </form>
         </div>
     </div>

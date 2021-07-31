@@ -20,7 +20,7 @@
                     <x-jet-input type="date" required name="toData" placeholder="الشهر" value="{{$lastDate}}" />
                 </div>
 
-                <input type="submit" value="عرض تقرير الأرباح والخسائر"
+                <input type="submit" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;" value="عرض تقرير الأرباح والخسائر"
                     class="bg-lime text-white font-bold px-5 py-1 mt-5 rounded-xl hover:bg-green-700 cursor-pointer">
             </form>
         </div>

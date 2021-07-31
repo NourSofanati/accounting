@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\Currency;
+use App\Models\CurrencyRate;
 use Illuminate\Http\Request;
 
 class BalanceSheetController extends Controller
@@ -15,7 +16,7 @@ class BalanceSheetController extends Controller
         $currency = Currency::all()->where('id', session('currency_id'))->first();
         $otherCurrency = Currency::all()->where('id', '!=', session('currency_id'))->first();
 
-        return view('reports.balanceSheet', ['types' => $types, 'currency' => $currency, 'otherCurrency' => $otherCurrency]);
+        return view('reports.balanceSheet', ['types' => $types, 'currency' => $currency, 'otherCurrency' => $otherCurrency, 'currency_rate' => CurrencyRate::orderBy('created_at', 'desc')->first()]);
     }
     public function create()
     {

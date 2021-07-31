@@ -40,7 +40,7 @@
                                 <x-jet-input type="date" name="toDate" id="enableOnChecked" />
                             </div>
                             
-                            <input type="submit" value="طلب التقرير"
+                            <input type="submit" value="طلب التقرير" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
                                 class=" mt-5 rounded px-5 bg-lime hover:bg-lime-dark transition duration-75 py-2 text-white font-bold " />
                         </form>
                     </div>

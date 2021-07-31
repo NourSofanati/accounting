@@ -1,5 +1,12 @@
 <?php
 
+function date_compare($a, $b)
+{
+    $t1 = strtotime($a['date']);
+    $t2 = strtotime($b['date']);
+    return $t2 - $t1;
+}
+
 namespace App\Http\Controllers;
 
 use App\Models\Account;
@@ -179,12 +186,15 @@ class EmployeeController extends Controller
                 'uri' => $imageName,
             ]);
         }
-        foreach ($request->achievments as $index => $achievment) {
-            EmployeeAchivement::create([
-                'type' => $achievment['type'],
-                'achievment' => $achievment['achievment'],
-                'employee_id' => $employee_details['id'],
-            ]);
+
+        if ($request->achievments) {
+            foreach ($request->achievments as $index => $achievment) {
+                EmployeeAchivement::create([
+                    'type' => $achievment['type'],
+                    'achievment' => $achievment['achievment'],
+                    'employee_id' => $employee_details['id'],
+                ]);
+            }
         }
 
         $files = ($request->file('attachment'));
@@ -208,9 +218,19 @@ class EmployeeController extends Controller
      */
     public function show(EmployeeDetails $employee)
     {
-        return view('hr.show', ['employee' => $employee]);
-    }
 
+
+        $arr = [];
+        foreach ($employee->payments as $payment) {
+            array_push($arr, array('amount' => $payment->amount, 'date' => $payment->payment_date, 'type' => 'payment'));
+        }
+        foreach ($employee->bonuses as $bonus) {
+            array_push($arr, array('amount' => $bonus->bonus_amount, 'date' => $bonus->date, 'type' => 'bonus'));
+        }
+        usort($arr, 'date_compare');
+        // dd($arr);
+        return view('hr.show', ['employee' => $employee, 'payments' => $arr]);
+    }
     /**
      * Show the form for editing the specified resource.
      *

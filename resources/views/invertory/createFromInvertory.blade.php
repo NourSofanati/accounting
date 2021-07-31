@@ -103,7 +103,7 @@
                         <input type="file" name="image" />
                     </div>
                     <div class="mt-3">
-                        <input type="submit" value="إضافة الأصل"
+                        <input type="submit" value="إضافة الأصل" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
                             class="block py-3 px-4 bg-indigo-600 text-white rounded cursor-pointer">
 
                     </div>

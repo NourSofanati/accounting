@@ -10,8 +10,10 @@ use App\Http\Controllers\CurrencyRateController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeBonusController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeePaymentsController;
+use App\Http\Controllers\EmployeeVacationController;
 use App\Http\Controllers\ExpenseRecieptController;
 use App\Http\Controllers\FixedAssetController;
 use App\Http\Controllers\GeneralLedgerController;
@@ -55,7 +57,7 @@ Route::get('archives', [ArchiveController::class, 'index'])->name('archives');
 Route::resource('types', AccountTypeController::class);
 Route::resource('accounts', AccountController::class);
 Route::get('/accounts/{account}/ledger', [AccountController::class, 'ledger'])->name('accountledger');
-Route::get('/migrate', function(){
+Route::get('/migrate', function () {
     \Artisan::call('migrate:fresh --seed');
     dd('تم التصفير');
 })->name('reset');
@@ -104,6 +106,8 @@ Route::resource('currency_rates', CurrencyRateController::class);
 // الموارد البشرية
 Route::resource('employees', EmployeeController::class);
 Route::resource('salary', EmployeePaymentsController::class);
+Route::resource('bonus', EmployeeBonusController::class);
+Route::resource('vacations', EmployeeVacationController::class);
 Route::get('paySalary/{employee}', [EmployeePaymentsController::class, 'showpayment'])->name('paySalary');
 // المناصب
 Route::resource('positions', PositionController::class);

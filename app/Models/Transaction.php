@@ -9,11 +9,25 @@ class Transaction extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'transaction_name', 'transaction_date', 'description', 'currency_id','mirror_id','attachment_group_id'
+        'transaction_name', 'transaction_date', 'description', 'currency_id', 'mirror_id', 'attachment_group_id'
     ];
     public function entries()
     {
         return $this->hasMany(Entry::class, 'transaction_id');
+    }
+
+    public function vacations()
+    {
+        return $this->hasMany(EmployeeVacation::class,'transaction_id');
+    }
+
+    public function creditTotal()
+    {
+        $total = 0;
+        foreach ($this->entries as $entry) {
+            $total += $entry['cr'];
+        }
+        return $total;
     }
     public function invoice()
     {

@@ -27,10 +27,11 @@
                                 :value="old('address')" required autofocus autocomplete="address" />
                         </div>
                     </div>
-                    <input type="submit" value="إضافة المورد" class="bg-green-500 text-white font-bold rounded-xl px-5 py-3">
+                    <input type="submit" value="إضافة المورد" class="bg-green-500 text-white font-bold rounded-xl px-5 py-3" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;">
                     <a class="mr-4" href="{{ route('vendors.index') }}">إلفاء</a>
                 </form>
             </div>
         </div>
     </div>
+    
 </x-app-layout>

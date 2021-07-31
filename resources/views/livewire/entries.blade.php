@@ -123,7 +123,7 @@
         <input type="file" multiple name="attachment[]" class="border border-dashed border-gray-400 text-sm py-3 mt-3 rounded-xl" placeholder="أرفق ملفات"/>
     </div>
     <div class="mt-5 flex">
-        <input type="submit" value="إضافة القيد"
+        <input type="submit" value="إضافة القيد" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
             class="rounded-md shadow-md font-bold px-3 py-3 block w-50 hover:shadow-xl transition-shadow ease-linear duration-200 {{ $diff != 0 ? ' cursor-not-allowed bg-gray-400 text-gray-600' : 'bg-indigo-600 cursor-pointer text-white' }}"
             {{ $diff != 0 ? 'disabled' : '' }}></a>
         <a wire:click.prevent="cancelTransaction"

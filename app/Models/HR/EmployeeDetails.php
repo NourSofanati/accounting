@@ -3,7 +3,9 @@
 namespace App\Models\HR;
 
 use App\Models\EmployeeAchivement;
+use App\Models\EmployeeBonus;
 use App\Models\EmployeeLiability;
+use App\Models\EmployeeVacation;
 use App\Models\Invertory;
 use App\Models\Position;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,6 +66,10 @@ class EmployeeDetails extends Model
     {
         return $this->hasMany(EmployeePayments::class, 'employee_id');
     }
+    public function bonuses()
+    {
+        return $this->hasMany(EmployeeBonus::class, 'employee_id');
+    }
 
     public function totalLiabilities()
     {
@@ -81,8 +87,20 @@ class EmployeeDetails extends Model
         }
         return $total;
     }
+    public function totalBonuses()
+    {
+        $total = 0;
+        foreach ($this->bonuses as $bonus) {
+            $total += $bonus->bonus_amount;
+        }
+        return $total;
+    }
     public function totalDue()
     {
         return $this->totalLiabilities() - $this->totalPayments();
+    }
+    public function vacations()
+    {
+        return $this->hasMany(EmployeeVacation::class,'employee_id');
     }
 }

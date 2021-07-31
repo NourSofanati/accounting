@@ -8,6 +8,14 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <form class="hidden flex" action="{{ route('currency_rates.store') }}" method="post" data-isHideable>
+                @csrf
+                <x-jet-input type="number" placeholder="سعر العملة" name="currency_rate"
+                    value="{{ $currency_rate ? $currency_rate->currency_rate : 1 }}" />
+                <x-jet-input type="submit" value="تعديل القيمة"
+                    onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
+                    class="px-3 bg-gray-700 shadow-md font-bold text-white mr-2" />
+            </form>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5" data-printable>
                 <div class="flex justify-between pb-8 ">
                     <div>
@@ -42,8 +50,8 @@
                                             <td class="text-left px-3 py-4">
                                                 {{ $child->balance() . ' ' . $currency->sign }}
                                                 <br>
-                                                <span
-                                                    class="text-gray-500 text-sm hidden" data-isHideable>({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                                <span class="text-gray-500 text-sm hidden"
+                                                    data-isHideable>({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -54,8 +62,8 @@
                                         <td class="text-left px-3 py-4">
                                             {{ $account->balance() . ' ' . $currency->sign }}
                                             <br>
-                                            <span
-                                                class="text-gray-500 text-sm hidden" data-isHideable>({{ $account->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                            <span class="text-gray-500 text-sm hidden"
+                                                data-isHideable>({{ $account->usdBalance() . ' ' . $otherCurrency->sign }})</span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -70,8 +78,8 @@
                         <div class="font-bold px-3 py-4">حساب الأصول الكلي</div>
                         <div class="font-bold px-3 py-4 text-left">{{ $types[0]->balance() . ' ' . $currency->sign }}
                             <br>
-                            <span
-                                class="text-gray-500 text-sm hidden" data-isHideable>({{ $types[0]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                            <span class="text-gray-500 text-sm hidden"
+                                data-isHideable>({{ $types[0]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
                         </div>
                     </div>
                 </div>
@@ -95,7 +103,11 @@
                                             <tr class="border-b border-t border-dashed ">
                                                 <td class="text-right px-3 py-4"> {{ $child->name }}</td>
                                                 <td class="text-left px-3 py-4">
-                                                    {{ $child->balance() . ' ' . $currency->sign }}</td>
+                                                    {{ $child->balance() . ' ' . $currency->sign }}
+                                                    <br>
+                                                    <span class="text-gray-500 text-sm hidden"
+                                                        data-isHideable>({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                                </td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -104,7 +116,11 @@
                                     <tr class="font-bold">
                                         <td class="text-right px-3 py-4">المجموع:</td>
                                         <td class="text-left px-3 py-4">
-                                            {{ $account->balance() . ' ' . $currency->sign }}</td>
+                                            {{ $account->balance() . ' ' . $currency->sign }}
+                                            <br>
+                                            <span class="text-gray-500 text-sm hidden"
+                                                data-isHideable>({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -116,7 +132,10 @@
                         </div>
                         <div class="w-full flex justify-between">
                             <div class="font-bold px-3 py-4">حساب الاتزامات الكلي</div>
-                            <div class="font-bold px-3 py-4">{{ $types[1]->balance() . ' ' . $currency->sign }}</div>
+                            <div class="font-bold px-3 py-4">{{ $types[1]->balance() . ' ' . $currency->sign }} <br>
+                                <span class="text-gray-500 text-sm hidden"
+                                    data-isHideable>({{ $types[1]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,7 +154,11 @@
                                         <tr class="border-b border-t border-dashed ">
                                             <td class="text-right px-3 py-4"> {{ $child->name }}</td>
                                             <td class="text-left px-3 py-4">
-                                                {{ $child->balance() . ' ' . $currency->sign }}</td>
+                                                {{ $child->balance() . ' ' . $currency->sign }}
+                                                <br>
+                                                <span class="text-gray-500 text-sm hidden"
+                                                    data-isHideable>({{ $child->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                            </td>
                                         </tr>
                                     @endforeach
 
@@ -145,7 +168,11 @@
                                     <tr class="font-bold">
                                         <td class="text-right px-3 py-4">المجموع:</td>
                                         <td class="text-left px-3 py-4">
-                                            {{ $account->balance() . ' ' . $currency->sign }}</td>
+                                            {{ $account->balance() . ' ' . $currency->sign }}
+                                            <br>
+                                            <span class="text-gray-500 text-sm hidden"
+                                                data-isHideable>({{ $account->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -159,7 +186,11 @@
                         <div class="w-full flex justify-between">
                             <div class=" px-3 py-4">الربح الصافي</div>
                             <div class=" px-3 py-4">
-                                {{ $types[3]->balance() - $types[4]->balance() . ' ' . $currency->sign }}</div>
+                                {{ $types[3]->balance() - $types[4]->balance() . ' ' . $currency->sign }}
+                                <br>
+                                <span class="text-gray-500 text-sm hidden"
+                                    data-isHideable>({{ $types[3]->usdBalance() - $types[4]->usdBalance() . ' ' . $otherCurrency->sign }})</span>
+                            </div>
                         </div>
                         <div class="px-3">
                             <hr class="mb-1">
@@ -168,6 +199,9 @@
                             <div class="font-bold px-3 py-4">حساب حقوق الملكية</div>
                             <div class="font-bold px-3 py-4">
                                 {{ $types[2]->balance() + ($types[3]->balance() - $types[4]->balance()) . ' ' . $currency->sign }}
+                                <br>
+                                <span class="text-gray-500 text-sm hidden"
+                                    data-isHideable>({{ $types[2]->usdBalance() + ($types[3]->usdBalance() - $types[4]->usdBalance()) . ' ' . $otherCurrency->sign }})</span>
                             </div>
                         </div>
                     </div>
@@ -181,6 +215,9 @@
                         <div class="font-bold px-3 py-4">حساب الاتزامات + حقوق الملكية الكلي</div>
                         <div class="font-bold px-3 py-4">
                             {{ $types[1]->balance() + $types[2]->balance() + ($types[3]->balance() - $types[4]->balance()) . ' ' . $currency->sign }}
+                            <br>
+                            <span class="text-gray-500 text-sm hidden"
+                                data-isHideable>({{ number_format($types[1]->usdBalance() + $types[2]->usdBalance() + ($types[3]->usdBalance() - $types[4]->usdBalance()) , 2). ' ' . $otherCurrency->sign }})</span>
                         </div>
                     </div>
                 </div>

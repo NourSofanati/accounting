@@ -6,6 +6,7 @@
     </x-slot>
 
     <div class="py-12">
+        
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 @include('reports.header',['reportName'=>'دفتر الإستاذ العام'])
@@ -31,8 +32,12 @@
                                                 <td class="py-4 text-right whitespace-nowrap">
                                                     {{ $entry->transaction->transaction_name }}</td>
                                                 <td class="py-4 ">{{ $entry->transaction->transaction_date }}</td>
-                                                <td class="py-4 ">{{ $entry['dr'] ? $currency->sign . ' ' . $entry['dr'] : '' }}</td>
-                                                <td class="py-4 ">{{ $entry['cr'] ? $currency->sign . ' ' . $entry['cr'] : '' }}</td>
+                                                <td class="py-4 ">
+                                                    {{ $entry['dr'] ? $currency->sign . ' ' . $entry['dr'] : '' }}
+                                                </td>
+                                                <td class="py-4 ">
+                                                    {{ $entry['cr'] ? $currency->sign . ' ' . $entry['cr'] : '' }}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

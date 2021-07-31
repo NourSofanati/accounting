@@ -8,7 +8,7 @@
                         @csrf
                         <x-jet-input type="number" placeholder="سعر العملة" name="currency_rate"
                             value="{{ $currency_rate ? $currency_rate->currency_rate : 1 }}" />
-                        <x-jet-input type="submit" value="تعديل"
+                        <x-jet-input type="submit"  onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;" value="تعديل"
                             class="px-3 bg-gray-700 shadow-md font-bold text-white mr-2" />
                     </form>
     <div class="py-12">

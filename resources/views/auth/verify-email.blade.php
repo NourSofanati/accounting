@@ -19,7 +19,7 @@
                 @csrf
 
                 <div>
-                    <x-jet-button type="submit">
+                    <x-jet-button type="submit" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;">
                         {{ __('Resend Verification Email') }}
                     </x-jet-button>
                 </div>

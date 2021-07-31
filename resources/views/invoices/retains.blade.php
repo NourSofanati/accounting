@@ -46,7 +46,7 @@
                 </div>
                 <hr class="my-5">
                 @csrf
-                <input type="submit" value="قبض التوقيفات" class="p-4 bg-indigo-500 text-white rounded">
+                <input type="submit" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;" value="قبض التوقيفات" class="p-4 bg-indigo-500 text-white rounded">
             </form>
         </div>
     </div>

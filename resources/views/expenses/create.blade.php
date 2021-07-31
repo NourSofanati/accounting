@@ -11,7 +11,7 @@
                 @csrf
                 <div class="p-5">
                     <div class="flex my-5">
-                        <input type="submit" value="حفظ الفاتورة"
+                        <input type="submit" value="حفظ الفاتورة" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
                             class="bg-green-500 text-white font-bold px-5 py-3 rounded-xl hover:bg-green-700 cursor-pointer">
                         <a class="bg-gray-200 text-gray-500 font-bold px-5 py-3 rounded-xl hover:bg-gray-300 cursor-pointer mr-5"
                             href="{{ route('expenses.index') }}">إلغاء</a>

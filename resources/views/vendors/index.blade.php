@@ -18,7 +18,7 @@
                 @forelse ($vendors as $vendor)
                     <a class="flex bg-white shadow rounded-xl w-full mb-5" href="{{ route('vendors.show', $vendor) }}">
                         <div class="p-5">
-                            <img src="https://lh3.googleusercontent.com/proxy/QFYt4j4cgj_-WOjq0Lmba1liUARCUVK74O86vwvK-2hNpzqSDJpjULGzq9pJ0K_lk0MHss8v9piM38m5cYqpGSejqSIvLy-kK9yORzxP6iE"
+                            <img src="https://icon-library.com/images/vendor-icon-png/vendor-icon-png-7.jpg"
                                 class="h-20 rounded-full w-20 my-auto ring-4" />
                         </div>
                         <div class="p-5 text-right">

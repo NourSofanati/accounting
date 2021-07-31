@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\CurrencyRate;
 use App\Models\Invoice;
 use App\Models\MonthlyReport;
 use App\Models\Transaction;
@@ -74,7 +75,7 @@ class MonthlyReportController extends Controller
 
 
         //dd(['totalIncome' => $income, 'taxes' => $taxes, 'retains' => $retains,  'totalPaid' => $grossIncome - $taxes,'expenses' => $expenses-$taxes]);
-        return view('monthly-report.show', ['totalIncome' => $income, 'taxes' => $taxes, 'retains' => $retains,  'totalPaid' => $grossIncome - $taxes, 'expenses' => $expenses - $taxes, 'equityAccounts' => $equityAccounts, 'totalEquity' => $totalEquity]);
+        return view('monthly-report.show', ['currency_rate' => CurrencyRate::orderBy('created_at', 'desc')->first(), 'totalIncome' => $income, 'taxes' => $taxes, 'retains' => $retains,  'totalPaid' => $grossIncome - $taxes, 'expenses' => $expenses - $taxes, 'equityAccounts' => $equityAccounts, 'totalEquity' => $totalEquity]);
     }
 
     /**
