@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Account;
 use App\Models\AccountType;
+use App\Models\Invertory;
 use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+
         DB::table('currencies')->insert(
             array(
                 ['name' => 'Syrian Pound', 'code' => "SYP", "sign" => "ل.س"],
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         );
         $this->seedAccountTypes();
         $this->seedExpenseCategories();
+        $this->seedStorage();
     }
     public function seedAccountTypes()
     {
@@ -298,7 +300,7 @@ class DatabaseSeeder extends Seeder
                 'account_type' => Account::where('name', 'مصاريف الموردين')->first()->account_type,
                 'parent_id' => Account::where('name', 'مصاريف الموردين')->first()->id,
             ),
-            
+
             array(
                 'name' => 'ابو عمر',
                 'account_type' => AccountType::where('name', 'حقوق الملكية')->first()->id,
@@ -320,5 +322,37 @@ class DatabaseSeeder extends Seeder
                 $child
             );
         }
+    }
+
+    public function seedStorage()
+    {
+
+        $damascus = $this->createInvertory('دمشق', null);
+        $damascus_garage = $this->createInvertory('الكراج', $damascus->id);
+        $damascus_office = $this->createInvertory('المكتب', $damascus->id);
+        $field = $this->createInvertory('الحقل', null);
+    }
+
+    public function createInvertory($name, $parent_id)
+    {
+        $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
+        $expenseAccount = Account::all()->where('name', 'نفقات الأصول')->first();
+        $invertory = Invertory::create(['parent_id' => $parent_id, 'name' => $name]);
+        $invertoryAccount = Account::create([
+            'name' => $name,
+            'parent_id' => $invertory->parent_id ?
+                $invertory->parent->account_id : $fixedAccount->id,
+            'account_type' => 1
+        ]);
+        $invertoryExpenseAccount = Account::create([
+            'name' => $name,
+            'parent_id' => $invertory->parent_id ?
+                $invertory->parent->expense_account_id : $expenseAccount->id,
+            'account_type' => 5
+        ]);
+        $invertory->account_id = $invertoryAccount->id;
+        $invertory->expense_account_id = $invertoryExpenseAccount->id;
+        $invertory->save();
+        return $invertory;
     }
 }

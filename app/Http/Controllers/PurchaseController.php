@@ -7,6 +7,8 @@ use App\Models\Currency;
 use App\Models\FixedAsset;
 use App\Models\Invertory;
 use App\Models\Purchase;
+use App\Models\PurchaseItem;
+use App\Models\PurchaseItemAttributes;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 
@@ -35,9 +37,8 @@ class PurchaseController extends Controller
         $cA = Account::all()->where('name', 'النقد')->first();
         $accounts = Account::all()->where('parent_id', $cA->id);
         $vendors = Vendor::all();
-
-        return view('invertory.createFromInvertory', [
-            'invertories' => Invertory::all(),
+        return view('purchases.create', [
+            'invertories' =>  Invertory::where('parent_id', null)->get(),
             'equityAccounts' => $accounts,
             'vendors' => $vendors
         ]);
@@ -51,7 +52,17 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        $purchase = Purchase::create($request->all());
+        foreach ($request->item as $item) {
+            $purchaseItem = PurchaseItem::create($item + ['purchase_id' => $purchase->id]);
+            if (isset($item["attributes"]) && count($item["attributes"]) > 0) {
+                foreach ($item["attributes"] as $attribute) {
+                    PurchaseItemAttributes::create($attribute + ['purchase_item' => $purchaseItem->id]);
+                }
+            }
+        }
+        dd($purchase);
     }
 
     /**
@@ -62,7 +73,7 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        //
+        dd($purchase);
     }
 
     /**

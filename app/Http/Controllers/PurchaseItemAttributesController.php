@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Vendor;
+use App\Models\PurchaseItemAttributes;
 use Illuminate\Http\Request;
 
-class VendorController extends Controller
+class PurchaseItemAttributesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,7 @@ class VendorController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::all();
-        return view('vendors.index')->with('vendors', $vendors);
+        //
     }
 
     /**
@@ -26,7 +24,7 @@ class VendorController extends Controller
      */
     public function create()
     {
-        return view('vendors.create');
+        //
     }
 
     /**
@@ -37,39 +35,27 @@ class VendorController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'phone' => 'numeric|nullable',
-            'address' => 'nullable',
-        ]);
-        Vendor::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
-
-        return redirect()->route('vendors.index');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Vendor  $vendor
+     * @param  \App\Models\PurchaseItemAttributes  $purchaseItemAttributes
      * @return \Illuminate\Http\Response
      */
-    public function show(Vendor $vendor)
+    public function show(PurchaseItemAttributes $purchaseItemAttributes)
     {
-
-        return view('vendors.show', ['vendor' => $vendor]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Vendor  $vendor
+     * @param  \App\Models\PurchaseItemAttributes  $purchaseItemAttributes
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vendor $vendor)
+    public function edit(PurchaseItemAttributes $purchaseItemAttributes)
     {
         //
     }
@@ -78,10 +64,10 @@ class VendorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Vendor  $vendor
+     * @param  \App\Models\PurchaseItemAttributes  $purchaseItemAttributes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vendor $vendor)
+    public function update(Request $request, PurchaseItemAttributes $purchaseItemAttributes)
     {
         //
     }
@@ -89,10 +75,10 @@ class VendorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Vendor  $vendor
+     * @param  \App\Models\PurchaseItemAttributes  $purchaseItemAttributes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vendor $vendor)
+    public function destroy(PurchaseItemAttributes $purchaseItemAttributes)
     {
         //
     }

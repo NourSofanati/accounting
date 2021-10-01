@@ -214,8 +214,14 @@ class Account extends Model
         $currency = Currency::all()->where('id', session('currency_id'))->first();
         if ($this->grandparent()->name == 'النقد' || $this->grandparent()->name == 'الحسابات المستحقة') {
             $latestRate = CurrencyRate::orderBy('created_at', 'desc')->first();
+            if (isset($latestRate) && $latestRate->currency_rate == 0) {
+                $latestRate->currency_rate = 1;
+            }
+            if (!isset($latestRate)) {
+                $latestRate = CurrencyRate::create(['currency_rate' => 1]);
+            }
 
-            //dd($currency);
+
             if ($currency->code == 'USD') {
                 $sum *= $latestRate ? $latestRate->currency_rate : 1;
             } else {

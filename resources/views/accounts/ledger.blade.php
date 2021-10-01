@@ -8,10 +8,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-                @include('reports.header',['reportName'=>'دفتر الإستاذ لحساب '.$account->name])
+                @include('reports.header',['reportName'=>'دفتر الإستاذ لحساب '.$account->alias])
                 @if ($account->entries->count())
                     <div class=" my-24">
-                        <h1 style="color:#526BC5;" class="font-bold">حساب {{ $account->name }}</h1>
+                        <h1 style="color:#526BC5;" class="font-bold">حساب {{ $account->alias }}</h1>
                         <div class="h-1 w-full rounded" style="background:#526BC5"></div>
                         <table class="min-w-full text-center mb-10 mt-4">
                             <thead class="border-b ">
@@ -43,11 +43,11 @@
                                     <td class="sr-only">خرا ما حدا حيشوفو</td>
                                     @if ($account->ledgerCredit() > $account->ledgerDebit())
                                         <td class=""></td>
-                                        <td class="py-4 ">
+                                        <td class=" py-4 ">
                                             {{ $currency->sign . ' ' . ($account->ledgerCredit() - $account->ledgerDebit()) }}
                                         </td>
-                                    @else
-                                        <td class="py-4 ">
+                    @else
+                                        <td class="    py-4 ">
                                             {{ $currency->sign . ' ' . ($account->ledgerDebit() - $account->ledgerCredit()) }}
                                         </td>
                                         <td class=""></td>

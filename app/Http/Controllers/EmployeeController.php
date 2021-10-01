@@ -1,13 +1,15 @@
 <?php
 
-function date_compare($a, $b)
+
+namespace App\Http\Controllers;
+
+function dateCompare($a, $b)
 {
     $t1 = strtotime($a['date']);
     $t2 = strtotime($b['date']);
     return $t2 - $t1;
 }
 
-namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Attachment;
@@ -23,6 +25,7 @@ use App\Models\Position;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 
 class EmployeeController extends Controller
 {
@@ -210,6 +213,8 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index');
     }
 
+
+
     /**
      * Display the specified resource.
      *
@@ -227,8 +232,14 @@ class EmployeeController extends Controller
         foreach ($employee->bonuses as $bonus) {
             array_push($arr, array('amount' => $bonus->bonus_amount, 'date' => $bonus->date, 'type' => 'bonus'));
         }
-        usort($arr, 'date_compare');
-        // dd($arr);
+        //     public function dateCompare($a, $b)
+        // {
+        //     $t1 = strtotime($a['date']);
+        //     $t2 = strtotime($b['date']);
+        //     return $t2 - $t1;
+        // }
+        $dateCompare = fn ($a, $b) => strtotime($b['date']) - strtotime($a['date']);
+        //usort($arr, 'dateCompare');
         return view('hr.show', ['employee' => $employee, 'payments' => $arr]);
     }
     /**

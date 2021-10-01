@@ -2,6 +2,7 @@
 
 use App\Models\Account;
 use App\Models\AttachmentGroup;
+use App\Models\Invertory;
 use App\Models\Transaction;
 use App\Models\Vendor;
 use Illuminate\Database\Migrations\Migration;
@@ -23,7 +24,7 @@ class CreatePurchasesTable extends Migration
             $table->foreignIdFor(Vendor::class, 'vendor_id')->nullable();
             $table->foreignIdFor(Transaction::class, 'transaction_id')->nullable();
             $table->foreignIdFor(AttachmentGroup::class, 'attachments_id')->nullable();
-            $table->foreignIdFor(Account::class, 'purchased_asset_id');
+            $table->foreignIdFor(Invertory::class, 'invertory_id')->nullable();
             $table->longText('notes')->nullable();
             $table->timestamps();
         });

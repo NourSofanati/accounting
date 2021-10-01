@@ -34,6 +34,13 @@
     "Utilities": "خدمات عامة ",
     "Edit account": "تعديل الحساب",
     "Ledger": "دفتر الإستاذ",
-    "attachment":"الملف المرفق",
-    "attachments":"الملفات المرفقة"
+    "attachment": "الملف المرفق",
+    "attachments": "الملفات المرفقة",
+    "Vendor": "المورد",
+    "Invertory": "المخزن",
+    "Type": "النوع",
+    "Notes": "ملاحظات",
+    "Purchase date":"تاريخ الشراء",
+    "assets": "أصول",
+    "materials": "مواد"
 }

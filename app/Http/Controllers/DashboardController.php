@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $activeExpenseAccounts = [];
         foreach ($expenseAccounts as $a) {
             if ($a->ledgerBalance()) {
-                array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => abs($a->ledgerBalance()), 'parent' => $a->parent? $a->parent->name : '', 'id' => $a->id));
+                array_push($activeExpenseAccounts, array('name' => $a->name, 'balance' => abs($a->ledgerBalance()), 'parent' => $a->parent ? $a->parent->name : '', 'id' => $a->id));
             }
         }
         $parentCashAccount = Account::where('name', 'النقد')->first();
@@ -32,7 +32,6 @@ class DashboardController extends Controller
     public function invoices()
     {
         $invoices = Invoice::orderBy('created_at', 'desc')->where('currency_id', session('currency_id'))->get();
-
         $colors = array(
             "مسودة" => "gray",
             "مرسلة" => "yellow",
@@ -47,12 +46,12 @@ class DashboardController extends Controller
         );
         foreach ($invoices as $invoice) {
             if ($invoice->status == "مسودة") {
-                $revenueSplit["draft"] += $invoice->totalDue();
+                $revenueSplit["draft"] += $invoice->totalDue() * $invoice->currency_value;
             } else {
                 $revenueSplit["recievables"] += $invoice->totalDue();
-                $revenueSplit["paid"] += $invoice->totalPaid() - $invoice->totalTaxes();
+                $revenueSplit["paid"] += ($invoice->totalPaid() * $invoice->currency_value) - $invoice->totalTaxes();
                 $revenueSplit["paidTaxes"] += $invoice->totalTaxes();
-                $revenueSplit["retains"] += $invoice->totalRetains();
+                $revenueSplit["retains"] += $invoice->totalRetains() * $invoice->currency_value;
             }
         }
         return $revenueSplit;

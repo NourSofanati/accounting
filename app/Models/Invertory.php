@@ -27,4 +27,13 @@ class Invertory extends Model
     {
         return $this->hasMany(FixedAsset::class, 'invertory_id');
     }
+    public function name_and_path()
+    {
+        $name = $this->name;
+        if ($this->parent_id) {
+            return  $this->parent->name_and_path() . ' / ' . $name;
+        } else {
+            return $name;
+        }
+    }
 }

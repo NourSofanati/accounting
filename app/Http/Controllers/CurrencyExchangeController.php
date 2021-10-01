@@ -82,7 +82,6 @@ class CurrencyExchangeController extends Controller
         $account_from = Account::all()->where('id', $request->exchange_from)->first();
         $account_to = Account::all()->where('id', $request->exchange_to)->first();
         $amount = 0;
-        $transaction = null;
         if ($currency_from->code == 'USD') {
             $amount = $request->currency_value * $request->exchange_value;
             $transaction = Transaction::create([
@@ -94,12 +93,24 @@ class CurrencyExchangeController extends Controller
             $this->handleExchangeTo($amount, $account_to, $transaction, $currency_to, $request->currency_value);
         } else {
             $amount =  $request->exchange_value / $request->currency_value;
-            $transaction = Transaction::create([
-                'transaction_name' => 'Currency Convert to ' . $currency_to->code . Carbon::now(),
+            $transaction_syp = Transaction::create([
+                'transaction_name' => '(SYP) Currency Convert from ' . $currency_from->code . Carbon::now(),
                 'transaction_date' => $request->issueDate,
+                'currnecy_id' => $currency_from->id,
             ]);
-            $this->handleExchangeFrom($request->exchange_value, $account_from, $transaction, $currency_from, $request->currency_value);
-            $this->handleExchangeTo($amount, $account_to, $transaction, $currency_to, $request->currency_value);
+            $transaction_usd = Transaction::create([
+                'transaction_name' => '(USD) Currency Convert to ' . $currency_to->code . Carbon::now(),
+                'transaction_date' => $request->issueDate,
+                'currnecy_id' => $currency_to->id,
+            ]);
+            $transaction_syp->mirror_id = $transaction_usd->id;
+            $transaction_usd->mirror_id = $transaction_syp->id;
+
+            $transaction_syp->save();
+            $transaction_usd->save();
+
+            $this->handleExchangeFrom($request->exchange_value, $account_from, $transaction_syp, $currency_from, $request->currency_value);
+            $this->handleExchangeTo($amount, $account_to, $transaction_usd, $currency_to, $request->currency_value);
         }
         CurrencyExchange::create([
             'amount' => $amount,
@@ -128,13 +139,6 @@ class CurrencyExchangeController extends Controller
             'currency_id' => $currency_from->id,
             'currency_value' => $currency_value,
         ]);
-        // Entry::create([
-        //     'dr' => $amount,
-        //     'account_id' => $account_from->id,
-        //     'transaction_id' => $transaction->id,
-        //     'currency_id' => $currency_from->id,
-        //     'currency_value' => $currency_value,
-        // ]);
     }
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\ArchiveController;
@@ -36,6 +37,7 @@ use App\Models\HR\Employee;
 use App\Models\HR\EmployeePayments;
 use App\Models\Invertory;
 use App\Models\Receipt;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -121,3 +123,27 @@ Route::prefix('report')->group(function () {
     Route::resource('logbook', LogBookController::class);
 });
 //});
+
+
+Route::post('/modal-add-vendors', function (Request $request) {
+    Vendor::create($request->all());
+    return response()->json(['vendors' => Vendor::all()]);
+})->name('addVendorModal');
+Route::post('/modal-add-invertories', function (Request $request) {
+    $invertoryX = Invertory::create($request->all());
+    $invertories = Invertory::all();
+    $htmlString = "";
+    foreach ($invertories as $invertory) {
+        $selected = $invertory->name_and_path() == $invertoryX->name_and_path() ? 'selected' : '';
+        $htmlString .= "<option value=\"" . $invertory->id . "\" $selected>" . $invertory->name_and_path() . "</option>";
+    }
+    return response()->json(['htmlString' => $htmlString]);
+})->name('addInvertoryModal');
+Route::get('/allInvertories', function () {
+    $invertories = Invertory::all();
+    $htmlString = "";
+    foreach ($invertories as $invertory) {
+        $htmlString .= "<option value=\"" . $invertory->id . "\">" . $invertory->name_and_path() . "</option>";
+    }
+    return response()->json(['htmlString' => $htmlString]);
+})->name('getInvertories');

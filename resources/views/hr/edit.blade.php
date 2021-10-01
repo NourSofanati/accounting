@@ -111,7 +111,7 @@
                 </div>
                 <div class="col-span-3">
                     <hr class="my-5">
-                    <input type="submit" value="إضافة الموظف" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
+                    <input type="submit" value="تعديل الموظف" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
                         class="bg-indigo-500 text-white px-4 py-2 rounded-lg shadow">
                 </div>
             </form>

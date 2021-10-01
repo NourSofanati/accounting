@@ -77,6 +77,7 @@
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
     @livewireStyles
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Scripts -->
 
 </head>
@@ -118,14 +119,15 @@
 
     <script src="{{ mix('js/app.js') }}"></script>
 
-    
+
     <script src="{{ asset('js/tafqit.js') }}"></script>
     <script src="{{ asset('js/classes/IDrawable.js') }}" type="module"></script>
     <script src="{{ asset('js/classes/Pie.js') }}" type="module"></script>
     <script src="{{ asset('js/classes/Slice.js') }}" type="module"></script>
     <script src="{{ asset('js/main.js') }}" type="module"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @yield('footerScripts')
+    @stack('custom-scripts')
 </body>
 
 </html>
