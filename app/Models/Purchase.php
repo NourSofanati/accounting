@@ -39,7 +39,7 @@ class Purchase extends Model implements HasMedia
         return $this->hasMany(PurchasePayment::class, 'purchase_id');
     }
 
-    public function totalPayments()
+    public function totalPaid()
     {
         $total = 0;
         foreach ($this->payments as $payment) {
@@ -49,6 +49,6 @@ class Purchase extends Model implements HasMedia
     }
     public function totalDue()
     {
-        return $this->total() - $this->totalPayments();
+        return $this->total() - $this->totalPaid();
     }
 }

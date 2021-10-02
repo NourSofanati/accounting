@@ -25,6 +25,7 @@ use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchasePaymentController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StupidFormController;
@@ -32,10 +33,12 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\VendorController;
+use App\Models\Account;
 use App\Models\FixedAsset;
 use App\Models\HR\Employee;
 use App\Models\HR\EmployeePayments;
 use App\Models\Invertory;
+use App\Models\Purchase;
 use App\Models\Receipt;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Route;
@@ -110,6 +113,13 @@ Route::resource('employees', EmployeeController::class);
 Route::resource('salary', EmployeePaymentsController::class);
 Route::resource('bonus', EmployeeBonusController::class);
 Route::resource('vacations', EmployeeVacationController::class);
+Route::get('/purchase/{purchase}/pay', function (Request $request, Purchase $purchase) {
+    $cA = Account::all()->where('name', 'النقد')->first();
+    $accounts = Account::all()->where('parent_id', $cA->id);
+    return view('purchase-payment.addPayment')->with('purchase', $purchase)->with('parentAccounts', $accounts);
+})->name('purchase-payment');
+Route::post('/purchase/{purchase}/pay', [PurchasePaymentController::class, 'addPayment'])->name('addPaymentPost');
+
 Route::get('paySalary/{employee}', [EmployeePaymentsController::class, 'showpayment'])->name('paySalary');
 // المناصب
 Route::resource('positions', PositionController::class);

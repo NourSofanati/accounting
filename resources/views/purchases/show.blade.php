@@ -11,16 +11,16 @@
 
             <div class="p-5">
                 <div class="flex my-5">
-                    {{-- @if ($reciept->totalDue() != 0)
-                        <a href=" {{ route('addExpense', $reciept) }} "
+                    @if ($purchase->totalDue() != 0)
+                        <a href=" {{ route('purchase-payment', $purchase) }} "
                             class="px-3 py-2 ml-5 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">تسجيل
                             دفعة</a>
                     @endif
-                    @if ($reciept->totalPaid() != 0)
-                        <a href=" {{ route('refundReciept', $reciept) }} "
+                    @if ($purchase->totalPaid() != 0)
+                        <a href=" {{ route('refundReciept', $purchase) }} "
                             class="px-3 py-2 ml-5 rounded text-white block shadow-md font-bold bg-lime hover:bg-lime-dark duration-100 transition-all cursor-pointer">تسجيل
                             الفاتورة كمرتجع</a>
-                    @endif --}}
+                    @endif
                     <a class="bg-gray-200 text-gray-500 hover:bg-gray-300 px-3 ml-5 py-2 rounded block shadow-md font-bold duration-100 transition-all cursor-pointer"
                         href="{{ route('purchases.index') }}">الرجوع لصفحة الفواتير</a>
                 </div>
@@ -30,7 +30,7 @@
                         <div class="flex justify-between pb-8 ">
                             <div>
                                 <h1 class="font-semibold text-4xl pb-5" style="color:#526BC5">
-                                    فاتورة شراء {{__($purchase->type)}}
+                                    فاتورة شراء {{ __($purchase->type) }}
                                 </h1>
                                 الديار للطاقة - دمشق
                             </div>
@@ -66,7 +66,7 @@
                                 <div class=" flex flex-col">
                                     <span class="text-gray-500">المبلغ المستحق</span>
                                     <h1 class="text-black text-xl">
-                                        <span>{{ $purchase->total() . ' ل.س' }}</span>
+                                        <span>{{ $purchase->totalDue() . ' ل.س' }}</span>
                                     </h1>
                                 </div>
                             </div>

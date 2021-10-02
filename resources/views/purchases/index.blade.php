@@ -33,8 +33,23 @@
                                         {{ number_format($p->total()) . ' ل.س' }}
                                     </p>
                                 </section>
-                                <section class="bg-gray-200 text-gray-600 text-center py-5 px-4 mt-3 text-xl font-bold">
-                                    غير مدفوعة</section>
+                                @if ($p->totalDue() == 0)
+                                    <section
+                                        class="bg-green-200 text-green-600 text-center py-5 px-4 mt-3 text-xl font-bold">
+                                        مدفوعة</section>
+
+                                @else
+                                    @if ($p->totalPaid() >= 0 && $p->totalPaid() < $p->total())
+                                        <section
+                                            class="bg-yellow-200 text-yellow-600 text-center py-5 px-4 mt-3 text-xl font-bold">
+                                            مدفوعة جزئيا</section>
+                                    @else
+                                        <section
+                                            class="bg-gray-200 text-gray-600 text-center py-5 px-4 mt-3 text-xl font-bold">
+                                            غير مدفوعة</section>
+
+                                    @endif
+                                @endif
                             </a>
                         @endforeach
                     @else
