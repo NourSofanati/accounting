@@ -14,7 +14,7 @@
                         جديدة</a>
                 </div>
                 <hr class=" my-4">
-                <div class="border-2 border-dashed p-4 flex flex-wrap">
+                <div class="border-2 border-dashed p-4 flex flex-wrap gap-10">
                     @if ($purchases->count())
                         @foreach ($purchases as $p)
                             <a href="{{ route('purchases.show', $p) }}"
@@ -24,6 +24,8 @@
                                 </header>
                                 <section class="p-2  text-center  px-2">
                                     <h2 class="font-bold text-xl pb-4 border-b text-gray-600 text-center">
+                                        <span class="text-gray-500 text-lg">المورد:</span>
+                                        <br>
                                         {{ $p->vendor->name }}
                                     </h2>
                                     <p class="text-lg text-gray-500">{{ $p->date }}</p>
@@ -39,7 +41,7 @@
                                         مدفوعة</section>
 
                                 @else
-                                    @if ($p->totalPaid() >= 0 && $p->totalPaid() < $p->total())
+                                    @if ($p->totalPaid() > 0 && $p->totalPaid() < $p->total())
                                         <section
                                             class="bg-yellow-200 text-yellow-600 text-center py-5 px-4 mt-3 text-xl font-bold">
                                             مدفوعة جزئيا</section>

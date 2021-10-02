@@ -17,7 +17,7 @@
                             {{ __('Vendor') }}</label>
                         <div class="flex">
                             <select name="vendor_id" class="bg-gray-50 border-gray-300 border rounded w-full"
-                                id="vendors">
+                                id="vendors" required>
                                 @foreach ($vendors as $vendor)
                                     <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
                                 @endforeach
@@ -30,7 +30,7 @@
                             {{ __('Invertory') }}</label>
                         <div class="flex">
                             <select name="invertory_id" class="bg-gray-50 border-gray-300 border rounded w-full"
-                                id="invertories">
+                                id="invertories" required>
                                 @foreach ($invertories as $invertory)
                                     <option value="{{ $invertory->id }}">{{ $invertory->name_and_path() }}</option>
                                 @endforeach
@@ -43,14 +43,14 @@
                             {{ __('Purchase date') }}</label>
                         <div class="flex">
                             <input type="date" name="date" id="date"
-                                class="bg-gray-50 border-gray-300 border rounded w-full">
+                                class="bg-gray-50 border-gray-300 border rounded w-full" required>
                         </div>
                     </div>
                     <div class="mt-3">
                         <label for="type" class="text-lg">
                             {{ __('Type') }}</label>
                         <div class="flex">
-                            <select name="type" class="bg-gray-50 border-gray-300 border rounded w-full"
+                            <select name="type" class="bg-gray-50 border-gray-300 border rounded w-full" required
                                 id="invertories">
                                 <option value="asset">{{ __('assets') }}</option>
                                 <option value="material">{{ __('materials') }}</option>

@@ -62,7 +62,7 @@ class PurchaseController extends Controller
                 }
             }
         }
-        dd($purchase);
+        return redirect()->route('purchases.index');
     }
 
     /**
