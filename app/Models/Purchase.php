@@ -11,7 +11,7 @@ class Purchase extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-    protected $fillable = ['date', 'vendor_id', 'transaction_id', 'currency_value', 'type'];
+    protected $fillable = ['date', 'vendor_id', 'transaction_id', 'currency_value', 'type', 'invertory_id'];
 
     public function transaction()
     {

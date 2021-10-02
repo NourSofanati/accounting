@@ -147,6 +147,11 @@ class DatabaseSeeder extends Seeder
                 'parent_id' => null,
             ),
             array(
+                'name' => 'مواد',
+                'account_type' => AccountType::where('name', 'أصول')->first()->id,
+                'parent_id' => null,
+            ),
+            array(
                 'name' => 'خصومات مؤجلة',
                 'account_type' => AccountType::where('name', 'أصول')->first()->id,
                 'parent_id' => null,

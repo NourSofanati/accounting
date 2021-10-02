@@ -22,32 +22,35 @@ class PurchaseItemObserver
         $transaction = $purchase->transaction;
         $vendor = $purchase->vendor;
         if ($purchase->type == 'asset') {
-            $asset = FixedAsset::create([
-                'name' => $purchaseItem->item_name,
-                'value' => $purchaseItem->price,
-                'currency_id' => 1,
-                'currency_value' => $purchase->currency_value,
-                'purchase_date' => $purchase->date,
-                'invertory_id' => $purchase->invertory_id,
-                'vendor_id' => $purchase->vendor_id,
-            ]);
-            $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
-            $assetAccount = Account::create([
-                'name' => $asset->name,
-                'parent_id' => $asset->invertory->account_id,
-                'account_type' => $fixedAccount->account_type,
-            ]);
-            $expenseAccount = Account::all()->where('name', 'نفقات الأصول')->first();
-            $assetExpenseAccount = Account::create([
-                'name' => $asset->name,
-                'parent_id' => $asset->invertory->expense_account_id,
-                'account_type' => $expenseAccount->account_type,
-            ]);
-            $asset->account_id = $assetAccount->id;
-            $asset->expense_account_id = $assetExpenseAccount->id;
-            $asset->save();
-            $crRecord = $this->createCreditEntry($vendor->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
-            $drRecord = $this->createDebitEntry($asset->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
+            for ($i = 0; $i < $purchaseItem->qty; $i++) {
+
+                $asset = FixedAsset::create([
+                    'name' => $purchaseItem->item_name,
+                    'value' => $purchaseItem->price,
+                    'currency_id' => 1,
+                    'currency_value' => $purchase->currency_value,
+                    'purchase_date' => $purchase->date,
+                    'invertory_id' => $purchase->invertory_id,
+                    'vendor_id' => $purchase->vendor_id,
+                ]);
+                $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
+                $assetAccount = Account::create([
+                    'name' => $asset->name,
+                    'parent_id' => $asset->invertory->account_id,
+                    'account_type' => $fixedAccount->account_type,
+                ]);
+                $expenseAccount = Account::all()->where('name', 'نفقات الأصول')->first();
+                $assetExpenseAccount = Account::create([
+                    'name' => $asset->name,
+                    'parent_id' => $asset->invertory->expense_account_id,
+                    'account_type' => $expenseAccount->account_type,
+                ]);
+                $asset->account_id = $assetAccount->id;
+                $asset->expense_account_id = $assetExpenseAccount->id;
+                $asset->save();
+                $crRecord = $this->createCreditEntry($vendor->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
+                $drRecord = $this->createDebitEntry($asset->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
+            }
         } else {
         }
     }
