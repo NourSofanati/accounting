@@ -42,5 +42,7 @@
     "Notes": "ملاحظات",
     "Purchase date":"تاريخ الشراء",
     "assets": "أصول",
-    "materials": "مواد"
+    "materials": "مواد",
+    "asset": "أصل",
+    "material": "مادة"
 }

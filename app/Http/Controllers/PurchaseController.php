@@ -24,7 +24,7 @@ class PurchaseController extends Controller
         $currency = Currency::all()->where('id', session('currency_id'))->first();
 
         return view('purchases.index')
-            ->with('purchases', FixedAsset::all())->with('currency', $currency);
+            ->with('purchases', Purchase::all())->with('currency', $currency);
     }
 
     /**
@@ -73,7 +73,7 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        dd($purchase);
+        return view('purchases.show', compact('purchase'));
     }
 
     /**

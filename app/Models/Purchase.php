@@ -21,4 +21,34 @@ class Purchase extends Model implements HasMedia
     {
         return $this->belongsTo(Vendor::class, 'vendor_id');
     }
+    public function items()
+    {
+        return $this->hasMany(PurchaseItem::class, 'purchase_id');
+    }
+
+    public function total()
+    {
+        $total = 0;
+        foreach ($this->items as $item) {
+            $total += $item->price * $item->qty;
+        }
+        return $total;
+    }
+    public function payments()
+    {
+        return $this->hasMany(PurchasePayment::class, 'purchase_id');
+    }
+
+    public function totalPayments()
+    {
+        $total = 0;
+        foreach ($this->payments as $payment) {
+            $total += $payment->amount;
+        }
+        return $total;
+    }
+    public function totalDue()
+    {
+        return $this->total() - $this->totalPayments();
+    }
 }
