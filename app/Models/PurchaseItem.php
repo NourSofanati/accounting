@@ -13,4 +13,8 @@ class PurchaseItem extends Model
     {
         return $this->belongsTo(Purchase::class, 'purchase_id');
     }
+    public function attributes()
+    {
+        return $this->hasMany(PurchaseItemAttributes::class, 'purchase_item');
+    }
 }

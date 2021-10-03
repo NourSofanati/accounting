@@ -18,10 +18,16 @@ class FixedAsset extends Model
         'invertory_id',
         'purchase_account',
         'purchase_date',
+        'purchase_item_id',
         'currency_id',
         'currency_value',
         'attachment_id',
+        "depreciation_rate"
     ];
+    public function purchaseItem()
+    {
+        return $this->belongsTo(PurchaseItem::class, 'purchase_item_id');
+    }
 
     public function invertory()
     {

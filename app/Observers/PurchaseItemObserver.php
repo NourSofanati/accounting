@@ -32,6 +32,7 @@ class PurchaseItemObserver
                     'purchase_date' => $purchase->date,
                     'invertory_id' => $purchase->invertory_id,
                     'vendor_id' => $purchase->vendor_id,
+                    'purchase_item_id' => $purchaseItem->id,
                 ]);
                 $fixedAccount = Account::all()->where('name', 'أصول ثابتة')->first();
                 $assetAccount = Account::create([
@@ -39,14 +40,17 @@ class PurchaseItemObserver
                     'parent_id' => $asset->invertory->account_id,
                     'account_type' => $fixedAccount->account_type,
                 ]);
+
                 $expenseAccount = Account::all()->where('name', 'نفقات الأصول')->first();
                 $assetExpenseAccount = Account::create([
                     'name' => $asset->name,
                     'parent_id' => $asset->invertory->expense_account_id,
                     'account_type' => $expenseAccount->account_type,
                 ]);
+
                 $asset->account_id = $assetAccount->id;
                 $asset->expense_account_id = $assetExpenseAccount->id;
+
                 $asset->save();
                 $crRecord = $this->createCreditEntry($vendor->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
                 $drRecord = $this->createDebitEntry($asset->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
@@ -57,7 +61,6 @@ class PurchaseItemObserver
 
     public function createCreditEntry($account_id, $currency_id, $amount, Transaction $transaction, $currency_value)
     {
-
         $crEntry = Entry::create([
             'cr' => $amount,
             'account_id' => $account_id,
@@ -67,6 +70,7 @@ class PurchaseItemObserver
         ]);
         return $crEntry;
     }
+
     public function createDebitEntry($account_id, $currency_id, $amount, Transaction $transaction, $currency_value)
     {
         $drEntry = Entry::create([

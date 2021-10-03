@@ -157,3 +157,17 @@ Route::get('/allInvertories', function () {
     }
     return response()->json(['htmlString' => $htmlString]);
 })->name('getInvertories');
+
+Route::post('changeInvertoryModal', function (Request $request) {
+    $validated = $request->validate([
+        'asset_id'     => 'required|exists:fixed_assets,id',
+        'invertory_id' => 'exists:invertories,id',
+        'depreciation_rate' => 'numeric|between:0.00,100.00'
+    ]);
+    $asset = FixedAsset::find($validated["asset_id"]);
+    $asset->update([
+        'invertory_id' => $validated["invertory_id"],
+        'depreciation_rate' => $validated["depreciation_rate"],
+    ]);
+    return redirect()->back();
+})->name('changeInvertoryModal');

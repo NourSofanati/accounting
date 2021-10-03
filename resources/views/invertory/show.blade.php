@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="p-6">
+        <div>
             <div class="p-5">
                 <div class="flex">
                     <a href="{{ route('createFromInvertory', $invertory) }}"
@@ -41,51 +41,36 @@
                     <span class="text-gray-500">لا يوجد مخازن داخل هذا المستودع</span>
                 @endforelse
                 <hr class="my-5">
-                الأصول الموجودة:
-                <table class="min-w-full mt-3">
-                    <thead>
-                        <tr>
-                            <th>اسم الأصل</th>
-                            <th>قيمة الأصل</th>
-                            <th>المسؤول</th>
-                            <th>الملفات المرفقة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $totalValue = 0;
-                        @endphp
+                <div class="border-2 border-dashed p-4">
+                    <h1 class="text-2xl border-b-2 border-dashed pb-2 text-gray-600">
+                        الأصول
+                    </h1>
+                    <section class="mt-2 flex flex-wrap gap-10">
                         @forelse ($invertory->assets as $asset)
-                            <tr class="text-center">
-                                <td class="py-2">
-                                    <a>
-                                        {{ $asset->name }}
-                                    </a>
-                                </td>
-                                <td class="py-2">{{ $currency->sign . ' ' . $asset->value }}</td>
-                                @php
-                                    $totalValue += $asset->value;
-                                @endphp
-                                <td class="py-2">{{ $asset->supervisor }}</td>
-                                <td class="py-2">
-                                    <a href="{{ Storage::url('public/images/' . @$asset->attachment->url) }}"
-                                        target="_blank`">الملف
-                                        المرفق</a>
-                                </td>
-                            </tr>
+                            <div data-id="{{ $asset->id }}" data-isShowAssetModal
+                                class="border-2 text-center bg-white w-[250px] py-2 hover:scale-105 duration-100 transition cursor-pointer hover:shadow-2xl">
+                                <h1 class="text-xl py-2 pb-2 border-b-2 border-dashed">
+                                    {{ $asset->name }}
+                                </h1>
+                                <p class="text-center text-lg text-green-500 font-bold pb-2 border-b-2 border-dashed">
+                                    {{ $asset->value }} ل.س
+                                </p>
+                                <p class="text-center text-lg">
+                                    المورد: {{ $asset->vendor->name }}
+                                </p>
+                                <p class="text-center text-lg">
+                                    رقم الفاتورة: {{ $asset->purchaseItem->purchase->id }}
+                                </p>
+                            </div>
+                            @include('utils.assetModal')
                         @empty
-
+                            <div class="w-full text-center text-xl">
+                                لا يوجد اصول
+                            </div>
                         @endforelse
-                    </tbody>
-                    <tfoot>
-                        <tr class="text-center  border-double border-t-4 pt-5"> 
-                            <td class="py-2 font-bold">المجموع:</td>
-                            <td class="py-2 font-bold">{{ $currency->sign . ' ' .$totalValue }}</td>
-                            <td class="py-2 font-bold"></td>
-                            <td class="py-2 font-bold"></td>
-                        </tr>
-                    </tfoot>
-                </table>
+
+                    </section>
+                </div>
             </div>
         </div>
     </div>
