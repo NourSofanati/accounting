@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Invertory;
 use App\Models\MaterialCategory;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class MaterialCategoryController extends Controller
@@ -46,7 +49,27 @@ class MaterialCategoryController extends Controller
      */
     public function show(MaterialCategory $materialCategory)
     {
-        //
+        return view('materials.categories.show', compact('materialCategory'));
+    }
+
+    /**
+     * Show the form for creating a new resource with a material category.
+     *
+     * @param  \App\Models\MaterialCategory  $materialCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function showCreate(MaterialCategory $materialCategory)
+    {
+
+        $cA = Account::all()->where('name', 'النقد')->first();
+        $accounts = Account::all()->where('parent_id', $cA->id);
+        $vendors = Vendor::all();
+        return view('materials.purchase', [
+            'invertories' =>  Invertory::where('parent_id', null)->get(),
+            'equityAccounts' => $accounts,
+            'vendors' => $vendors,
+            'materialCategory' => $materialCategory,
+        ]);
     }
 
     /**

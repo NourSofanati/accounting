@@ -46,18 +46,7 @@
                                 class="bg-gray-50 border-gray-300 border rounded w-full" required>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <label for="type" class="text-lg">
-                            {{ __('Type') }}</label>
-                        <div class="flex">
-                            <select name="type" class="bg-gray-50 border-gray-300 border rounded w-full" required
-                                id="invertories">
-                                <option value="asset">{{ __('assets') }}</option>
-                                <option value="material">{{ __('materials') }}</option>
-                            </select>
-
-                        </div>
-                    </div>
+                    <input type="hidden" name="type" value="asset">
 
                     <div class="mt-3">
                         <label for="notes" class="text-lg">

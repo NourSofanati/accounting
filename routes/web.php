@@ -9,7 +9,6 @@ use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CurrencyExchangeController;
 use App\Http\Controllers\CurrencyRateController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeBonusController;
 use App\Http\Controllers\EmployeeController;
@@ -21,12 +20,13 @@ use App\Http\Controllers\GeneralLedgerController;
 use App\Http\Controllers\InvertoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LogBookController;
+use App\Http\Controllers\MaterialCategoryController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchasePaymentController;
-use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StupidFormController;
 use App\Http\Controllers\TaxController;
@@ -35,11 +35,11 @@ use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\VendorController;
 use App\Models\Account;
 use App\Models\FixedAsset;
-use App\Models\HR\Employee;
-use App\Models\HR\EmployeePayments;
 use App\Models\Invertory;
+use App\Models\Material;
+use App\Models\MaterialCategory;
+use App\Models\MaterialSpending;
 use App\Models\Purchase;
-use App\Models\Receipt;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Route;
 
@@ -171,3 +171,21 @@ Route::post('changeInvertoryModal', function (Request $request) {
     ]);
     return redirect()->back();
 })->name('changeInvertoryModal');
+Route::resource('materials', MaterialController::class);
+Route::resource('material-categories', MaterialCategoryController::class);
+Route::resource('material-spendings', MaterialCategoryController::class);
+Route::post('addMaterialCategoryModal', function (Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|unique:material_categories,name',
+        'unit' => 'string',
+    ]);
+    MaterialCategory::create($request->all());
+})->name('addMaterialCategoryModal');
+Route::post('addMaterialModal', function (Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|unique:material_categories,name',
+        'unit' => 'string',
+    ]);
+    Material::create($request->all());
+})->name('addMaterialModal');
+Route::get('material-categories/{materialCategory}/purchase', [MaterialCategoryController::class, 'showCreate'])->name('purchaseMaterial');

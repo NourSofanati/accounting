@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Currency;
-use App\Models\FixedAsset;
 use App\Models\Invertory;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
@@ -62,7 +61,10 @@ class PurchaseController extends Controller
                 }
             }
         }
-        return redirect()->route('purchases.index');
+        if ($purchase->type == 'asset')
+            return redirect()->route('purchases.index');
+        else
+            return redirect()->route('materials.index');
     }
 
     /**

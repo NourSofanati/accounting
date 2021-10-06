@@ -25,10 +25,14 @@ class Material extends Model
     {
         return $this->qty * $this->price;
     }
-
-    public function getAllQtyAttribute(bool $withUnit = false)
+    public function getRemainingPriceAttribute()
     {
-        return $withUnit ? $this->qty . ' ' . $this->category->unit : $this->qty;
+        return $this->total_price - ($this->total_spent * $this->price);
+    }
+
+    public function getAllQtyAttribute()
+    {
+        return $this->qty;
     }
 
     public function spendings()
@@ -45,9 +49,11 @@ class Material extends Model
         return $total;
     }
 
-    public function getAvailableQtyAttribute(bool $withUnit = false)
+
+
+    public function getAvailableQtyAttribute()
     {
         $available = $this->qty - $this->total_spent;
-        return $withUnit ? $available . ' ' . $this->category->unit : $available;
+        return $available;
     }
 }

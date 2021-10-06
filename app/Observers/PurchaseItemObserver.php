@@ -5,7 +5,10 @@ namespace App\Observers;
 use App\Models\Transaction;
 use App\Models\Entry;
 use App\Models\Account;
+use App\Models\AccountType;
 use App\Models\FixedAsset;
+use App\Models\Material;
+use App\Models\MaterialCategory;
 use App\Models\PurchaseItem;
 
 class PurchaseItemObserver
@@ -55,7 +58,23 @@ class PurchaseItemObserver
                 $crRecord = $this->createCreditEntry($vendor->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
                 $drRecord = $this->createDebitEntry($asset->account_id, 1, $asset->value, $transaction,  $purchase->currency_value);
             }
-        } else {
+        } elseif ($purchase->type == 'material') {
+            $materialsAccount = Account::select('id')->where('name', 'مواد')->first();
+            $materialsExpenseAccount = Account::firstOrCreate([
+                'name' => 'نفقات مواد',
+                'account_type' => AccountType::where('name', 'نفقات')->first()->id,
+                'parent_id' => null,
+            ])->first();
+            $category = MaterialCategory::where('name', $purchaseItem->item_name)->first();
+            $material = Material::create([
+                'invertory_id' => $purchase->invertory_id,
+                'category_id' => $category->id,
+                'purchase_item_id' => $purchaseItem->id,
+                'price' => $purchaseItem->price,
+                'qty' => $purchaseItem->qty,
+            ]);
+            $crRecord = $this->createCreditEntry($vendor->account_id, 1, $material->total_price, $transaction,  $purchase->currency_value);
+            $drRecord = $this->createDebitEntry($materialsAccount->id, 1, $material->total_price, $transaction,  $purchase->currency_value);
         }
     }
 

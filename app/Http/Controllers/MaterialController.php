@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\MaterialCategory;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -14,7 +15,8 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        //
+        $materialCategories = MaterialCategory::all();
+        return view('materials.index', compact('materialCategories'));
     }
 
     /**
@@ -24,7 +26,7 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        //
+        return view('materials.create');
     }
 
     /**

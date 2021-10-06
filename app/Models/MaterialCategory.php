@@ -13,12 +13,21 @@ class MaterialCategory extends Model
     {
         return $this->hasMany(Material::class, 'category_id');
     }
-    public function getTotalQtyAttribute(bool $withUnit = false)
+    public function getTotalQtyAttribute()
     {
         $totalQty = 0;
         foreach ($this->materials as $material) {
             $totalQty += $material->available_qty;
         }
-        return $withUnit ? $totalQty . ' ' . $this->unit : $totalQty;
+        return $totalQty;
     }
+    public function getTotalRemainingPriceAttribute()
+    {
+        $totalPrice = 0;
+        foreach ($this->materials as $material) {
+            $totalPrice += $material->remaining_price;
+        }
+        return $totalPrice;
+    }
+
 }
