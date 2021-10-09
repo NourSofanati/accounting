@@ -21,7 +21,7 @@ class AccountTypeController extends Controller
             session(['currency_id' => 1]);
         }
         return view('index')
-            ->with('accountTypes', AccountType::with(['accounts'])->get())
+            ->with('accountTypes', AccountType::with('accounts')->get())
             ->with('currency', Currency::all())
             ->with('currency_rate', CurrencyRate::orderBy('created_at', 'desc')->first());
     }

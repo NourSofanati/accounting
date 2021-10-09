@@ -46,4 +46,9 @@ class AccountType extends Model
         }
         return $totalBalance;
     }
+    public const IS_ASSET = 1;
+    public const IS_LIABILITY = 2;
+    public const IS_EQUITY = 3;
+    public const IS_INCOME = 4;
+    public const IS_EXPENSE = 5;
 }

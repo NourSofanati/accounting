@@ -13,6 +13,9 @@ class MaterialCategory extends Model
     {
         return $this->hasMany(Material::class, 'category_id');
     }
+
+
+
     public function getTotalQtyAttribute()
     {
         $totalQty = 0;
@@ -29,5 +32,4 @@ class MaterialCategory extends Model
         }
         return $totalPrice;
     }
-
 }

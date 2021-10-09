@@ -3,36 +3,36 @@
     <td class=" px-4 text-right ">
         <div class="flex " wire:click.prevent="showItem({{ $item }})">
             @if ($item->parent_id == null)
-                @switch($item->accountType->name)
-                    @case('أصول')
+                @switch($item->account_type)
+                    @case(1)
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="h-6 w-6 ml-3 text-indigo-500">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     @break
-                    @case('التزامات')
+                    @case(2)
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="h-6 w-6 ml-3 text-yellow-500	">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     @break
-                    @case('حقوق الملكية')
+                    @case(3)
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="h-6 w-6 ml-3 text-green-500	">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     @break
-                    @case('دخل')
+                    @case(4)
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="h-6 w-6 ml-3 text-blue-500	">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
                         </svg>
                     @break
-                    @case('نفقات')
+                    @case(5)
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="h-6 w-6 ml-3 text-red-400	">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -66,14 +66,14 @@
             </div>
         </div>
     </td>
-    <td class=" px-4 py-3">{{ $item->accountType->name }}</td>
+    <td class=" px-4 py-3">{{ $accountType }}</td>
 
     <td class=" px-4 py-6 ">
         <span>
             {{ $balance != 0 ? $balance : abs($balance) }}
         </span>
         <span class=" font-thin text-gray-400">
-            {{ $currency->sign }}
+            {{ $sign }}
         </span>
         <br>
         <span data-isHideable class="text-gray-400 hidden">({{ $usdBalance != 0 ? $usdBalance : abs($usdBalance) }})</span>

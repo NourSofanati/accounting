@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class=" mx-auto sm:px-6 lg:px-8">
+    <div class="p-6">
+        <div>
             <div class="sm:rounded-lg">
                 <div class="flex p-5 justify-between">
                     <div class="flex">
@@ -26,9 +26,8 @@
                             class="px-3 bg-gray-700 shadow-md font-bold text-white mr-2" />
                     </form>
                 </div>
-                <hr>
-                <div class="p-5">
-                    <table class="border min-w-full text-center table-fixed  rounded-t-xl">
+                <div >
+                    <table class="border min-w-full text-center table-fixed rounded-t-xl">
                         <thead class=" border table-header-group rounded-t-xl">
                             <tr class=" border">
                                 <th class="tracking-wide w-4/12 px-4 py-3 text-right">الحساب</th>

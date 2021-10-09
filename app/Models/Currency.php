@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     use HasFactory;
+    public const IS_SYP = 1;
+    public const IS_USD = 2;
 }

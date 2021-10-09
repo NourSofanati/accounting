@@ -1976,6 +1976,10 @@ select {
 .bg-transparent {
 	background-color: transparent;
 }
+.bg-red-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
+}
 .bg-opacity-25 {
 	--tw-bg-opacity: 0.25;
 }
