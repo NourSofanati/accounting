@@ -15,7 +15,6 @@ class PurchaseObserver
      */
     public function created(Purchase $purchase)
     {
-        //'transaction_name', 'transaction_date', 'description', 'currency_id', 'mirror_id', 'attachment_group_id'
         $purchaseTransaction = Transaction::create(
             [
                 'transaction_name' => 'فاتورة شراء ' . now(),

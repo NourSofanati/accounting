@@ -30,6 +30,12 @@ class Material extends Model
         return $this->total_price - ($this->total_spent * $this->price);
     }
 
+    public function getRemainingQtyAttribute()
+    {
+        return $this->qty - $this->total_spent;
+    }
+
+
     public function getAllQtyAttribute()
     {
         return $this->qty;

@@ -51,7 +51,6 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         $purchase = Purchase::create($request->all());
         foreach ($request->item as $item) {
             $purchaseItem = PurchaseItem::create($item + ['purchase_id' => $purchase->id]);
