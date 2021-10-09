@@ -15,7 +15,7 @@ class CreateMaterialCategoriesTable extends Migration
     {
         Schema::create('material_categories', function (Blueprint $table) {
             $table->id();
-            $table->text('name')->unique();
+            $table->text('name');
             $table->text('unit')->nullable();
             $table->timestamps();
         });
