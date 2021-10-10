@@ -15,7 +15,7 @@ class Account extends Model
     ];
     public function children()
     {
-        return $this->hasMany(Account::class, 'parent_id');
+        return $this->hasMany(Account::class, 'parent_id')->with('children');
     }
 
     public function parent()

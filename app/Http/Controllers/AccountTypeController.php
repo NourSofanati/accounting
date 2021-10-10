@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\AccountType;
+use App\Models\Account;
 use App\Models\Currency;
 use App\Models\CurrencyRate;
 use Illuminate\Http\Request;
@@ -20,8 +21,9 @@ class AccountTypeController extends Controller
         if (!$request->session()->has('currency_id')) {
             session(['currency_id' => 1]);
         }
+        $accounts = Account::with('children')->where('parent_id',null)->orderBy('account_type','ASC')->get();
         return view('index')
-            ->with('accountTypes', AccountType::with('accounts')->get())
+            ->with('accounts', $accounts)
             ->with('currency', Currency::all())
             ->with('currency_rate', CurrencyRate::orderBy('created_at', 'desc')->first());
     }

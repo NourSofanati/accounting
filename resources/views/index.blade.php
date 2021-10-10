@@ -18,15 +18,17 @@
                             قيود
                             جديدة</a>
                     </div>
-                    <form class="hidden flex" action="{{ route('currency_rates.store') }}" method="post" data-isHideable>
+                    <form class="hidden flex" action="{{ route('currency_rates.store') }}" method="post"
+                        data-isHideable>
                         @csrf
                         <x-jet-input type="number" placeholder="سعر العملة" name="currency_rate"
                             value="{{ $currency_rate ? $currency_rate->currency_rate : 1 }}" />
-                        <x-jet-input type="submit" value="تعديل" onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
+                        <x-jet-input type="submit" value="تعديل"
+                            onClick="this.disabled=true; this.value='جاري المعالجة...';this.form.submit();return false;"
                             class="px-3 bg-gray-700 shadow-md font-bold text-white mr-2" />
                     </form>
                 </div>
-                <div >
+                <div>
                     <table class="border min-w-full text-center table-fixed rounded-t-xl">
                         <thead class=" border table-header-group rounded-t-xl">
                             <tr class=" border">
@@ -36,14 +38,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($accountTypes as $accountType)
-                                @foreach ($accountType->accounts as $item)
-                                    @php
-                                        $depth = 0;
-                                        $items = ['item' => $item, $depth, $currency_rate];
-                                    @endphp
-                                    @include('layouts.list',$items)
-                                @endforeach
+                            @foreach ($accounts as $item)
+                                @php
+                                    $depth = 0;
+                                    $items = ['item' => $item, $depth, $currency_rate];
+                                @endphp
+                                @include('layouts.list',$items)
                             @endforeach
                         </tbody>
                     </table>
