@@ -18,7 +18,7 @@ class CreateEmployeePaymentsTable extends Migration
     {
         Schema::create('employee_payments', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount');
+            $table->decimal('amount',20);
             $table->integer('currency_value');
             $table->date('payment_date');
             $table->foreignIdFor(Currency::class, 'currency_id');
