@@ -195,3 +195,9 @@ Route::get('assets/{asset}/getAttributes', function (FixedAsset $asset) {
     $attributes = $asset->purchaseItem->attributes;
     return response()->json(['attributes' => $attributes]);
 })->name('getAssetAttributes');
+
+Route::get('search-vendors', function(Request $request) {
+    $query = $request->search_query;
+    $vendors = Vendor::search($query)->get();
+    return $vendors;
+});

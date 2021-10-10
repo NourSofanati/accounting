@@ -1280,6 +1280,9 @@ select {
 .ml-5 {
 	margin-left: 1.25rem;
 }
+.mb-1 {
+	margin-bottom: 0.25rem;
+}
 .mr-4 {
 	margin-right: 1rem;
 }
@@ -1298,9 +1301,6 @@ select {
 .mr-5 {
 	margin-right: 1.25rem;
 }
-.mb-1 {
-	margin-bottom: 0.25rem;
-}
 .mb-2 {
 	margin-bottom: 0.5rem;
 }
@@ -1309,6 +1309,9 @@ select {
 }
 .-mt-px {
 	margin-top: -1px;
+}
+.mb-3\.5 {
+	margin-bottom: 0.875rem;
 }
 .mb-8 {
 	margin-bottom: 2rem;
@@ -1576,6 +1579,22 @@ select {
 }
 .transform {
 	transform: var(--tw-transform);
+}
+@-webkit-keyframes spin {
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes spin {
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+.animate-spin {
+	-webkit-animation: spin 1s linear infinite;
+	        animation: spin 1s linear infinite;
 }
 .cursor-pointer {
 	cursor: pointer;
@@ -1913,6 +1932,10 @@ select {
 .bg-indigo-600\/30 {
 	background-color: rgba(79, 70, 229, 0.3);
 }
+.bg-lime {
+	--tw-bg-opacity: 1;
+	background-color: rgba(67, 191, 190, var(--tw-bg-opacity));
+}
 .bg-yellow-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(245, 158, 11, var(--tw-bg-opacity));
@@ -1920,10 +1943,6 @@ select {
 .bg-green-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(16, 185, 129, var(--tw-bg-opacity));
-}
-.bg-lime {
-	--tw-bg-opacity: 1;
-	background-color: rgba(67, 191, 190, var(--tw-bg-opacity));
 }
 .bg-green-200 {
 	--tw-bg-opacity: 1;
@@ -1979,10 +1998,6 @@ select {
 .bg-red-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
-}
-.bg-gray-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
 }
 .bg-opacity-25 {
 	--tw-bg-opacity: 0.25;
@@ -2506,6 +2521,17 @@ select {
 .ease-in-out {
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 .hover\:scale-105:hover {
 	--tw-scale-x: 1.05;
 	--tw-scale-y: 1.05;
@@ -2567,6 +2593,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
 }
+.hover\:bg-green-700:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(4, 120, 87, var(--tw-bg-opacity));
+}
 .hover\:bg-indigo-800:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(55, 48, 163, var(--tw-bg-opacity));
@@ -2574,10 +2604,6 @@ select {
 .hover\:bg-yellow-800:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(146, 64, 14, var(--tw-bg-opacity));
-}
-.hover\:bg-green-700:hover {
-	--tw-bg-opacity: 1;
-	background-color: rgba(4, 120, 87, var(--tw-bg-opacity));
 }
 .hover\:bg-gray-300:hover {
 	--tw-bg-opacity: 1;

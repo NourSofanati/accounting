@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Purchase extends Model implements HasMedia
 {
+    use Searchable;
     use HasFactory;
     use InteractsWithMedia;
     protected $fillable = ['date', 'vendor_id', 'transaction_id', 'currency_value', 'type', 'invertory_id'];

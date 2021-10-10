@@ -120,6 +120,7 @@
     <script src="{{ asset('js/tafqit.js') }}"></script>
     <script src="{{ asset('js/main.js') }}" type="module"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/jquery.debounce-1.0.5.js') }}"></script>
     @yield('footerScripts')
     @stack('custom-scripts')
 </body>

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Invoice extends Model
 {
+    use Searchable;
     use HasFactory;
     protected $fillable = [
         'id', 'customer_id', 'transaction_id', 'status', 'dueDate', 'issueDate', 'currency_id', 'currency_value', 'attachment_group_id', 'invoice_month', 'invoice_date'

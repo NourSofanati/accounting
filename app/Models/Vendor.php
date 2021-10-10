@@ -5,8 +5,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
 class Vendor extends Model
 {
+    use Searchable;
     use HasFactory;
     protected $fillable = [
         'name', 'account_id', 'loss_account_id', 'phone', 'address', 'id'
