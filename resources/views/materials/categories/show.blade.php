@@ -12,7 +12,7 @@
                 class="px-3 py-4 text-white block rounded-xl cursor-pointer hover:scale-105 transition-all duration-100 hover:shadow-xl shadow-md font-bold bg-green-400 ">
                 شراء {{ $materialCategory->name }}
             </a>
-            <a href="{{ route('purchaseMaterial', $materialCategory) }}"
+            <a href="{{ route('spendMaterial', $materialCategory) }}"
                 class="px-3 py-4 text-white block rounded-xl cursor-pointer hover:scale-105 transition-all duration-100 hover:shadow-xl shadow-md font-bold bg-red-400 ">
                 انفاق {{ $materialCategory->name }}
             </a>

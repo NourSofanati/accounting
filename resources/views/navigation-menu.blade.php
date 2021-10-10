@@ -17,6 +17,8 @@
                     :active="request()->routeIs('vendors.index')" :name="'vendors'" />
                 <x-jet-responsive-nav-link href="{{ route('purchases.index') }}"
                     :active="request()->routeIs('purchases.index')" :name="'purchases'" />
+                <x-jet-responsive-nav-link href="{{ route('materials.index') }}"
+                    :active="request()->routeIs('materials.index')" :name="'materials'" />
                 <x-jet-responsive-nav-link href="{{ route('expenses.index') }}"
                     :active="request()->routeIs('expenses.index')" :name="'expenses'" />
                 <x-jet-responsive-nav-link href="{{ route('invoices.index') }}"
@@ -55,7 +57,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             {{-- <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    
+
                 @endif
 
                 <div>

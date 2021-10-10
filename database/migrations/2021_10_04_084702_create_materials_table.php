@@ -18,6 +18,7 @@ class CreateMaterialsTable extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->foreignIdFor(Invertory::class, 'invertory_id');
             $table->foreignIdFor(PurchaseItem::class, 'purchase_item_id');
             $table->foreignIdFor(MaterialCategory::class, 'category_id');

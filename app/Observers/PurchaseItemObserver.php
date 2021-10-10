@@ -72,6 +72,7 @@ class PurchaseItemObserver
                 'purchase_item_id' => $purchaseItem->id,
                 'price' => $purchaseItem->price,
                 'qty' => $purchaseItem->qty,
+                'date' => $purchase->date
             ]);
             $crRecord = $this->createCreditEntry($vendor->account_id, 1, $material->total_price, $transaction,  $purchase->currency_value);
             $drRecord = $this->createDebitEntry($materialsAccount->id, 1, $material->total_price, $transaction,  $purchase->currency_value);

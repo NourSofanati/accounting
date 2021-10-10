@@ -22,6 +22,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\MaterialCategoryController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MaterialSpendingController;
 use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfitLossController;
@@ -144,8 +145,8 @@ Route::post('/modal-add-invertories', function (Request $request) {
     $invertories = Invertory::all();
     $htmlString = "";
     foreach ($invertories as $invertory) {
-        $selected = $invertory->name_and_path() == $invertoryX->name_and_path() ? 'selected' : '';
-        $htmlString .= "<option value=\"" . $invertory->id . "\" $selected>" . $invertory->name_and_path() . "</option>";
+        $selected = $invertory->name_and_path == $invertoryX->name_and_path ? 'selected' : '';
+        $htmlString .= "<option value=\"" . $invertory->id . "\" $selected>" . $invertory->name_and_path . "</option>";
     }
     return response()->json(['htmlString' => $htmlString]);
 })->name('addInvertoryModal');
@@ -153,7 +154,7 @@ Route::get('/allInvertories', function () {
     $invertories = Invertory::all();
     $htmlString = "";
     foreach ($invertories as $invertory) {
-        $htmlString .= "<option value=\"" . $invertory->id . "\">" . $invertory->name_and_path() . "</option>";
+        $htmlString .= "<option value=\"" . $invertory->id . "\">" . $invertory->name_and_path . "</option>";
     }
     return response()->json(['htmlString' => $htmlString]);
 })->name('getInvertories');
@@ -173,7 +174,7 @@ Route::post('changeInvertoryModal', function (Request $request) {
 })->name('changeInvertoryModal');
 Route::resource('materials', MaterialController::class);
 Route::resource('material-categories', MaterialCategoryController::class);
-Route::resource('material-spendings', MaterialCategoryController::class);
+Route::resource('material-spendings', MaterialSpendingController::class);
 Route::post('addMaterialCategoryModal', function (Request $request) {
     $validated = $request->validate([
         'name' => 'required|unique:material_categories,name',
@@ -189,3 +190,8 @@ Route::post('addMaterialModal', function (Request $request) {
     Material::create($request->all());
 })->name('addMaterialModal');
 Route::get('material-categories/{materialCategory}/purchase', [MaterialCategoryController::class, 'showCreate'])->name('purchaseMaterial');
+Route::get('material-categories/{materialCategory}/spend', [MaterialCategoryController::class, 'showSpend'])->name('spendMaterial');
+Route::get('assets/{asset}/getAttributes', function (FixedAsset $asset) {
+    $attributes = $asset->purchaseItem->attributes;
+    return response()->json(['attributes' => $attributes]);
+})->name('getAssetAttributes');

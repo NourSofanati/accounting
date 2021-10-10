@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\MaterialSpending;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Vendor;
+use App\Observers\MaterialSpendingObserver;
 use App\Observers\PurchaseItemObserver;
 use App\Observers\PurchaseObserver;
 use App\Observers\VendorObserver;
@@ -36,5 +38,6 @@ class EventServiceProvider extends ServiceProvider
         Vendor::observe(VendorObserver::class);
         Purchase::observe(PurchaseObserver::class);
         PurchaseItem::observe(PurchaseItemObserver::class);
+        MaterialSpending::observe(MaterialSpendingObserver::class);
     }
 }

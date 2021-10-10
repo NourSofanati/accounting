@@ -25,7 +25,7 @@
                             class="w-full h-full border-1 border-gray-300 rounded mt-2">
                             <option value="">لا يوجد مستودع حاوي</option>
                             @forelse ($invertories as $item)
-                                <option value="{{ $item->id }}">{{ $item->name_and_path() }}</option>
+                                <option value="{{ $item->id }}">{{ $item->name_and_path }}</option>
                             @empty
 
                             @endforelse

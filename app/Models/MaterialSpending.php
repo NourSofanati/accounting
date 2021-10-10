@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MaterialSpending extends Model
 {
     use HasFactory;
-    protected $fillable = ['material_id', 'qty_spent', 'account_spent_on_id'];
+    protected $fillable = ['material_id', 'qty_spent', 'account_spent_on_id','date'];
 
     public function material()
     {

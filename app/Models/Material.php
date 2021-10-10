@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Material extends Model
 {
     use HasFactory;
-    protected $fillable = ['invertory_id', 'category_id', 'purchase_item_id', 'price', 'qty'];
+    protected $fillable = ['invertory_id','date', 'category_id', 'purchase_item_id', 'price', 'qty'];
     public function invertory()
     {
         return $this->belongsTo(Invertory::class, 'invertory_id');
@@ -55,11 +55,13 @@ class Material extends Model
         return $total;
     }
 
-
-
     public function getAvailableQtyAttribute()
     {
         $available = $this->qty - $this->total_spent;
         return $available;
+    }
+    public function scopeAvailable($query)
+    {
+        return $query->where('remaining_qty', '>', 0);
     }
 }

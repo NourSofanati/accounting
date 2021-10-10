@@ -18,7 +18,8 @@ class CreateMaterialSpendingsTable extends Migration
         Schema::create('material_spendings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Material::class, 'material_id');
-            $table->foreignIdFor(Account::class,'account_spent_on_id');
+            $table->foreignIdFor(Account::class,'account_spent_on_id')->nullable();
+            $table->date('date');
             $table->decimal('qty_spent', 20);
             $table->timestamps();
         });

@@ -140,11 +140,6 @@ class Account extends Model
 
         return $this->account_type == AccountType::IS_ASSET && $balance != 0 ? $balance : $balance * -1;
     }
-
-
-
-
-
     public function entries()
     {
         return $this->hasMany(Entry::class, 'account_id');
@@ -233,8 +228,6 @@ class Account extends Model
             return $sum;
         }
     }
-
-
 
     public function _USD_Credit()
     {

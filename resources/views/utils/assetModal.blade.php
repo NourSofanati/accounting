@@ -44,7 +44,7 @@
                         @foreach (\App\Models\Invertory::all() as $inv)
                             <option value="{{ $inv->id }}"
                                 {{ $asset->invertory_id == $inv->id ? 'selected' : '' }}>
-                                {{ $inv->name_and_path() }}
+                                {{ $inv->name_and_path }}
                             </option>
 
                         @endforeach

@@ -32,7 +32,7 @@
                             <select name="invertory_id" class="bg-gray-50 border-gray-300 border rounded w-full"
                                 id="invertories" required>
                                 @foreach ($invertories as $invertory)
-                                    <option value="{{ $invertory->id }}">{{ $invertory->name_and_path() }}</option>
+                                    <option value="{{ $invertory->id }}">{{ $invertory->name_and_path }}</option>
                                 @endforeach
                             </select>
                             <button id="addInvertory"><span class="material-icons my-auto">add</span></button>

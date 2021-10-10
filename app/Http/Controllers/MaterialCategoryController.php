@@ -71,6 +71,10 @@ class MaterialCategoryController extends Controller
             'materialCategory' => $materialCategory,
         ]);
     }
+    public function showSpend(MaterialCategory $materialCategory)
+    {
+        return view('materials.spend', compact('materialCategory'));
+    }
 
     /**
      * Show the form for editing the specified resource.
