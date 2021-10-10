@@ -17,11 +17,8 @@
 
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" id="tailwindcss">
-    <link rel="stylesheet" href="https://cdn.nayzac.online/svgCharts/css/style.css" />
     <link rel="apple-touch-icon" href="icons/apple-icon-180.png">
-
     <meta name="apple-mobile-web-app-capable" content="yes">
-
     <meta name="theme-color" content="#47BFBE" />
     <link rel="apple-touch-startup-image" href="{{ asset('images/icons/apple-splash-2048-2732.jpg') }}"
         media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
@@ -121,9 +118,6 @@
 
 
     <script src="{{ asset('js/tafqit.js') }}"></script>
-    <script src="{{ asset('js/classes/IDrawable.js') }}" type="module"></script>
-    <script src="{{ asset('js/classes/Pie.js') }}" type="module"></script>
-    <script src="{{ asset('js/classes/Slice.js') }}" type="module"></script>
     <script src="{{ asset('js/main.js') }}" type="module"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @yield('footerScripts')
