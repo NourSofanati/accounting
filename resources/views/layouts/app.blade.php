@@ -93,11 +93,11 @@
                 <header class="bg-white border-b border-gray-300 ">
                     <div class="w-full py-6 px-4 sm:px-6 lg:px-8 relative">
                         {{ $header }}
-                        @if (URL::previous())
-                            <a href="{{ URL::previous() }}"
-                                class="rounded-full text-lime flex top-0 text-xl left-8 bottom-0 my-auto absolute"><span
-                                    class="my-auto">الرجوع</span></a>
-                        @endif
+
+                        <a id="backBtn"
+                            class="rounded-full cursor-pointer text-lime flex top-0 text-xl left-8 bottom-0 my-auto absolute"><span
+                                class="my-auto">الرجوع</span></a>
+
                     </div>
                 </header>
             @endif
@@ -123,6 +123,12 @@
     <script src="{{ asset('js/jquery.debounce-1.0.5.js') }}"></script>
     @yield('footerScripts')
     @stack('custom-scripts')
+    <script>
+        $('#backBtn').click(function(e) {
+            e.preventDefault();
+            window.history.back();
+        });
+    </script>
 </body>
 
 </html>

@@ -15,6 +15,6 @@ class GeneralLedgerController extends Controller
     }
     public function create()
     {
-            
+        return redirect()->route('generalledger.index');
     }
 }
